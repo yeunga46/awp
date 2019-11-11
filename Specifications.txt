@@ -1,0 +1,59 @@
+Your project is to build a social networking photo upload site.
+
+It must have all of the following features:
+
+1) User registration.
+
+   a) Users register with an email address.
+
+   b) Users can recover their passwords via an email link.
+
+   c) Users can change their passwords.
+
+   d) Passwords are never stored in plain text.
+
+
+2) Upload of pictures.
+
+   a) Uploaded pictures are tagged with date/time of upload.
+
+   b) Each picture can be given a caption.
+
+   c) Registered users can comment on uploaded pictures.
+       i. Users can delete their own comments.
+      ii. Owners of pictures can delete any comment made on a picture.
+     iii. Comments are tagged with the date/time.   
+
+   d) Uploaded pictures go into the filesystem, not the database!
+      Captions and comments go in the database.
+   
+
+3) Consistency.
+
+   a) If a picture is deleted, all comments on the picture are also
+      deleted.
+
+   b) If an account is deleted, comments made by that account remain
+      but instead of the username they are marked with "[deleted]".
+
+   c) If an account is deleted, all pictures posted by that account
+      are deleted.
+
+
+Extra Credit Ideas:
+
+1) Block a user from seeing/commenting on your pictures.
+
+2) Add hashtags to picture captions/comments and make that searchable.
+
+3) Add "albums" where people can group pictures together.
+
+4) Something you think up yourself.  Impress me.
+
+5) Verify new registrations with an email sent to the given address
+   that has a confirmation link, and the confirmation link must be
+   followed in order for the registration to be completed.  (Might
+   want to add a Boolean field "verified" or something to the user
+   table, which verified users have more privileges than non-verified
+   users.)
+   

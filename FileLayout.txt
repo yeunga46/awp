@@ -1,0 +1,74 @@
+File Layout for Photo Site Project
+
+This is not a requirement, but it's a way you might consider
+using.  Whatever you use, write me a nice list of all the files
+and what they do.
+
+Note: when I hit your site's folder, I want to see an index of all
+the files.  Don't have an "index.html" or anything.  (Obviously a
+real site wouldn't do that, but this makes it easier to grade.)
+
+
+1) Your main page.
+
+A file with a name like "start.php", which checks to see if
+there's a cookie and someone's logged in.  If yes, give them a
+list of things they can do.
+
+If nobody's logged in, show them a form for logging in, and a
+form for registering, with two different "action" attributes for
+the forms.
+
+The "action" for each form should probably have no HTML in it;
+for "login", just check the username and password, and if good,
+send them back to "start.php", where now they're logged in and
+so it shows what they can do.  If the login's no good, send them
+to a "try again" page.
+
+The "register" action should add them as a user and then send
+them logged in back to the start page.  If you are not using a
+verification link, new users should be auto-logged-in after they
+register.
+
+Maybe it should have some interesting stats too: "10 pictures
+uploaded so far today", or "3 users online right now" or something
+like that.  It could show the most recently-added picture, or do a
+slideshow of the five most recently-added pictures, or something?
+
+Some reason why a new user would _want_ to stick around and register
+for this site, instead of going somewhere else.
+
+
+2) Secondary pages.
+
+You might have the start page do all the work, or you might have
+"profile.php" which shows all the pictures by a particular person,
+and then "picture.php" which shows a single picture and all the
+comments on it, and a "search.php" for if you search for "sunset"
+and it finds all pictures with "sunset" in the caption somewhere.
+(Extra points for using a .htaccess file and rewrites so the URLs
+look like ".../profile/fred" instead of ".../profile.php?user=fred".)
+
+
+3) Files to help do work.
+
+You'll probably have something akin to "AjaxFunctions.js", and
+"connect.php".  Some things you'll do a lot, so creating a file
+like "DataFunctions.php" with functions in it shortens the code
+and simplifies your (and the grader's) life.  For example, you
+can have something like "GetUserID(username, password)" that
+returns -1 if the username/password pair are no good, or returns
+the "person_id" or whatever out of the user table if the username
+and password check out.
+
+
+4) PHP files for use with Ajax.
+
+When someone tabs off the "new user" field (or on keyup, or whatever
+you like) you might have a little Javascript function that checks if
+that name is in use.  You may find performance better if you have
+a PHP file whose only job is verifying usernames.  It can return
+"nogood" if there are illegal characters, "inuse" if it's already
+in the table, or "okay" if it passes those tests.
+
+
