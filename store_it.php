@@ -14,6 +14,11 @@
 
 <h2>Information about the upload</h2>
 <?php
+// access information in directory with no web access
+require_once('Connect.php');
+
+// other functions are right here
+require_once('DBfuncs.php');
 
 // Note: "userfile" is the name from the form which we used for the
 //       file input tag.
@@ -87,6 +92,8 @@ if (file_exists($targetname)) {
         chmod($targetname, 0444);
         // but we can't upload another with the same name on top,
         // because it's now read-only
+		$dbh = ConnectDB();
+		Upload($dbh,$targetname,6);
     } else {
         die("Error copying ". $_FILES["userfile"]["name"]);
     }

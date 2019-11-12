@@ -1,64 +1,116 @@
 <?php
 
-/* This file has useful database functions in it for the phone
- * project.
+/* This file has useful database functions in it for the photo
+ * site.
  */
 
 // ListAllPhones() - return an array of phone objects
 // USAGE: $phonelist = ListAllPhones($dbh)
 // $dbh is database handle
-function ListAllPhones($dbh)
+function ListAllUsers($dbh)
 {
     // fetch the data
     try {
         // set up query
-        $phone_query = "SELECT name, phone FROM phonelist";
+        $user_query = "SELECT * FROM photo_users";
         // prepare to execute (this is a security precaution)
-        $stmt = $dbh->prepare($phone_query);
+        $stmt = $dbh->prepare($user_query);
         // run query
         $stmt->execute();
         // get all the results from database into array of objects
-        $phonedata = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $userdata = $stmt->fetchAll(PDO::FETCH_OBJ);
         // release the statement
         $stmt = null;
 
-        return $phonedata;
+        return $userdata;
     }
     catch(PDOException $e)
     {
-        die ('PDO error in ListAllPhones()": ' . $e->getMessage() );
+        die ('PDO error in ListAllUsers()": ' . $e->getMessage() );
+    }
+}
+
+// Upload() -  need to test after some questions of gow to store info
+// USAGE: upload file location to database
+// $dbh is database handle
+function Upload($dbh,$file_location,$uid)
+{
+     try {
+
+        $query = 'INSERT INTO `photo_files`(`filelocation`, `user_id`) ' .
+                 'VALUES (:filelocation, :uid)';
+        $stmt = $dbh->prepare($query);
+		
+        // Note each parameter must be bound separately
+        $stmt->bindParam(':filelocation', $file_location);
+		$stmt->bindParam(':uid', $uid);
+
+        $stmt->execute();
+        $inserted = $stmt->rowCount();
+
+        $stmt = null;
+    
+        echo "<p>inserted $inserted record(s).</p>\n";
+
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error inserting(): ' . $e->getMessage() );
     }
 }
 
 
-// ListMatchingPhones() - return an array of phone objects
-// USAGE: $phonelist = ListAllPhones($dbh, $name)
-// $dbh is database handle, $name is what to search
-function ListMatchingPhones($dbh, $name)
+// getUsername() - return username
+// USAGE: $username = getUsername($dbh, $uid)
+// $dbh is database handle, $uid is what to search
+function getUsername($dbh, $uid)
 {
     // fetch the data
     try {
-        // Note use of ":name" in query as placeholder
-        $phone_query = "SELECT name, phone FROM phonelist " .
-                       "WHERE  name like :name";
+       
+        $query = "SELECT username FROM photo_users " .
+                       "WHERE  user_id=:uid";
         // prepare to execute
-        $stmt = $dbh->prepare($phone_query);
+        $stmt = $dbh->prepare($query);
 
-        // bind $name to :name placeholder
-        // Note use of "%" as wildcard, same as "*" for shell
-        // or ".*" in sed/grep.
-        $match = "%$name%";
-        $stmt->bindParam('name', $match);
+        $stmt->bindParam(':uid', $uid);
 
         $stmt->execute();
-        $phonedata = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $username = implode($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
         $stmt = null;
 
-        return $phonedata;
+        return $username;
     }
     catch(PDOException $e)
     {
-        die ('PDO error in ListMatchingPhones(): ' . $e->getMessage() );
+        die ('PDO error in getUsername(): ' . $e->getMessage() );
+    }
+}
+
+// getUsername() - return true/false
+// USAGE: $bool = checkPassword($dbh, $username, $pword)
+// $dbh is database handle, $username is what to search, $pword check against
+function checkPassword($dbh, $username, $pword)
+{
+    // fetch the data
+    try {
+       
+        $query = "SELECT password FROM photo_users " .
+                       "WHERE  username=:username";
+        // prepare to execute
+        $stmt = $dbh->prepare($query);
+
+        $stmt->bindParam(':username', $username);
+
+        $stmt->execute();
+        $en_password = implode($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+        $stmt = null;
+		
+        return password_verify( $pword, $en_password );
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in getUsername(): ' . $e->getMessage() );
     }
 }
 

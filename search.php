@@ -19,49 +19,31 @@ $dbh = ConnectDB();
 
 
 // was there a name entered for the search?
-if (isset($_POST['name']) && !empty($_POST['name']) ) {
+if (isset($_POST['uid']) && !empty($_POST['uid']) ) {
 
-    echo '<p>Searching for ' . $_POST['name'] . "...</p>\n";
+    echo '<p>Searching for ' . $_POST['uid'] . "...</p>\n";
 
-    $phonelist = ListMatchingPhones($dbh, $_POST['name']);
-
+    $username = getUsername($dbh, $_POST['uid']);
+	echo "<p> $username <p>\n";
+	// uncomment next line for debugging
+	echo '<pre>'; print_r($username); echo '</pre>';
 } else {
 
     echo "<p>No search specified; here's the whole list.</p>\n";
 
-    $phonelist = ListAllPhones($dbh);
 }
 
-$counter = 0;
-echo "<ul>\n";
-foreach ( $phonelist as $number ) {
-    $counter++;
-    echo "    <li> $number->name, $number->phone </li>\n";
-    // modification: add delete link
-}
-echo "</ul>\n";
 
-echo "<p> $counter record(s) returned.<p>\n";
-
-// uncomment next line for debugging
-# echo '<pre>'; print_r($phonelist); echo '</pre>';
 
 ?>
 
 
 <h1>Search for an entry</h1>
 
-<form action="search.php" method="post">
-      Name: <input type="text" name='name'><br>
+<form method="post">
+      User Id: <input type="text" name='uid'><br>
        <input type="submit">
 </form>
-
-<p>(Note: try to search for the name '0' (zero), and
-the name '5', and the name ' ' (space), and think
-about situations in which using <i>strlen()</i> instead
-of <i>isempty()</i> might be a better choice.)</p>
-
-<?php include('foot.php'); ?>
 
 </body>
 </html>

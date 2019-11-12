@@ -5,11 +5,11 @@
 </head> 
 <body>
 
-<h1>Data from phonelist</h1>
+<h1>Data from userlist</h1>
 <?php
 
 // access information in directory with no web access
-require_once('/home/kilroy/public_html/awp/Wk9.2-php2/Connect.php');
+require_once('Connect.php');
 
 // other functions are right here
 require_once('DBfuncs.php');
@@ -17,27 +17,21 @@ require_once('DBfuncs.php');
 
 $dbh = ConnectDB();
 
-$phonelist = ListAllPhones($dbh);
+$userlist = ListAllUsers($dbh);
 
 echo "<p>Here is the data:<p>\n";
 $counter = 0;
-echo "<ul>\n";
-foreach ( $phonelist as $number ) {
+foreach ( $userlist as $number ) {
     $counter++;
-    echo "    <li> $number->name, $number->phone ";
-    echo "<a href='./delete.php?name=$number->name&amp;phone=$number->phone'>";
-    echo "remove</a>";
-    echo "</li>\n";
 }
-echo "</ul>\n";
 
 echo "<p> $counter record(s) returned.<p>\n";
 
 // uncomment next line for debugging
-# echo '<pre>'; print_r($phonelist); echo '</pre>';
+echo '<pre>'; print_r($userlist); echo '</pre>';
 ?>
 
-<?php include('foot.php'); ?>
+
 
 </body>
 </html>
