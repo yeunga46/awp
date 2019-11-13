@@ -37,11 +37,4 @@
 </div>
 </div>
 </body>
-<script>
-//jquery works
-$('#body').css("background-color", "coral");
-alert("test");
-
-</script>
-
 </html>

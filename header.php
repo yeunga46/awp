@@ -6,7 +6,6 @@
 
 <!-- Bootstrap 3 works but not bootstrap 4...-->
 <link rel="stylesheet" href=".\css\bootstrap.min.css">
-<link rel="stylesheet" href=".\css\main.css">
 <script src=".\scripts\jquery-3.4.1.min.js"></script>
 <script src=".\scripts\bootstrap.min.js"></script>
 <title><?php echo $title; ?></title>
@@ -21,17 +20,50 @@
     <ul class="nav navbar-nav">
       <li class="active"><a href="#">Home</a></li>
     </ul>
-    <form class="navbar-form navbar-right">
-    <div class="form-group">
-        <input class="form-control" type="text" placeholder="username">
-    </div>
-    <div class="form-group">
-        <input class="form-control" type="password" placeholder="password">
-    </div>
+    <form class="navbar-form navbar-right" action="login.php">
+      <div class="form-group">
+          <input class="form-control" type="text" name="username" placeholder="username">
+      </div>
+      <div class="form-group">
+          <input class="form-control" type="password" name="pwd" placeholder="password">
+      </div>
     <button class="btn btn-success" type="submit">Log in</button>
-    <button class="btn btn-info">Register</button>
-    </form>
 
+    <button class="btn btn-info" data-toggle="modal" data-target="#div_registerModal" type="button">Register</button>
+    </form>
   </div>
 </nav>
 </header>
+<!-- Register modal-->
+<div class="modal fade" id="div_registerModal" role="dialog">
+<div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Register</h4>
+        </div>
+        <div class="modal-body">
+        <form method="post" action="/register.php">
+          <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" name="username">
+          </div>
+          <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="text" name="email">
+          </div>
+          <div class="form-group">
+          <label for="pword">Password:</label>
+          <input type="password" id="pword" name="pword">
+          </div>
+          <!-- need to add pword confirm field-->
+          <button type="submit" class="btn btn-success">Register</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

@@ -63,14 +63,6 @@ if ( isset($_POST['username'])   &&  !empty($_POST['username'])   &&
 <h1>Register</h1>
 
 
-<form method="post">
-    User Name: <input type="text" name='username'><br>
-    E-Mail: <input type="text" name='email'><br>
-	Password: <input type="password" name='pword'><br>
-    <input type="submit">
-</form>
-
-
 </body>
 </html>
 
