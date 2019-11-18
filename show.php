@@ -30,8 +30,6 @@ echo "<p> $counter record(s) returned.<p>\n";
 // uncomment next line for debugging
 echo '<pre>'; print_r($userlist); echo '</pre>';
 
-
-
 echo "<p> Comments<p>\n";
 
 $comments = getComments($dbh,0);

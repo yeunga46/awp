@@ -1,18 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
- "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-  <title>The Uploaded File</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-  <meta name="Author" content="Darren Provine" />
-  <meta name="generator" content="GNU Emacs" />
-
-</head>
-<body>
-
-<!-- <h1>Now To Save The Uploaded File</h1>
-
-<h2>Information about the upload</h2> -->
 <?php
 
 session_start();
@@ -30,25 +15,19 @@ require_once('DBfuncs.php');
 // echo "File Size: ", $_FILES["userfile"]["size"], " bytes <br />";
 
 ?>
-
-<!-- <h2>Here's the file itself</h2>
- -->
 <?php
 
-#$File_Handle = fopen($_FILES["userfile"]["tmp_name"], "r");
+$File_Handle = fopen($_FILES["userfile"]["name"], "r");
 
-#$File_Contents = fread($File_Handle, $_FILES["userfile"]["size"]);
+$File_Contents = fread($File_Handle, $_FILES["userfile"]["size"]);
 
-#echo "<pre>\n";
+##echo "<pre>\n";
 #echo htmlspecialchars($File_Contents, ENT_QUOTES);
 #echo "</pre>\n";
 
-#fclose($File_Handle);
+fclose($File_Handle);
 
 ?>
-
-
-
 <?php
 
 // In order for this to work, there has to be a directory where
@@ -64,17 +43,10 @@ require_once('DBfuncs.php');
 
 // echo "<p>Making directory " . $_SESSION["username"] . " . . . ";
 
-if (file_exists("./UPLOADED/archive/" . $_SESSION["username"])) {
-    echo "I see it already exists; you've uploaded before.</p>";
-} else {
-    // bug in mkdir() requires you to chmod()
+if (!file_exists("./UPLOADED/archive/" . $_SESSION["username"])) {
     mkdir("./UPLOADED/archive/". $_SESSION["username"], 0777);
     chmod("./UPLOADED/archive/". $_SESSION["username"], 0777);
-    echo "done.</p>";
 }
-
-echo "<h2>Copying File And Setting Permission</h2>";
-
 // Make sure it was uploaded
 if (!is_uploaded_file( $_FILES["userfile"]["tmp_name"])) {
     #echo "<pre>\n"; print_r($_FILES["userfile"]); echo "</pre>";
@@ -82,28 +54,27 @@ if (!is_uploaded_file( $_FILES["userfile"]["tmp_name"])) {
 }
 
 
-$targetname = "./UPLOADED/archive/" . $_SESSION["username"] . "/" .
-              $_FILES["userfile"]["name"];
+$targetname = "./UPLOADED/archive/" . $_SESSION["username"] . "/" . basename($_FILES["userfile"]["name"]);;
 
-if (file_exists($targetname)) {
-    echo "<p>Already uploaded one with this name.  I'm confused.</p>";
-} else {
-    if ( copy($_FILES["userfile"]["tmp_name"], $targetname) ) {
+if(file_exists($targetname))
+{
+    ?> <script>alert("File already uploaded.")</script> <?php
+    header('Location: ./upload.php');
+}
+else {
+    if (move_uploaded_file($_FILES["userfile"]["tmp_name"], $targetname) ) {
         // if we don't do this, the file will be mode 600, owned by
         // www, and so we won't be able to read it ourselves
         chmod($targetname, 0444);
         // but we can't upload another with the same name on top,
         // because it's now read-only
-		$dbh = ConnectDB();
-		Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $_POST["caption"],$_POST["title"]);
+        $dbh = ConnectDB();
+        
+        Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $_POST["caption"],$_POST["title"]);
+        header('Location: ./profile.php');
 		//file + timestamp caption default null
-    } else {
-        die("Error copying ". $_FILES["userfile"]["name"]);
-    }
+} else {
+    die("Error copying ". $_FILES["userfile"]["name"]);
+}
 }
 ?>
-
-<h2>Done!</h2>
-
-</body>
-</html>
