@@ -19,6 +19,10 @@ else {
     <div class="row"></div>
         <div class="col-sm-auto col-centered text-center">
             <form method="post" action="./store_it.php">
+                <div class= "form-group">
+                    <label for="title">Choose a title for your photo:</label>
+                    <input type="text" name="title" id="title">
+                </div>
                 <div class="form-group">
                     <label for="userfile">Choose a photo to upload:</label>
                     <!-- center pesky input -->

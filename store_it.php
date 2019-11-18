@@ -14,6 +14,8 @@
 
 <h2>Information about the upload</h2> -->
 <?php
+
+session_start();
 // access information in directory with no web access
 require_once('Connect.php');
 
@@ -33,15 +35,15 @@ require_once('DBfuncs.php');
  -->
 <?php
 
-$File_Handle = fopen($_FILES["userfile"]["tmp_name"], "r");
+#$File_Handle = fopen($_FILES["userfile"]["tmp_name"], "r");
 
-$File_Contents = fread($File_Handle, $_FILES["userfile"]["size"]);
+#$File_Contents = fread($File_Handle, $_FILES["userfile"]["size"]);
 
-echo "<pre>\n";
-echo htmlspecialchars($File_Contents, ENT_QUOTES);
-echo "</pre>\n";
+#echo "<pre>\n";
+#echo htmlspecialchars($File_Contents, ENT_QUOTES);
+#echo "</pre>\n";
 
-fclose($File_Handle);
+#fclose($File_Handle);
 
 ?>
 
@@ -60,27 +62,27 @@ fclose($File_Handle);
 // out the casual visitor.
 // NOTE: the Makefile to set all this up isn't as bad as it sounds.
 
-// echo "<p>Making directory " . $_POST["username"] . " . . . ";
+// echo "<p>Making directory " . $_SESSION["username"] . " . . . ";
 
-if (file_exists("./UPLOADED/archive/" . $_POST["username"])) {
+if (file_exists("./UPLOADED/archive/" . $_SESSION["username"])) {
     echo "I see it already exists; you've uploaded before.</p>";
 } else {
     // bug in mkdir() requires you to chmod()
-    mkdir("./UPLOADED/archive/". $_POST["username"], 0777);
-    chmod("./UPLOADED/archive/". $_POST["username"], 0777);
+    mkdir("./UPLOADED/archive/". $_SESSION["username"], 0777);
+    chmod("./UPLOADED/archive/". $_SESSION["username"], 0777);
     echo "done.</p>";
 }
 
 echo "<h2>Copying File And Setting Permission</h2>";
 
 // Make sure it was uploaded
-if (! is_uploaded_file ( $_FILES["userfile"]["tmp_name"] ) ) {
+if (!is_uploaded_file( $_FILES["userfile"]["tmp_name"])) {
     #echo "<pre>\n"; print_r($_FILES["userfile"]); echo "</pre>";
     die("Error: " . $_FILES["userfile"]["name"] . " did not upload.");
 }
 
 
-$targetname = "./UPLOADED/archive/" . $_POST["username"] . "/" .
+$targetname = "./UPLOADED/archive/" . $_SESSION["username"] . "/" .
               $_FILES["userfile"]["name"];
 
 if (file_exists($targetname)) {
@@ -93,7 +95,7 @@ if (file_exists($targetname)) {
         // but we can't upload another with the same name on top,
         // because it's now read-only
 		$dbh = ConnectDB();
-		Upload($dbh,$targetname,$_POST["uid"],$_POST["username"], $_POST["caption"]$_POST["title"]);
+		Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $_POST["caption"],$_POST["title"]);
 		//file + timestamp caption default null
     } else {
         die("Error copying ". $_FILES["userfile"]["name"]);
