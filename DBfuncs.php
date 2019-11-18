@@ -33,17 +33,19 @@ function ListAllUsers($dbh)
 // Upload() -  need to test after some questions of gow to store info
 // USAGE: upload file location to database
 // $dbh is database handle
-function Upload($dbh,$file_location,$uid)
+function Upload($dbh,$file_location,$uid,$uploader)
 {
+    
      try {
 
-        $query = 'INSERT INTO photo_files(filelocation, user_id) ' .
-                 'VALUES (:filelocation, :uid)';
+        $query = 'INSERT INTO photo_files(filelocation, user_id, uploader) ' .
+                 'VALUES (:filelocation, :uid, :uploader)';
         $stmt = $dbh->prepare($query);
 		
         // Note each parameter must be bound separately
         $stmt->bindParam(':filelocation', $file_location);
 		$stmt->bindParam(':uid', $uid);
+        $stmt->bindParam(':uploader', $uploader);
 
         $stmt->execute();
         $inserted = $stmt->rowCount();
@@ -51,7 +53,6 @@ function Upload($dbh,$file_location,$uid)
         $stmt = null;
     
         echo "<p>inserted $inserted record(s).</p>\n";
-
     }
     catch(PDOException $e)
     {
