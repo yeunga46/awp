@@ -15,11 +15,18 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#"><?php echo $title; ?></a>
+      <a class="navbar-brand" href="#"><?php echo $title;?></a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Home</a></li>
+      <li class="active"><a href="./start.php">Home</a></li>
     </ul>
+    <form class="navbar-form" style="float: inherit; display: inline-block; !important" action="./search.php">
+      <div class="form-group">
+        <input class="form-control" type="text" name="searchbar" placeholder="search">
+      </div>
+    </form> 
+    <!-- Login / Register part of header-->
+    <?php if(!$_SESSION["login"]) { ?>
     <form class="navbar-form navbar-right" method="post" action="./login.php">
       <div class="form-group">
           <input class="form-control" type="text" name="username" placeholder="username">
@@ -31,6 +38,21 @@
 
     <button class="btn btn-info" data-toggle="modal" data-target="#div_registerModal" type="button">Register</button>
     </form>
+    <?php } else{ ?>
+    <ul class="nav navbar-nav">
+      <li><a href="./profile.php">Profile</a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+      <li><a href="./upload.php">Upload</a></li>
+    </ul>
+    
+    <!-- Log out form-->
+    <form class="navbar-form navbar-right" method="post" action="./logout.php">
+      <div class="form-group">
+        <button class="btn btn-danger" type="submit" onclick="alert('Logging out...')">Log out</button>
+      </div>
+    </form>
+    <?php }?>
   </div>
 </nav>
 </header>

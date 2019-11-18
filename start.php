@@ -2,12 +2,17 @@
 <?php 
 session_start();
 
+if(!isset($_SESSION["login"]))
+{
+  $_SESSION["login"] = false;
+}
 if ($_SESSION["login"])
 {
   $title = 'Welcome '.$_SESSION["username"];
 }else{
   $title = 'Welcome';
 }
+
 include("header.php");
 ?>
 <div class="container-fluid">

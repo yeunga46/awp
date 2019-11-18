@@ -1,7 +1,7 @@
 <?php
 // Variable to check
 // $email = "john.doe@as.net";
-$email = $_POST['email']
+$email = $_POST['email'];
 
 // Remove all illegal characters from email
 $email = filter_var($email, FILTER_SANITIZE_EMAIL);

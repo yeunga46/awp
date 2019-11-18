@@ -19,11 +19,11 @@ $dbh = ConnectDB();
 
 
 // was there a name entered for the search?
-if (isset($_POST['uid']) && !empty($_POST['uid']) ) {
+if (isset($_POST['searchbar']) && !empty($_POST['searchbar']) ) {
 
-    echo '<p>Searching for ' . $_POST['uid'] . "...</p>\n";
+    echo '<p>Searching for ' . $_POST['searchbar'] . "...</p>\n";
 
-    $username = getUsername($dbh, $_POST['uid']);
+    $username = getUsername($dbh, $_POST['searchbar']);
 	echo "<p> $username <p>\n";
 	// uncomment next line for debugging
 	echo '<pre>'; print_r($username); echo '</pre>';
