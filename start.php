@@ -1,4 +1,15 @@
-<?php $title = 'Welcome'; include("header.php");?>
+
+<?php 
+session_start();
+
+if ($_SESSION["login"])
+{
+  $title = 'Welcome '.$_SESSION["username"];
+}else{
+  $title = 'Welcome';
+}
+include("header.php");
+?>
 <div class="container-fluid">
 
 <h1>Popular images</h1>

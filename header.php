@@ -20,7 +20,7 @@
     <ul class="nav navbar-nav">
       <li class="active"><a href="#">Home</a></li>
     </ul>
-    <form class="navbar-form navbar-right" action="login.php">
+    <form class="navbar-form navbar-right" method="post" action="./login.php">
       <div class="form-group">
           <input class="form-control" type="text" name="username" placeholder="username">
       </div>
@@ -43,7 +43,7 @@
           <h4 class="modal-title">Register</h4>
         </div>
         <div class="modal-body">
-        <form method="post" action="/register.php">
+        <form method="post" action="./register.php">
           <div class="form-group">
           <label for="username">Username:</label>
           <input type="text" name="username">

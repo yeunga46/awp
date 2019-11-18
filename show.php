@@ -29,6 +29,25 @@ echo "<p> $counter record(s) returned.<p>\n";
 
 // uncomment next line for debugging
 echo '<pre>'; print_r($userlist); echo '</pre>';
+
+
+
+echo "<p> Comments<p>\n";
+
+$comments = getComments($dbh,0);
+// addComment($dbh,22,0,"hello world");
+// editComment($dbh,2,0,22,"Howdy");
+echo '<pre>'; print_r($comments); echo '</pre>';
+
+echo "<p> user photos<p>\n";
+
+$photos = getUserPhotos($dbh,6);
+// addComment($dbh,22,0,"hello world");
+// editComment($dbh,2,0,22,"Howdy");
+echo '<pre>'; print_r($photos); echo '</pre>';
+// changePassword($dbh, "tester", "test", "testing");
+// changePassword($dbh, "tester", "testing", "test");
+
 ?>
 
 

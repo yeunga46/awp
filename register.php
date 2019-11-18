@@ -11,9 +11,6 @@
 // access information in directory with no web access
 require_once('Connect.php');
 
-// other functions are right here
-// require_once('DBfuncs.php');
-
 $dbh = ConnectDB();
 
 // was a name and phone entered?
@@ -46,6 +43,7 @@ if ( isset($_POST['username'])   &&  !empty($_POST['username'])   &&
         $stmt = null;
     
         // echo "<p>inserted $inserted record(s).</p>\n";
+        header("Location:start.php");
 
     }
     catch(PDOException $e)
@@ -60,7 +58,7 @@ if ( isset($_POST['username'])   &&  !empty($_POST['username'])   &&
 }
 ?>
 
-<h1>Register</h1>
+
 
 
 </body>

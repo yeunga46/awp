@@ -10,9 +10,9 @@
 </head>
 <body>
 
-<h1>Now To Save The Uploaded File</h1>
+<!-- <h1>Now To Save The Uploaded File</h1>
 
-<h2>Information about the upload</h2>
+<h2>Information about the upload</h2> -->
 <?php
 // access information in directory with no web access
 require_once('Connect.php');
@@ -23,14 +23,14 @@ require_once('DBfuncs.php');
 // Note: "userfile" is the name from the form which we used for the
 //       file input tag.
 
-echo "Name On Client: ", $_FILES["userfile"]["name"], "<br />";
-echo "Name On Server: ", $_FILES["userfile"]["tmp_name"], "<br />";
-echo "File Size: ", $_FILES["userfile"]["size"], " bytes <br />";
+// echo "Name On Client: ", $_FILES["userfile"]["name"], "<br />";
+// echo "Name On Server: ", $_FILES["userfile"]["tmp_name"], "<br />";
+// echo "File Size: ", $_FILES["userfile"]["size"], " bytes <br />";
 
 ?>
 
-<h2>Here's the file itself</h2>
-
+<!-- <h2>Here's the file itself</h2>
+ -->
 <?php
 
 $File_Handle = fopen($_FILES["userfile"]["tmp_name"], "r");
@@ -45,7 +45,7 @@ fclose($File_Handle);
 
 ?>
 
-<h2>Now to create the dir and save the file</h2>
+
 
 <?php
 
@@ -60,7 +60,7 @@ fclose($File_Handle);
 // out the casual visitor.
 // NOTE: the Makefile to set all this up isn't as bad as it sounds.
 
-echo "<p>Making directory " . $_POST["username"] . " . . . ";
+// echo "<p>Making directory " . $_POST["username"] . " . . . ";
 
 if (file_exists("./UPLOADED/archive/" . $_POST["username"])) {
     echo "I see it already exists; you've uploaded before.</p>";
@@ -94,6 +94,7 @@ if (file_exists($targetname)) {
         // because it's now read-only
 		$dbh = ConnectDB();
 		Upload($dbh,$targetname,6);
+		//file + timestamp caption default null
     } else {
         die("Error copying ". $_FILES["userfile"]["name"]);
     }
