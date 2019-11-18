@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2019 at 03:11 AM
+-- Generation Time: Nov 18, 2019 at 11:22 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -11,8 +11,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
-CREATE DATABASE photosite;
-USE photosite;
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -31,8 +30,8 @@ USE photosite;
 
 CREATE TABLE `photo_comments` (
   `comment_id` int(8) NOT NULL,
-  `user_id` int(6) DEFAULT NULL,
-  `photo_id` int(8) DEFAULT NULL,
+  `user_id` int(6) NOT NULL,
+  `photo_id` int(8) NOT NULL,
   `comment_text` varchar(128) DEFAULT NULL,
   `comment_time` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -42,10 +41,10 @@ CREATE TABLE `photo_comments` (
 --
 
 INSERT INTO `photo_comments` (`comment_id`, `user_id`, `photo_id`, `comment_text`, `comment_time`) VALUES
-(1, 0, 0, 'test', '0000-00-00 00:00:00'),
-(2, 22, 0, 'Howdy', '2019-11-17 23:56:18'),
-(3, 22, 0, 'hello world', '2019-11-17 23:56:21'),
-(4, 22, 0, 'hello world', '2019-11-17 23:58:08');
+(1, 1, 3, 'test', '0000-00-00 00:00:00'),
+(2, 22, 3, 'Howdy', '2019-11-17 23:56:18'),
+(3, 22, 4, 'hello world', '2019-11-17 23:56:21'),
+(4, 22, 4, 'hello world', '2019-11-17 23:58:08');
 
 -- --------------------------------------------------------
 
@@ -57,6 +56,7 @@ CREATE TABLE `photo_files` (
   `photo_id` int(8) NOT NULL,
   `uploaddate` datetime NOT NULL DEFAULT current_timestamp(),
   `uploader` varchar(128) DEFAULT NULL,
+  `title` varchar(140) NOT NULL,
   `caption` varchar(128) DEFAULT NULL,
   `filelocation` varchar(512) NOT NULL,
   `user_id` int(11) NOT NULL
@@ -66,9 +66,11 @@ CREATE TABLE `photo_files` (
 -- Dumping data for table `photo_files`
 --
 
-INSERT INTO `photo_files` (`photo_id`, `uploaddate`, `uploader`, `caption`, `filelocation`, `user_id`) VALUES
-(1, '2019-11-12 13:08:14', '', '', './UPLOADED/archive/test2/blue duck.png', 6),
-(2, '2019-11-12 13:10:33', NULL, NULL, './UPLOADED/archive/test2/blue duck.png', 6);
+INSERT INTO `photo_files` (`photo_id`, `uploaddate`, `uploader`, `title`, `caption`, `filelocation`, `user_id`) VALUES
+(2, '2019-11-12 13:10:33', NULL, '', NULL, './UPLOADED/archive/test2/blue duck.png', 6),
+(3, '2019-11-18 11:51:52', NULL, '', NULL, './UPLOADED/archive/ay/image1.png', 7),
+(4, '2019-11-18 11:53:47', NULL, '', NULL, './UPLOADED/archive/ay/image1.png', 7),
+(10, '2019-11-18 11:58:38', 'ay', '', NULL, './UPLOADED/archive/ay/image1.png', 7);
 
 -- --------------------------------------------------------
 
@@ -92,7 +94,6 @@ CREATE TABLE `photo_users` (
 
 INSERT INTO `photo_users` (`user_id`, `joindate`, `username`, `password`, `email`, `profile_pic_id`, `bio`) VALUES
 (1, '2019-11-11 22:51:02', 'test', 'blue', 'test.test.com', NULL, NULL),
-(2, '2019-11-12 16:13:03', 'test', 'sagugfuisl', 'acisgfui', NULL, NULL),
 (5, '2019-11-12 16:14:59', 'test3', 'sasgugfuisl', 'acisgxfui', NULL, NULL),
 (6, '2019-11-12 16:20:24', 'test2', 'g@g.com', '$2y$10$6no9n6FDEgcIVTniVLavYeDtyLeT/nSQz9/y9iHmJl.CbmOcO56/e', NULL, NULL),
 (7, '2019-11-12 16:20:48', 'test2', 'g@g.com', '$2y$10$dUQs.cssoXnifBAH4qt2NOOH7hlWNBOeOC/xMObuT4Bil8NZoZ4ie', NULL, NULL),
@@ -110,7 +111,8 @@ INSERT INTO `photo_users` (`user_id`, `joindate`, `username`, `password`, `email
 -- Indexes for table `photo_comments`
 --
 ALTER TABLE `photo_comments`
-  ADD PRIMARY KEY (`comment_id`);
+  ADD PRIMARY KEY (`comment_id`),
+  ADD KEY `photo_id` (`photo_id`);
 
 --
 -- Indexes for table `photo_files`
@@ -139,13 +141,23 @@ ALTER TABLE `photo_comments`
 -- AUTO_INCREMENT for table `photo_files`
 --
 ALTER TABLE `photo_files`
-  MODIFY `photo_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `photo_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `photo_users`
 --
 ALTER TABLE `photo_users`
   MODIFY `user_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `photo_comments`
+--
+ALTER TABLE `photo_comments`
+  ADD CONSTRAINT `photo_comments_ibfk_1` FOREIGN KEY (`photo_id`) REFERENCES `photo_files` (`photo_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
