@@ -93,7 +93,7 @@ if (file_exists($targetname)) {
         // but we can't upload another with the same name on top,
         // because it's now read-only
 		$dbh = ConnectDB();
-		Upload($dbh,$targetname,7,$_POST["username"]);
+		Upload($dbh,$targetname,$_POST["uid"],$_POST["username"], $_POST["caption"]$_POST["title"]);
 		//file + timestamp caption default null
     } else {
         die("Error copying ". $_FILES["userfile"]["name"]);
