@@ -14,21 +14,15 @@ require_once('DBfuncs.php');
 // echo "Name On Server: ", $_FILES["userfile"]["tmp_name"], "<br />";
 // echo "File Size: ", $_FILES["userfile"]["size"], " bytes <br />";
 
-?>
-<?php
-
 $File_Handle = fopen($_FILES["userfile"]["name"], "r");
 
 $File_Contents = fread($File_Handle, $_FILES["userfile"]["size"]);
 
-##echo "<pre>\n";
-#echo htmlspecialchars($File_Contents, ENT_QUOTES);
-#echo "</pre>\n";
+// #echo "<pre>\n";
+// echo htmlspecialchars($File_Contents, ENT_QUOTES);
+// echo "</pre>\n";
 
 fclose($File_Handle);
-
-?>
-<?php
 
 // In order for this to work, there has to be a directory where
 // the web server can save files, and where you can go in and work
@@ -69,8 +63,13 @@ else {
         // but we can't upload another with the same name on top,
         // because it's now read-only
         $dbh = ConnectDB();
+        $caption = null;
+
+        if(!empty($_POST["caption"])){
+          $caption = $_POST["caption"];
+        }
         
-        Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $_POST["caption"],$_POST["title"]);
+        Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $caption,$_POST["title"]);
         header('Location: ./profile.php');
 		//file + timestamp caption default null
 } else {

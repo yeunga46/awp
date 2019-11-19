@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2019 at 11:22 PM
+-- Generation Time: Nov 19, 2019 at 10:35 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -70,7 +70,11 @@ INSERT INTO `photo_files` (`photo_id`, `uploaddate`, `uploader`, `title`, `capti
 (2, '2019-11-12 13:10:33', NULL, '', NULL, './UPLOADED/archive/test2/blue duck.png', 6),
 (3, '2019-11-18 11:51:52', NULL, '', NULL, './UPLOADED/archive/ay/image1.png', 7),
 (4, '2019-11-18 11:53:47', NULL, '', NULL, './UPLOADED/archive/ay/image1.png', 7),
-(10, '2019-11-18 11:58:38', 'ay', '', NULL, './UPLOADED/archive/ay/image1.png', 7);
+(10, '2019-11-18 11:58:38', 'ay', '', NULL, './UPLOADED/archive/ay/image1.png', 7),
+(11, '2019-11-19 13:36:19', 'tester', 'h', 'as', './UPLOADED/archive/tester/pokehyaku01b.jpg', 24),
+(12, '2019-11-19 13:43:40', 'tester', 's', NULL, './UPLOADED/archive/tester/pokehyaku02b.jpg', 24),
+(13, '2019-11-19 13:52:32', 'tester', '3', NULL, './UPLOADED/archive/tester/pokehyaku03b.jpg', 24),
+(14, '2019-11-19 15:55:44', 'tester', 'ghost', NULL, './UPLOADED/archive/tester/pokehyaku04b.jpg', 24);
 
 -- --------------------------------------------------------
 
@@ -95,13 +99,13 @@ CREATE TABLE `photo_users` (
 INSERT INTO `photo_users` (`user_id`, `joindate`, `username`, `password`, `email`, `profile_pic_id`, `bio`) VALUES
 (1, '2019-11-11 22:51:02', 'test', 'blue', 'test.test.com', NULL, NULL),
 (5, '2019-11-12 16:14:59', 'test3', 'sasgugfuisl', 'acisgxfui', NULL, NULL),
-(6, '2019-11-12 16:20:24', 'test2', 'g@g.com', '$2y$10$6no9n6FDEgcIVTniVLavYeDtyLeT/nSQz9/y9iHmJl.CbmOcO56/e', NULL, NULL),
+(6, '2019-11-12 16:20:24', 'test8', 'g@g.com', '$2y$10$6no9n6FDEgcIVTniVLavYeDtyLeT/nSQz9/y9iHmJl.CbmOcO56/e', NULL, NULL),
 (7, '2019-11-12 16:20:48', 'test2', 'g@g.com', '$2y$10$dUQs.cssoXnifBAH4qt2NOOH7hlWNBOeOC/xMObuT4Bil8NZoZ4ie', NULL, NULL),
 (8, '2019-11-12 16:26:57', 'test4', '$2y$10$BSNhnQPg8YM0toPFswRB0eLVzZ.njdrZpnY/yXRLEwWrzObRsEGOi', 'a@a.com', NULL, NULL),
 (19, '2019-11-12 16:33:01', 'yufyufgcyufy', '$2y$10$OonSXnKxMdCvyKaQZc5zxuptX507vBdp6F1HOHl39uexq8ONauSI2', 'fyufufyuf', NULL, NULL),
 (21, '2019-11-12 16:37:21', 'test6', '$2y$10$D9YS5sexY/nz6Nb/TjxZgOZd9jVWzC/TGsxA7GRpWYJKCTJ4CT6la', 'hajuwb', NULL, NULL),
-(22, '2019-11-12 16:37:44', 'test7', '$2y$10$lyYFvIp0DOYo9ZrUX6fziux17s.WXF1N0pBVr.89Cv5FHn7xtmWrq', 'they', NULL, NULL),
-(24, '2019-11-18 02:01:01', 'tester', '$2y$10$XH/CQMC3Z77l44N2W8JODuG.VG9XmXcLfPalX7ZaqziDoRq2LO59C', 'tes.ting.com', NULL, NULL);
+(22, '2019-11-12 16:37:44', 'test7', '$2y$10$lyYFvIp0DOYo9ZrUX6fziux17s.WXF1N0pBVr.89Cv5FHn7xtmWrq', 'they', 3, 'test guy'),
+(24, '2019-11-18 02:01:01', 'tester', '$2y$10$XH/CQMC3Z77l44N2W8JODuG.VG9XmXcLfPalX7ZaqziDoRq2LO59C', 'tes.ting.com', 6, 'test guy');
 
 --
 -- Indexes for dumped tables
@@ -125,7 +129,8 @@ ALTER TABLE `photo_files`
 --
 ALTER TABLE `photo_users`
   ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -141,7 +146,7 @@ ALTER TABLE `photo_comments`
 -- AUTO_INCREMENT for table `photo_files`
 --
 ALTER TABLE `photo_files`
-  MODIFY `photo_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `photo_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `photo_users`

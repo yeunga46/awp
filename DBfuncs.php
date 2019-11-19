@@ -3,9 +3,9 @@
 /* This file has useful database functions in it for the photo
  * site.
  */
-//maybe repurposed or remove mainly used for tests check
-// ListAllPhones() - return an array of user objects
-// USAGE: $phonelist = ListAllPhones($dbh)
+
+// ListAllUsers() - return an array of user objects
+// USAGE: $userlist = ListAllUsers($dbh)
 // $dbh is database handle
 function ListAllUsers($dbh)
 {
@@ -30,21 +30,21 @@ function ListAllUsers($dbh)
     }
 }
 
-// Upload() -  need to test after some questions of gow to store info
-// USAGE: upload file location to database
-// $dbh is database handle
+// Upload() - upload file location  and othe information to database
+// USAGE: 
+// $dbh is database handle, $file_location is file location,$uid is user id,
+// $uploader is username of uploader,$caption is photo caption,$title is photo title
 function Upload($dbh,$file_location,$uid,$uploader,$caption,$title)
 {
-    
-     try {
+    try {
 
         $query = 'INSERT INTO photo_files(filelocation, user_id, uploader, caption, title) ' .
                  'VALUES (:filelocation, :uid, :uploader,:caption, :title)';
         $stmt = $dbh->prepare($query);
-		
+    	
         // Note each parameter must be bound separately
         $stmt->bindParam(':filelocation', $file_location);
-		$stmt->bindParam(':uid', $uid);
+    	$stmt->bindParam(':uid', $uid);
         $stmt->bindParam(':uploader', $uploader);
         $stmt->bindParam(':caption', $caption);
         $stmt->bindParam(':title', $title);
@@ -52,16 +52,16 @@ function Upload($dbh,$file_location,$uid,$uploader,$caption,$title)
         $inserted = $stmt->rowCount();
 
         $stmt = null;
-    
-        echo "<p>inserted $inserted record(s).</p>\n";
+
+        // echo "<p>inserted $inserted record(s).</p>\n";
     }
     catch(PDOException $e)
     {
-        die ('PDO error inserting(): ' . $e->getMessage() );
+        die ('PDO error Upload(): ' . $e->getMessage() );
     }
 }
 
-// getUsername() - return uid
+// getUid() - return uid from username
 // USAGE: $username = getUid($dbh, $username)
 // $dbh is database handle, $username is what to search
 function getUid($dbh, $username)
@@ -84,11 +84,11 @@ function getUid($dbh, $username)
     }
     catch(PDOException $e)
     {
-        die ('PDO error in getUsername(): ' . $e->getMessage() );
+        die ('PDO error in getUid(): ' . $e->getMessage() );
     }
 }
 
-// getUsername() - return username
+// getUsername() - return username from uid
 // USAGE: $username = getUsername($dbh, $uid)
 // $dbh is database handle, $uid is what to search
 function getUsername($dbh, $uid)
@@ -115,7 +115,71 @@ function getUsername($dbh, $uid)
     }
 }
 
-// getUsername() - return true/false
+// checkUserExist() - return true/false if user exist
+// USAGE: $bool = checkUserExist($dbh, $username)
+// $dbh is database handle, $username is what to search
+function checkUserExist($dbh, $username)
+{
+    // fetch the data
+    try {
+       
+        $query = "SELECT 1 FROM photo_users WHERE username = :username";
+        // prepare to execute
+        $stmt = $dbh->prepare($query);
+
+        $stmt->bindParam(':username', $username);
+
+        $stmt->execute();
+        $check = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $stmt = null;
+
+        // echo '<pre>'; print_r($check); echo '</pre>';
+        if ($check) {
+
+            return true;
+        } else {
+            return false;
+        } 
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in checkUserExist(): ' . $e->getMessage() );
+    }
+}
+
+// checkEmailExist() - return true/false if email exist
+// USAGE: $bool = checkEmailExist($dbh, $email)
+// $dbh is database handle, $email is what to search
+function checkEmailExist($dbh, $email)
+{
+    // fetch the data
+        try {
+       
+        $query = "SELECT 1 FROM photo_users WHERE email = :email";
+        // prepare to execute
+        $stmt = $dbh->prepare($query);
+
+        $stmt->bindParam(':email', $email);
+
+        $stmt->execute();
+        $check = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $stmt = null;
+
+        // echo '<pre>'; print_r($check); echo '</pre>';
+        if ($check) {
+
+            return true;
+        } else {
+            return false;
+        } 
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in checkEmailExist(): ' . $e->getMessage() );
+    }
+}
+
+// getUsername() - return true/false if password is valid
 // USAGE: $bool = checkPassword($dbh, $username, $pword)
 // $dbh is database handle, $username is what to search, $pword check against
 function checkPassword($dbh, $username, $pword)
@@ -138,13 +202,13 @@ function checkPassword($dbh, $username, $pword)
     }
     catch(PDOException $e)
     {
-        die ('PDO error in getUsername(): ' . $e->getMessage() );
+        die ('PDO error in checkPassword(): ' . $e->getMessage() );
     }
 }
 
-// changePassword() -  need to test after some questions of gow to store info
-// USAGE: upload file location to database
-// $dbh is database handle
+// changePassword() - changes the password if the old password is valid
+// USAGE: 
+// $dbh is database handle,$pwd is old password, $new_pwd is new password
 function changePassword($dbh, $username, $pwd, $new_pwd)
 {
     if (checkPassword($dbh, $username, $pwd)){
@@ -165,17 +229,17 @@ function changePassword($dbh, $username, $pwd, $new_pwd)
         }
         catch(PDOException $e)
         {
-            die ('PDO error inserting(): ' . $e->getMessage() );
+            die ('PDO error changePassword(): ' . $e->getMessage() );
         }
     }
 }
 
-// editProfile() -  need to test after some questions of gow to store info
-// USAGE: upload file location to database
+// editProfile() - update user bio
+// USAGE: 
 // $dbh is database handle
 function editProfile($dbh, $uid, $bio)
 {
-     try {
+    try {
 
         $query = 'UPDATE photo_users SET bio = :bio ' .
                  'WHERE user_id =:uid';
@@ -192,15 +256,43 @@ function editProfile($dbh, $uid, $bio)
     }
     catch(PDOException $e)
     {
-        die ('PDO error inserting(): ' . $e->getMessage() );
+        die ('PDO error editProfile(): ' . $e->getMessage() );
     }
 }
-// addComment() -  need to test after some questions of gow to store info
-// USAGE: upload file location to database
+
+// getProfile() -  return user info
+// USAGE: 
 // $dbh is database handle
+function getProfile($dbh, $uid)
+{
+    // fetch the data
+    try {
+        // set up query
+        $query = 'SELECT username, profile_pic_id, bio FROM photo_users ' .
+                 'WHERE user_id =:uid';
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':uid', $uid);
+        // run query
+        $stmt->execute();
+        // get all the results from database into array of objects
+        $userdata = $stmt->fetchAll(PDO::FETCH_OBJ);
+        // release the statement
+        $stmt = null;
+
+        return $userdata;
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in getProfile()": ' . $e->getMessage() );
+    }
+}
+
+// addComment() -  adds comment to table
+// USAGE: upload file location to database
+// $dbh is database handle , $uid is user id, $pid is photo id, 
 function addComment($dbh, $uid, $pid, $comment)
 {
-     try {
+    try {
 
         $query = 'INSERT INTO photo_comments(user_id, photo_id, comment_text)' .
                  'VALUES (:uid, :pid, :comment)';
@@ -220,16 +312,16 @@ function addComment($dbh, $uid, $pid, $comment)
     }
     catch(PDOException $e)
     {
-        die ('PDO error inserting(): ' . $e->getMessage() );
+        die ('PDO error addComment(): ' . $e->getMessage() );
     }
 }
 
-// editComment() -  need to test after some questions of gow to store info
+// editComment() -  Update comment in table
 // USAGE: upload file location to database
 // $dbh is database handle
 function editComment($dbh, $cid, $pid, $uid, $comment)
 {
-     try {
+    try {
 
         $query = 'UPDATE photo_comments SET comment_text = :comment ' .
                  'WHERE comment_id =:cid AND photo_id =:pid AND user_id =:uid';
@@ -248,15 +340,16 @@ function editComment($dbh, $cid, $pid, $uid, $comment)
     }
     catch(PDOException $e)
     {
-        die ('PDO error inserting(): ' . $e->getMessage() );
+        die ('PDO error editComment(): ' . $e->getMessage() );
     }
 }
-// getComment() -  need to test after some questions of gow to store info
+
+// getComment() - return array of comments fo a photo
 // USAGE: upload file location to database
 // $dbh is database handle
 function getComments($dbh,$pid)
 {
-     // fetch the data
+    // fetch the data
     try {
        
         $query = "SELECT * FROM photo_comments " .
@@ -268,32 +361,25 @@ function getComments($dbh,$pid)
         $comments = $stmt->fetchAll(PDO::FETCH_OBJ);
         $stmt = null;
 
-        return $comments;
-    
+        return $comments;   
     }
     catch(PDOException $e)
     {
-        die ('PDO error in getUsername(): ' . $e->getMessage() );
+        die ('PDO error in getComments(): ' . $e->getMessage() );
     }
 }
 
-// getPhotosBetween() -  need to test after some questions of gow to store info
+// getLatestNumPhotos() - return array of latest n number of photos
 // USAGE: upload file location to database
-// $dbh is database handle
-// LIMIT 150 or LIMIT 0,150 : first 150 rows 0-150
-// LIMIT 150,150 : next 150 rows 151-300
-// LIMIT 300,150 : next 150 rows 301-450           
-function getPhotosBetween($dbh,$n_size_unit,$limit_size)
+// $dbh is database handle, $n_photos is the number of photos you want         
+function getLatestNumPhotos($dbh,$n_photos)
 {
-     // fetch the data
+    // fetch the data
     try {
         
-        $query = "SELECT photo_id, uploaddate, uploader, caption, filelocation FROM photo_files " .
-                       "LIMIT  n, :limit_size";
+        $query = "SELECT photo_id, uploaddate, uploader, title, caption, filelocation FROM photo_files ORDER BY uploaddate LIMIT " .$n_photos;
         // prepare to execute
         $stmt = $dbh->prepare($query);
-        $stmt->bindParam(':n', $n_size_unit);
-        $stmt->bindParam(':limit_size', $limit_size);
         $stmt->execute();
         $photos = $stmt->fetchAll(PDO::FETCH_OBJ);
         $stmt = null;
@@ -303,15 +389,43 @@ function getPhotosBetween($dbh,$n_size_unit,$limit_size)
     }
     catch(PDOException $e)
     {
-        die ('PDO error in getUsername(): ' . $e->getMessage() );
+        die ('PDO error in getLatestNumPhotos(): ' . $e->getMessage() );
     }
 }
-// getUserPhotos() -  need to test after some questions of gow to store info
+
+// getPhotosBetween() - return array of photos between x to x + n
+// USAGE: upload file location to database
+// $dbh is database handle,$n_size_unit is offset ,$limit_size is limit
+// LIMIT 150 or LIMIT 0,150 : first 150 rows 0-150
+// LIMIT 150,150 : next 150 rows 151-300
+// LIMIT 300,150 : next 150 rows 301-450           
+function getPhotosBetween($dbh,$n_size_unit,$limit_size)
+{
+    // fetch the data
+    try {
+        
+        $query = "SELECT photo_id, uploaddate, uploader, caption, filelocation FROM photo_files LIMIT  " . $n_size_unit . ", " . $limit_size;
+        // prepare to execute
+        $stmt = $dbh->prepare($query);
+        $stmt->execute();
+        $photos = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $stmt = null;
+
+        return $photos;
+    
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in getPhotosBetween(): ' . $e->getMessage() );
+    }
+}
+
+// getUserPhotos() - return array of photos of user
 // USAGE: upload file location to database
 // $dbh is database handle
 function getUserPhotos($dbh,$uid)
 {
-     // fetch the data
+    // fetch the data
     try {
        
         $query = "SELECT photo_id, uploaddate, uploader, caption, filelocation FROM photo_files " .
@@ -328,15 +442,16 @@ function getUserPhotos($dbh,$uid)
     }
     catch(PDOException $e)
     {
-        die ('PDO error in getUsername(): ' . $e->getMessage() );
+        die ('PDO error in getUserPhotos(): ' . $e->getMessage() );
     }
 }
-// editPhotoCaption() -  need to test after some questions of gow to store info
+
+// editPhotoCaption() - update photo caption
 // USAGE: upload file location to database
 // $dbh is database handle
 function editPhotoCaption($dbh, $cid, $pid, $uid, $caption)
 {
-     try {
+    try {
 
         $query = 'UPDATE photo_files SET caption = :caption ' .
                  'WHERE photo_id =:pid AND user_id =:uid';
@@ -357,6 +472,5 @@ function editPhotoCaption($dbh, $cid, $pid, $uid, $caption)
         die ('PDO error inserting(): ' . $e->getMessage() );
     }
 }
-
 
 ?>
