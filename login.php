@@ -23,7 +23,8 @@ if ( isset($_POST['username'])   &&  !empty($_POST['username'])   &&
 		session_write_close();
 
 	}else{
-		echo "<br>Invalid Username or Password!<br />";
+		header("Location:start.php");
+		
 	}
 }
 
