@@ -8,10 +8,28 @@
 <link rel="stylesheet" href=".\css\bootstrap.min.css">
 <script src=".\scripts\jquery-3.4.1.min.js"></script>
 <script src=".\scripts\bootstrap.min.js"></script>
+<script>
+$(document).ready(function() {
+
+$('#searchbar').on('change', function() {
+  $.ajax(
+        {
+          url: '',           
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({}),
+          success: function (response) {
+            //take the data and put it in the dropdown
+          }
+        });
+});
+})
+
+</script>
 <title><?php echo $title; ?></title>
 </head>
-<body id="body">
-<header></header>
+<body>
+<header>
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -20,9 +38,9 @@
     <ul class="nav navbar-nav">
       <li class="active"><a href="./start.php">Home</a></li>
     </ul>
-    <form class="navbar-form" style="float: inherit; display: inline-block; !important" action="./search.php">
+    <form class="navbar-form" style="float: inherit; display: inline-block; !important">
       <div class="form-group">
-        <input class="form-control" type="text" name="searchbar" placeholder="search">
+        <input class="form-control" type="text" id="searchbar" placeholder="search">
       </div>
     </form> 
     <!-- Login / Register part of header-->
@@ -40,7 +58,7 @@
     </form>
     <?php } else{ ?>
     <ul class="nav navbar-nav">
-      <li><a href="./profile.php">Profile</a></li>
+      <li><a href="./profile.php?username=<?php echo $_SESSION["username"]; ?>">Profile</a></li>
     </ul>
     <ul class="nav navbar-nav">
       <li><a href="./upload.php">Upload</a></li>
