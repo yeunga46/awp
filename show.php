@@ -73,8 +73,20 @@ $photos = getPhotosBetween($dbh,2,2);
 echo '<pre>'; print_r($photos); echo '</pre>';
 $photos = getPhotosBetween($dbh,4,2);
 echo '<pre>'; print_r($photos); echo '</pre>';
+$photos = getPhoto($dbh,14);
+echo '<pre>'; print_r($photos); echo '</pre>';
 
 
+// echo '<pre>'; print_r(checkCommentOwner($dbh,2, 22)); echo '</pre>';
+// deleteComment($dbh,2, 22)
+// checkPhotoOwner($dbh,14,24);
+// getPhotoLocation($dbh,15);
+// chmod(getPhotoLocation($dbh,15), 0777);
+// unlink(getPhotoLocation($dbh,15));
+// deletePhoto($dbh, 15, 24);
+// deleteUser($dbh, "test", "test");
+$t = getProfileByName($dbh, "test");
+echo '<pre>'; print_r($t); echo '</pre>';
 ?>
 
 

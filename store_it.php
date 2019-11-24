@@ -48,7 +48,7 @@ if (!is_uploaded_file( $_FILES["userfile"]["tmp_name"])) {
 }
 
 
-$targetname = "./UPLOADED/archive/" . $_SESSION["username"] . "/" . basename($_FILES["userfile"]["name"]);;
+$targetname = "./UPLOADED/archive/" . $_SESSION["username"] . "/" . basename($_FILES["userfile"]["name"]);
 
 if(file_exists($targetname))
 {
@@ -70,7 +70,7 @@ else {
         }
         
         Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $caption,$_POST["title"]);
-        header('Location: ./profile.php');
+        header('Location: ./profile.php?username='.$_SESSION["username"]);
 		//file + timestamp caption default null
 } else {
     die("Error copying ". $_FILES["userfile"]["name"]);

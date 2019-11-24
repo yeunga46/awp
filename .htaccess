@@ -1,0 +1,72 @@
+# .htaccess file showing rewrite rules and option setting
+#
+# D Provine, 27 March 2017
+
+# Turn on the rewriting engine
+RewriteEngine On
+
+# required for rewriting using non-absolute pathnames (~albus, eg)
+Options FollowSymLinks
+Options +Indexes
+
+# don't rewrite if the request is an extant file, folder, or if it's
+# favicon.ico
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !=favicon.ico
+
+# Regular expressions are similar to what you've seen elsewhere.
+# Note 1: parens in the match part identify substrings you can use:
+#
+# if your match is  (foo)bar  you can later say "$1baz" and it will
+# turn it into "foobaz"
+#
+# Note 2: {a,b} after a match is like *, but limits # of chars
+#
+#  a{3,5} matches "aaa", "aaaa", & "aaaaa", and nothing else
+
+
+# If it's just a string, as in "..../rewrite/cutecats", run the
+# "subject.php" script and pass the name as an argument
+RewriteRule ^([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ subject.php?subject=$1 [NC,QSA,L]
+
+# allow .../subject/kitties
+RewriteRule ^(subject)/([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ $1.php?subject=$2 [NC,QSA,L]
+
+# flags there are: NC  = "no case" (so case insensitive)
+#                  QSA = "query string append" (add to query string you made)
+#                  L   = "last" (stop processing rules)
+
+
+# If it's "..../rewrite/user/hpotter", run the "user.php" script and
+# pass the name as an argument
+RewriteRule ^(user)/([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ $1.php?username=$2 [NC,QSA,L]
+
+RewriteRule ^(u)/([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ profile.php?username=$2 [NC,QSA,L]
+
+# the other rules limit to 20 characters, but this one doesn't,
+# so if a name is longer than 20 characters it'll do this
+RewriteRule   (^[a-z]+$) ./echo.php?thing=$1 [NC,L]
+
+
+# This is a redirect, not the same as a rewrite.  So if a filename
+# was changed or something (names with / in them work, so directory
+# changes can also be handled this way).
+# NOTE: have to use full pathname part of URL for the target
+
+# Redirect 301 /~kilroy/awp/Wk8.3-htaccess/rewrite/Foobar.html /~kilroy/awp/Wk8.3-htaccess/rewrite/foobar.html
+
+# Redirects can also be done to other domains:
+
+# Redirect 301 /~kilroy/awp/Wk8.3-htaccess/rewrite/about.html https://www.google.com
+
+
+# You can set your own error document, but needs the full name like
+# the redirects.
+
+ErrorDocument 404 /photosite/res/404.png
+
+
+# You can also set a error message:
+
+# ErrorDocument 404 "<h1>Page not found.</h1>"

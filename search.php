@@ -7,15 +7,15 @@ require_once('DBfuncs.php');
 
 $dbh = ConnectDB();
 
+
 // was there a name entered for the search?
 if (isset($_GET['searchbar']) && !empty($_GET['searchbar'])) {
-
-    echo '<p>Searching for ' . $_GET['searchbar'] . "...</p>\n";
-	$uid = getUid($dbh,$_GET['searchbar']);
-    $profile = getProfile($dbh, $uid);
+	$search = $_GET['searchbar'];
+    echo '<p>Searching for ' . $search . "...</p>\n";
+    $profile = getProfileByName($dbh, $search);
 	// uncomment next line for debugging
 	echo '<pre>'; print_r($profile); echo '</pre>';
-	$photos = getUserPhotos($dbh,$uid);
+	$photos = getPhotosByTitle($dbh,$search);
 	echo '<pre>'; print_r($photos); echo '</pre>';
 } else {
 
