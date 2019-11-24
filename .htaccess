@@ -11,6 +11,7 @@ Options +Indexes
 
 # don't rewrite if the request is an extant file, folder, or if it's
 # favicon.ico
+#RewriteBase /photosite/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !=favicon.ico
@@ -24,15 +25,6 @@ RewriteCond %{REQUEST_URI} !=favicon.ico
 # Note 2: {a,b} after a match is like *, but limits # of chars
 #
 #  a{3,5} matches "aaa", "aaaa", & "aaaaa", and nothing else
-
-
-# If it's just a string, as in "..../rewrite/cutecats", run the
-# "subject.php" script and pass the name as an argument
-RewriteRule ^([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ subject.php?subject=$1 [NC,QSA,L]
-
-# allow .../subject/kitties
-RewriteRule ^(subject)/([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ $1.php?subject=$2 [NC,QSA,L]
-
 # flags there are: NC  = "no case" (so case insensitive)
 #                  QSA = "query string append" (add to query string you made)
 #                  L   = "last" (stop processing rules)
@@ -40,7 +32,7 @@ RewriteRule ^(subject)/([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ $1.php?subject=$2 [NC,QS
 
 # If it's "..../rewrite/user/hpotter", run the "user.php" script and
 # pass the name as an argument
-RewriteRule ^(user)/([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ $1.php?username=$2 [NC,QSA,L]
+RewriteRule ^(user)/([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ profile.php?username=$2 [NC,QSA,L]
 
 RewriteRule ^(u)/([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ profile.php?username=$2 [NC,QSA,L]
 

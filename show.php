@@ -85,8 +85,8 @@ echo '<pre>'; print_r($photos); echo '</pre>';
 // unlink(getPhotoLocation($dbh,15));
 // deletePhoto($dbh, 15, 24);
 // deleteUser($dbh, "test", "test");
-$t = getProfileByName($dbh, "test");
-echo '<pre>'; print_r($t); echo '</pre>';
+// $t = getProfileByName($dbh, "test");
+// echo '<pre>'; print_r($t); echo '</pre>';
 ?>
 
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+<base href="/photosite/">
 <!-- Bootstrap 3 works but not bootstrap 4...-->
 <link rel="stylesheet" href=".\css\bootstrap.min.css">
 <script src=".\scripts\jquery-3.4.1.min.js"></script>
@@ -33,7 +33,8 @@ $('#searchbar').on('change', function() {
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#"><?php echo $title;?></a>
+      <!-- had to change # to ./start or else it goes to index -->
+      <a class="navbar-brand" href="./start.php"><?php echo $title;?></a>
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="./start.php">Home</a></li>
@@ -58,7 +59,7 @@ $('#searchbar').on('change', function() {
     </form>
     <?php } else{ ?>
     <ul class="nav navbar-nav">
-      <li><a href="./profile.php?username=<?php echo $_SESSION["username"]; ?>">Profile</a></li>
+      <li><a href="./u/<?php echo $_SESSION["username"]; ?>">Profile</a></li>
     </ul>
     <ul class="nav navbar-nav">
       <li><a href="./upload.php">Upload</a></li>
