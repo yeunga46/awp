@@ -3,28 +3,49 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<base href="/photosite/">
 <!-- Bootstrap 3 works but not bootstrap 4...-->
 <link rel="stylesheet" href=".\css\bootstrap.min.css">
 <script src=".\scripts\jquery-3.4.1.min.js"></script>
 <script src=".\scripts\bootstrap.min.js"></script>
 <script>
 $(document).ready(function() {
-
-$('#searchbar').on('change', function() {
+$('#searchbar').on('change keyup paste', function() {
+  console.log($('#form_search').serialize());
   $.ajax(
         {
-          url: '',           
-          type: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify({}),
+          url: './search.php',           
+          type: 'GET',
+          data: $('#form_search').serialize(),
           success: function (response) {
-            //take the data and put it in the dropdown
+              let data = $.parseJSON($.trim(response));
+              console.log(data);
+              //probably will use https://select2.org/getting-started/basic-usage here
           }
         });
 });
-})
-
+$('#btn_login').on('click', function() {
+  $.ajax(
+    {
+      url: './login.php',
+      type: 'POST',
+      data: $('#form_login').serialize(),
+      success: function(response) {
+        //need to trim because otherwise there's extra whitespace and the string won't compare properly
+        if($.trim(response) === "invalid")
+        {
+          $('#form_login').trigger("reset");
+          alert('Invalid username or password');
+          //I'll change this to a tooltip later for extra eye-candy
+        }
+        else
+        {
+          //refreshes the page to get the new session variables
+          location.reload();
+        }
+      }
+    }); 
+});
+});
 </script>
 <title><?php echo $title; ?></title>
 </head>
@@ -39,22 +60,21 @@ $('#searchbar').on('change', function() {
     <ul class="nav navbar-nav">
       <li class="active"><a href="./start.php">Home</a></li>
     </ul>
-    <form class="navbar-form" style="float: inherit; display: inline-block; !important">
+    <form class="navbar-form" id="form_search" style="float: inherit; display: inline-block; !important">
       <div class="form-group">
-        <input class="form-control" type="text" id="searchbar" placeholder="search">
+        <input class="form-control" type="text" name="searchbar" id="searchbar" placeholder="search">
       </div>
     </form> 
     <!-- Login / Register part of header-->
     <?php if(!$_SESSION["login"]) { ?>
-    <form class="navbar-form navbar-right" method="post" action="./login.php">
+    <form class="navbar-form navbar-right" id="form_login">
       <div class="form-group">
           <input class="form-control" type="text" name="username" placeholder="username">
       </div>
       <div class="form-group">
           <input class="form-control" type="password" name="pwd" placeholder="password">
       </div>
-    <button class="btn btn-success" type="submit">Log in</button>
-
+    <button class="btn btn-success" type="button" id="btn_login">Log in</button>
     <button class="btn btn-info" data-toggle="modal" data-target="#div_registerModal" type="button">Register</button>
     </form>
     <?php } else{ ?>
@@ -64,7 +84,6 @@ $('#searchbar').on('change', function() {
     <ul class="nav navbar-nav">
       <li><a href="./upload.php">Upload</a></li>
     </ul>
-    
     <!-- Log out form-->
     <form class="navbar-form navbar-right" method="post" action="./logout.php">
       <div class="form-group">
