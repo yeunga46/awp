@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2019 at 01:31 AM
+-- Generation Time: Nov 26, 2019 at 03:11 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -11,8 +11,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
-CREATE DATABASE photosite;
-USE photosite;
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -85,6 +84,7 @@ CREATE TABLE `photo_users` (
   `username` varchar(20) NOT NULL,
   `password` varchar(256) NOT NULL,
   `email` varchar(256) NOT NULL,
+  `reset_password` tinyint(1) NOT NULL DEFAULT 0,
   `profile_pic_id` int(8) DEFAULT NULL,
   `bio` varchar(140) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -93,11 +93,11 @@ CREATE TABLE `photo_users` (
 -- Dumping data for table `photo_users`
 --
 
-INSERT INTO `photo_users` (`user_id`, `joindate`, `username`, `password`, `email`, `profile_pic_id`, `bio`) VALUES
-(19, '2019-11-12 16:33:01', 'yufyufgcyufy', '$2y$10$OonSXnKxMdCvyKaQZc5zxuptX507vBdp6F1HOHl39uexq8ONauSI2', 'fyufufyuf', NULL, NULL),
-(21, '2019-11-12 16:37:21', 'test6', '$2y$10$D9YS5sexY/nz6Nb/TjxZgOZd9jVWzC/TGsxA7GRpWYJKCTJ4CT6la', 'hajuwb', NULL, NULL),
-(22, '2019-11-12 16:37:44', 'test7', '$2y$10$lyYFvIp0DOYo9ZrUX6fziux17s.WXF1N0pBVr.89Cv5FHn7xtmWrq', 'they', 3, 'test guy'),
-(24, '2019-11-18 02:01:01', 'tester', '$2y$10$XH/CQMC3Z77l44N2W8JODuG.VG9XmXcLfPalX7ZaqziDoRq2LO59C', 'tes.ting.com', 6, 'test guy');
+INSERT INTO `photo_users` (`user_id`, `joindate`, `username`, `password`, `email`, `reset_password`, `profile_pic_id`, `bio`) VALUES
+(19, '2019-11-12 16:33:01', 'yufyufgcyufy', '$2y$10$OonSXnKxMdCvyKaQZc5zxuptX507vBdp6F1HOHl39uexq8ONauSI2', 'fyufufyuf', 0, NULL, NULL),
+(21, '2019-11-12 16:37:21', 'test6', '$2y$10$D9YS5sexY/nz6Nb/TjxZgOZd9jVWzC/TGsxA7GRpWYJKCTJ4CT6la', 'hajuwb', 0, NULL, NULL),
+(22, '2019-11-12 16:37:44', 'test7', '$2y$10$lyYFvIp0DOYo9ZrUX6fziux17s.WXF1N0pBVr.89Cv5FHn7xtmWrq', 'they', 0, 3, 'test guy'),
+(24, '2019-11-18 02:01:01', 'tester', '$2y$10$XH/CQMC3Z77l44N2W8JODuG.VG9XmXcLfPalX7ZaqziDoRq2LO59C', 'tes.ting.com', 0, 6, 'test guy');
 
 --
 -- Triggers `photo_users`
