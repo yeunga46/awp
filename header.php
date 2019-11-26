@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<base href="/photosite/">
 <!-- Bootstrap 3 works but not bootstrap 4...-->
 <link rel="stylesheet" href=".\css\bootstrap.min.css">
 <script src=".\scripts\jquery-3.4.1.min.js"></script>
