@@ -760,6 +760,62 @@ function editPhotoCaption($dbh, $cid, $pid, $uid, $caption)
         die ('PDO error inserting(): ' . $e->getMessage() );
     }
 }
+// checkReset() - return true/false if user can reset password with recovery link
+// USAGE: 
+// $dbh is database handle, $username is what to search
+function checkReset($dbh, $username)
+{
+    // fetch the data
+    try {
+       
+        $query = "SELECT reset_password FROM photo_users " .
+                       "WHERE  username=:username";
+        // prepare to execute
+        $stmt = $dbh->prepare($query);
 
+        $stmt->bindParam(':username', $username);
+
+        $stmt->execute();
+        $reset = implode($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+        $stmt = null;
+        
+        return $reset;
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in checkReset(): ' . $e->getMessage() );
+    }
+}
+// checkConfrimCode() - return true/false if confrim code is valid
+// USAGE: $bool = checkPassword($dbh, $username, $pword)
+// $dbh is database handle, $username is what to search, $pword check against
+function checkConfrimCode($dbh,$username, $code)
+{
+    // fetch the data
+    try {
+       
+        $query = "SELECT confirm_code FROM photo_users " .
+                       "WHERE  username=:username";
+        // prepare to execute
+        $stmt = $dbh->prepare($query);
+
+        $stmt->bindParam(':username', $username);
+
+        $stmt->execute();
+        $confirm_code = implode($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+        $stmt = null;
+        
+        if ($code === $confirm_code ) {
+            return true;
+        } else {
+            return false;
+        } 
+
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in checkConfrimCode(): ' . $e->getMessage() );
+    }
+}
 
 ?>

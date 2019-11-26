@@ -32,7 +32,7 @@ $dbh = ConnectDB();
         #should be adjusted to according to row size
         echo '<div class="col-sm-4">';
             echo '<div class="thumbnail">';
-                echo '<img src='; echo $photos[$i]->filelocation; echo ' width=100%></img>';
+                echo '<img src='; echo str_replace(' ', '%20', $photos[$i]->filelocation); echo ' width=100%></img>';
                     echo '<div class="caption">';
                         echo '<p>'; echo $photos[$i]->caption; echo '</p>';
                     echo '</div>';

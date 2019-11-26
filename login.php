@@ -2,7 +2,7 @@
 require_once('Connect.php');
 require_once('DBfuncs.php');
 $dbh = ConnectDB();
-if ( isset($_POST['username'])   &&  !empty($_POST['username'])   && 
+if ( isset($_POST['username'])   &&  !empty($_POST['username'])   || 
      isset($_POST['pwd'])  &&  !empty($_POST['pwd'])){
 	if (checkPassword($dbh, $_POST["username"], $_POST["pwd"])){
 		session_start();

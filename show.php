@@ -87,8 +87,13 @@ echo '<pre>'; print_r($photos); echo '</pre>';
 // deleteUser($dbh, "test", "test");
 // $t = getProfileByName($dbh, "test");
 // echo '<pre>'; print_r($t); echo '</pre>';
-?>
 
+$bool_val = checkReset($dbh,"tester");
+echo '<pre>'; echo $bool_val ? 'true' : 'false'; echo '</pre>';
+
+$bool_val = checkConfrimCode($dbh,"tester","a1c46293f88f10caae38203c442f5630a36938e");
+echo '<pre>'; echo $bool_val ? 'true' : 'false'; echo '</pre>';
+?>
 
 
 </body>

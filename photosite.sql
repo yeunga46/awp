@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2019 at 03:11 AM
+-- Generation Time: Nov 26, 2019 at 07:07 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `photosite`
 --
+CREATE DATABASE IF NOT EXISTS `photosite` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `photosite`;
 
 -- --------------------------------------------------------
 
@@ -28,6 +30,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `photo_comments`
 --
 
+DROP TABLE IF EXISTS `photo_comments`;
 CREATE TABLE `photo_comments` (
   `comment_id` int(8) NOT NULL,
   `user_id` int(6) NOT NULL,
@@ -52,6 +55,7 @@ INSERT INTO `photo_comments` (`comment_id`, `user_id`, `photo_id`, `uploader`, `
 -- Table structure for table `photo_files`
 --
 
+DROP TABLE IF EXISTS `photo_files`;
 CREATE TABLE `photo_files` (
   `photo_id` int(8) NOT NULL,
   `uploaddate` datetime NOT NULL DEFAULT current_timestamp(),
@@ -78,6 +82,7 @@ INSERT INTO `photo_files` (`photo_id`, `uploaddate`, `uploader`, `title`, `capti
 -- Table structure for table `photo_users`
 --
 
+DROP TABLE IF EXISTS `photo_users`;
 CREATE TABLE `photo_users` (
   `user_id` int(6) NOT NULL,
   `joindate` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -85,6 +90,7 @@ CREATE TABLE `photo_users` (
   `password` varchar(256) NOT NULL,
   `email` varchar(256) NOT NULL,
   `reset_password` tinyint(1) NOT NULL DEFAULT 0,
+  `confirm_code` varchar(256) DEFAULT NULL,
   `profile_pic_id` int(8) DEFAULT NULL,
   `bio` varchar(140) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -93,15 +99,16 @@ CREATE TABLE `photo_users` (
 -- Dumping data for table `photo_users`
 --
 
-INSERT INTO `photo_users` (`user_id`, `joindate`, `username`, `password`, `email`, `reset_password`, `profile_pic_id`, `bio`) VALUES
-(19, '2019-11-12 16:33:01', 'yufyufgcyufy', '$2y$10$OonSXnKxMdCvyKaQZc5zxuptX507vBdp6F1HOHl39uexq8ONauSI2', 'fyufufyuf', 0, NULL, NULL),
-(21, '2019-11-12 16:37:21', 'test6', '$2y$10$D9YS5sexY/nz6Nb/TjxZgOZd9jVWzC/TGsxA7GRpWYJKCTJ4CT6la', 'hajuwb', 0, NULL, NULL),
-(22, '2019-11-12 16:37:44', 'test7', '$2y$10$lyYFvIp0DOYo9ZrUX6fziux17s.WXF1N0pBVr.89Cv5FHn7xtmWrq', 'they', 0, 3, 'test guy'),
-(24, '2019-11-18 02:01:01', 'tester', '$2y$10$XH/CQMC3Z77l44N2W8JODuG.VG9XmXcLfPalX7ZaqziDoRq2LO59C', 'tes.ting.com', 0, 6, 'test guy');
+INSERT INTO `photo_users` (`user_id`, `joindate`, `username`, `password`, `email`, `reset_password`, `confirm_code`, `profile_pic_id`, `bio`) VALUES
+(19, '2019-11-12 16:33:01', 'yufyufgcyufy', '$2y$10$OonSXnKxMdCvyKaQZc5zxuptX507vBdp6F1HOHl39uexq8ONauSI2', 'fyufufyuf', 0, NULL, NULL, NULL),
+(21, '2019-11-12 16:37:21', 'test6', '$2y$10$D9YS5sexY/nz6Nb/TjxZgOZd9jVWzC/TGsxA7GRpWYJKCTJ4CT6la', 'hajuwb', 0, NULL, NULL, NULL),
+(22, '2019-11-12 16:37:44', 'test7', '$2y$10$lyYFvIp0DOYo9ZrUX6fziux17s.WXF1N0pBVr.89Cv5FHn7xtmWrq', 'they', 0, NULL, 3, 'test guy'),
+(24, '2019-11-18 02:01:01', 'tester', '$2y$10$zPlHP.48LAQZ/wq7f9Mw2OUYFc9v.lT55yifHxTMbroyLVjpgvi/u', 'tes.ting.com', 0, '2f8cd645a2008edf7f5bb1234ffa09b39d5b9164', 6, 'test guy');
 
 --
 -- Triggers `photo_users`
 --
+DROP TRIGGER IF EXISTS `update_deleted_user_comment`;
 DELIMITER $$
 CREATE TRIGGER `update_deleted_user_comment` AFTER DELETE ON `photo_users` FOR EACH ROW UPDATE `photo_comments` SET `uploader`= "[deleted]" WHERE `user_id` = OLD.`user_id`
 $$
@@ -147,13 +154,13 @@ ALTER TABLE `photo_comments`
 -- AUTO_INCREMENT for table `photo_files`
 --
 ALTER TABLE `photo_files`
-  MODIFY `photo_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `photo_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `photo_users`
 --
 ALTER TABLE `photo_users`
-  MODIFY `user_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `user_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Constraints for dumped tables
