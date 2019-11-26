@@ -11,7 +11,7 @@ Options +Indexes
 
 # don't rewrite if the request is an extant file, folder, or if it's
 # favicon.ico
-#RewriteBase /photosite/
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !=favicon.ico
