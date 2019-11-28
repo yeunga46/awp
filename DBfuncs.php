@@ -1,5 +1,6 @@
 <?php
-
+#I suggest you refactor this into several files because its hard to figure out where each
+#function is - do something like photoDBfuncs, userDBfuncs etc.
 /* This file has useful database functions in it for the photo
  * site.
  */

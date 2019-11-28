@@ -22,8 +22,8 @@ else {
                         <input type="text" name="title" id="title">
                     </div>
                     <div class="form-group">
-                        <label for="caption">Enter a caption: (Optional)</label>
-                        <textarea name="caption" style="width: 100%; height: 100%;"></textarea>
+                        <label for="caption">Enter a caption:</label>
+                        <textarea name="caption" placeholder="optional" style="width: 100%; height: 100%;"></textarea>
                     </div>
                     <div class="form-group">
                         <input type="file" name="userfile" id="userfile" accept="image/*">
@@ -45,10 +45,8 @@ else {
                 reader.onload = function (e) {
                     $('#img_preview').attr('src', e.target.result);
                 }
-
                 reader.readAsDataURL($('#userfile')[0].files[0]);
             }
-
         });
     });
 </script>
