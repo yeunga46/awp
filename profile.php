@@ -2,8 +2,6 @@
 #TODO: 
 #add hrefs to photos to link to photo.php 
 #create photo.php 
-#decide between adding a new page to edit preferences or to dynamically edit this one
-#                        ^^^^ much easier - call it settings.php
 
 session_start();
 
@@ -29,18 +27,19 @@ $dbh = ConnectDB();
     #set up profile pic + bio
     echo '<div class="flex-container">';
         echo '<div class="container">';
-            echo '<div class= "row">';
+            echo '<div class="row">';
                 echo '<div class="col-lg-2">';
                     if(isset($profile_pic) && !empty($profile_pic))
                     {
-                        echo '<img src='; echo str_replace(' ', '%20', $profile_pic[0]->filelocation); echo ' width=100%></img>';
+                        echo '<img id="profile_img" src='; echo str_replace(' ', '%20', $profile_pic[0]->filelocation); echo ' width=100%></img>';
                     }
                     else
                     {
-                        echo '<img src="/awp/res/placeholder.png" width=100%></img>';
+                        #add href to photo.php with the appropriate query
+                        echo '<img src="/awp/res/placeholder.png" width=100% id="profile_img"></img>';
                     }
                 echo '</div>';
-                echo '<div class="col-lg-2">';
+                echo '<div class="col-lg-2" id="bio-div">';
                     echo '<h2>'; echo $username; echo '</h2>';
                     if(!is_null($bio))
                     {
@@ -52,7 +51,7 @@ $dbh = ConnectDB();
                     //present button for editing preferences
                     if($_SESSION["username"] == $title)
                     {
-                        echo "<button class='btn btn-success'>Edit Profile</button>";
+                        echo "<button class='btn btn-success' id='btn_edit'>Edit Profile</button>";
                     }
                 echo '</div>';
             echo '</div>';
@@ -80,11 +79,13 @@ $dbh = ConnectDB();
             }
             #should be adjusted to according to row size
             echo '<div class="col-sm-4">';
-                echo '<div class="thumbnail">';
-                    echo '<img src='; echo str_replace('./', '/awp/', $photos[$i]->filelocation); echo ' width=100%></img>';
-                        echo '<div class="caption">';
-                            echo '<p>'; echo $photos[$i]->caption; echo '</p>';
-                        echo '</div>';
+                echo '<div class="thumbnail" id="photo-'; echo $i; echo '-div">';
+                    echo '<a href="/awp/photo.php?pid='; echo $photos[$i]->photo_id; echo '">';
+                        echo '<img src='; echo str_replace('./', '/awp/', $photos[$i]->filelocation); echo ' width=100%></img>';
+                            echo '<div class="caption">';
+                                echo '<p>'; echo $photos[$i]->caption; echo '</p>';
+                            echo '</div>';
+                    echo '</a>';
                 echo '</div>';
             echo '</div>';
 
@@ -108,5 +109,43 @@ $dbh = ConnectDB();
     }
 
 ?>
+<script>
+$().ready(function(){
+    $('#btn_edit').on('click', function(){
 
+            //photo-i-div
+            //bio-div
+            $('#bio-div').empty();
+            var form = $('<form />', { action: '/awp/editProfile.php', method: 'POST'});
+            var username_box = $('<input/>').attr('type', 'text')
+                               .val('<?php echo $_SESSION["username"]; ?>').attr('id', 'input_new_username');
+            var file_input = $('<input/>').attr('type', 'file').attr('id','profile_upload');
+            var bio_area = $('<textarea/>')
+                           .attr('placeholder', 
+                           '<?php echo (!is_null($bio) ? $bio : 'Write something about yourself...'); ?>')
+                           .attr('width', '100%');
+            var submit = $('<button />').attr('type', 'submit').attr('class', 'btn btn-success').text('Submit changes');
+            form.append(username_box);
+            form.append($('<br/>'));
+            form.append($('<br/>'));
+            form.append(bio_area);
+            form.append($('<br/>'));
+            form.append($('<br/>'));
+            form.append(file_input);
+            form.append($('<br/>'));
+            form.append(submit);
+            $('#bio-div').append(form);
+    });
+
+    $('#profile_upload').on('change', function(){
+        if ($('#profile_upload')[0].files && $('#profile_upload')[0].files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#profile_img').attr('src', e.target.result);
+                }
+                reader.readAsDataURL($('#profile_upload')[0].files[0]);
+            }
+    });
+});
+</script>
 
