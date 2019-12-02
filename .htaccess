@@ -32,12 +32,9 @@ RewriteCond %{REQUEST_URI} !=favicon.ico
 
 # If it's "..../rewrite/user/hpotter", run the "user.php" script and
 # pass the name as an argument
-#should add a rewrite rule for php files + photos
-
 RewriteRule ^(user)/([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ profile.php?username=$2 [NC,QSA,L]
 
 RewriteRule ^(u)/([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ profile.php?username=$2 [NC,QSA,L]
-
 
 # the other rules limit to 20 characters, but this one doesn't,
 # so if a name is longer than 20 characters it'll do this

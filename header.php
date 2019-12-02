@@ -6,7 +6,7 @@
 <!-- <base href="/~yeunga46/awp/photosite/"> -->
 <!-- fixed the rewrite problem by loading everything from a cdn
 <!-- Bootstrap 3 works but not bootstrap 4...-->
-<base href="./">
+<base href="/photosite/">
 <!-- now all the links on the profile page are broken
  because its looking for everything in a relative manner -->
 
@@ -19,7 +19,7 @@ $('#searchbar').on('change keyup paste', function() {
   console.log($('#form_search').serialize());
   $.ajax(
         {
-          url: '/awp/search.php',           
+          url: './search.php',           
           type: 'GET',
           data: $('#form_search').serialize(),
           success: function (response) {
@@ -32,7 +32,7 @@ $('#searchbar').on('change keyup paste', function() {
 $('#btn_login').on('click', function() {
   $.ajax(
     {
-      url: '/awp/login.php',
+      url: './login.php',
       type: 'POST',
       data: $('#form_login').serialize(),
       success: function(response) {
@@ -61,10 +61,10 @@ $('#btn_login').on('click', function() {
   <div class="container-fluid">
     <div class="navbar-header">
       <!-- had to change # to ./start or else it goes to index -->
-      <a class="navbar-brand" href="/awp/start.php"><?php echo $title;?></a>
+      <a class="navbar-brand" href="./start.php"><?php echo $title;?></a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="/awp/start.php">Home</a></li>
+      <li class="active"><a href="./start.php">Home</a></li>
     </ul>
     <form class="navbar-form" id="form_search" style="float: inherit; display: inline-block; !important">
       <div class="form-group">
@@ -85,10 +85,10 @@ $('#btn_login').on('click', function() {
     </form>
     <?php } else{ ?>
     <ul class="nav navbar-nav">
-      <li><a href="/awp/u/<?php echo $_SESSION["username"]; ?>">Profile</a></li>
+      <li><a href="./u/<?php echo $_SESSION["username"]; ?>">Profile</a></li>
     </ul>
     <ul class="nav navbar-nav">
-      <li><a href="/awp/upload.php">Upload</a></li>
+      <li><a href="./upload.php">Upload</a></li>
     </ul>
     <!-- Log out form-->
     <form class="navbar-form navbar-right" method="post" action="./logout.php">
@@ -109,7 +109,7 @@ $('#btn_login').on('click', function() {
           <h4 class="modal-title">Register</h4>
         </div>
         <div class="modal-body">
-        <form method="post" action="/awp/register.php">
+        <form method="post" action="./register.php">
           <div class="form-group">
           <label for="username">Username:</label>
           <input type="text" name="username">

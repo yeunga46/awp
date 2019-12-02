@@ -36,7 +36,7 @@ $dbh = ConnectDB();
                     else
                     {
                         #add href to photo.php with the appropriate query
-                        echo '<img src="/awp/res/placeholder.png" width=100% id="profile_img"></img>';
+                        echo '<img src="./res/placeholder.png" width=100% id="profile_img"></img>';
                     }
                 echo '</div>';
                 echo '<div class="col-lg-2" id="bio-div">';
@@ -80,8 +80,8 @@ $dbh = ConnectDB();
             #should be adjusted to according to row size
             echo '<div class="col-sm-4">';
                 echo '<div class="thumbnail" id="photo-'; echo $i; echo '-div">';
-                    echo '<a href="/awp/photo.php?pid='; echo $photos[$i]->photo_id; echo '">';
-                        echo '<img src='; echo str_replace('./', '/awp/', $photos[$i]->filelocation); echo ' width=100%></img>';
+                    echo '<a href="./photo.php?pid='; echo $photos[$i]->photo_id; echo '">';
+                        echo '<img src='; echo str_replace(' ', '%20', $photos[$i]->filelocation); echo ' width=100%></img>';
                             echo '<div class="caption">';
                                 echo '<p>'; echo $photos[$i]->caption; echo '</p>';
                             echo '</div>';
@@ -116,7 +116,7 @@ $().ready(function(){
             //photo-i-div
             //bio-div
             $('#bio-div').empty();
-            var form = $('<form />', { action: '/awp/editProfile.php', method: 'POST'});
+            var form = $('<form />', { action: './editProfile.php', method: 'POST'});
             var username_box = $('<input/>').attr('type', 'text')
                                .val('<?php echo $_SESSION["username"]; ?>').attr('id', 'input_new_username');
             var file_input = $('<input/>').attr('type', 'file').attr('id','profile_upload');
