@@ -1,7 +1,4 @@
 <?php
-#TODO: 
-#add hrefs to photos to link to photo.php 
-#create photo.php 
 
 session_start();
 
@@ -39,7 +36,7 @@ $dbh = ConnectDB();
                         echo '<img src="./res/placeholder.png" width=100% id="profile_img"></img>';
                     }
                 echo '</div>';
-                echo '<div class="col-lg-2" id="bio-div">';
+                echo '<div class="col-lg-1" id="bio-div">';
                     echo '<h2>'; echo $username; echo '</h2>';
                     if(!is_null($bio))
                     {
@@ -112,39 +109,40 @@ $dbh = ConnectDB();
 <script>
 $().ready(function(){
     $('#btn_edit').on('click', function(){
-
             //photo-i-div
             //bio-div
             $('#bio-div').empty();
-            var form = $('<form />', { action: './editProfile.php', method: 'POST'});
-            var username_box = $('<input/>').attr('type', 'text')
-                               .val('<?php echo $_SESSION["username"]; ?>').attr('id', 'input_new_username');
-            var file_input = $('<input/>').attr('type', 'file').attr('id','profile_upload');
+            var form = $('<form/>', { action: './editProfile.php', method: 'POST'});
+            var username = $('<h2>').html('<?php echo $_SESSION["username"]; ?>')
+            var file_input = $('<input/>').attr('type', 'file').attr('id','profile_upload').attr('name', 'userfile').on('change', function(){
+                console.log(this);
+                    if (this[0].files && this[0].files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                        $('#profile_img').attr('src', e.target.result);
+                        }
+                        reader.readAsDataURL(this[0].files[0]);
+                }
+            });
+            
+            
+            ;
             var bio_area = $('<textarea/>')
                            .attr('placeholder', 
                            '<?php echo (!is_null($bio) ? $bio : 'Write something about yourself...'); ?>')
-                           .attr('width', '100%');
+                           .attr('width', '100%').attr('name','bio');
             var submit = $('<button />').attr('type', 'submit').attr('class', 'btn btn-success').text('Submit changes');
-            form.append(username_box);
-            form.append($('<br/>'));
-            form.append($('<br/>'));
+            var cancel = $('<button />').attr('type', 'button').attr('class', 'btn btn-danger').text('Cancel').on('click', function() {location.reload();});
+            form.append(username);
             form.append(bio_area);
             form.append($('<br/>'));
             form.append($('<br/>'));
             form.append(file_input);
             form.append($('<br/>'));
             form.append(submit);
+            form.append($('<p> </p>'))
+            form.append(cancel);
             $('#bio-div').append(form);
-    });
-
-    $('#profile_upload').on('change', function(){
-        if ($('#profile_upload')[0].files && $('#profile_upload')[0].files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#profile_img').attr('src', e.target.result);
-                }
-                reader.readAsDataURL($('#profile_upload')[0].files[0]);
-            }
     });
 });
 </script>

@@ -18,6 +18,7 @@ else {
             <div class="col-md-6">
                 <form method="post" enctype="multipart/form-data" action="./store_it.php">
                     <div class="form-group">
+                    <!-- make sure to require title -->
                         <label for="title">Choose a title for your photo:</label>
                         <input type="text" name="title" id="title">
                     </div>
