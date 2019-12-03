@@ -36,6 +36,8 @@ RewriteRule ^(user)/([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ profile.php?username=$2 [NC
 
 RewriteRule ^(u)/([a-zA-Z][a-zA-Z0-9_-]{1,20})/?$ profile.php?username=$2 [NC,QSA,L]
 
+RewriteRule ^(photo)/([0-9]{1,20})/?$ photo.php?pid=$2 [NC,QSA,L]
+
 # the other rules limit to 20 characters, but this one doesn't,
 # so if a name is longer than 20 characters it'll do this
 RewriteRule   (^[a-z]+$) ./echo.php?thing=$1 [NC,L]

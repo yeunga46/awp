@@ -3,7 +3,8 @@
 require_once('Connect.php');
 
 // other functions are right here
-require_once('DBfuncs.php');
+require_once('UserDBFuncs.php');
+require_once('PhotoDBFuncs.php');
 
 $dbh = ConnectDB();
 // was there a name entered for the search?

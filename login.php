@@ -1,6 +1,6 @@
 <?php
 require_once('Connect.php');
-require_once('DBfuncs.php');
+require_once('UserDBFuncs.php');
 $dbh = ConnectDB();
 if ( isset($_POST['username'])   &&  !empty($_POST['username'])   || 
      isset($_POST['pwd'])  &&  !empty($_POST['pwd'])){

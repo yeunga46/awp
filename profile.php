@@ -3,7 +3,8 @@
 session_start();
 
 require_once('Connect.php');
-require_once('DBfuncs.php');
+require_once('PhotoDBFuncs.php');
+require_once('UserDBFuncs.php');
 
 $dbh = ConnectDB();
     $title = $_GET["username"];
@@ -77,7 +78,7 @@ $dbh = ConnectDB();
             #should be adjusted to according to row size
             echo '<div class="col-sm-4">';
                 echo '<div class="thumbnail" id="photo-'; echo $i; echo '-div">';
-                    echo '<a href="./photo.php?pid='; echo $photos[$i]->photo_id; echo '">';
+                    echo '<a href="./photo/'; echo $photos[$i]->photo_id; echo '">';
                         echo '<img src='; echo str_replace(' ', '%20', $photos[$i]->filelocation); echo ' width=100%></img>';
                             echo '<div class="caption">';
                                 echo '<p>'; echo $photos[$i]->caption; echo '</p>';
