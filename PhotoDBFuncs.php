@@ -76,7 +76,7 @@ function getLatestNumPhotos($dbh,$n_photos)
         $photos = $stmt->fetchAll(PDO::FETCH_OBJ);
         $stmt = null;
 
-        return $photos;
+        return array_reverse($photos);
     
     }
     catch(PDOException $e)
