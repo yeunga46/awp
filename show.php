@@ -12,7 +12,10 @@
 require_once('Connect.php');
 
 // other functions are right here
-require_once('DBfuncs.php');
+require_once('PhotoDBFuncs.php');
+require_once('UserDBFuncs.php');
+require_once('CommentDBFuncs.php');
+
 
 
 $dbh = ConnectDB();
@@ -88,11 +91,16 @@ echo '<pre>'; print_r($photos); echo '</pre>';
 // $t = getProfileByName($dbh, "test");
 // echo '<pre>'; print_r($t); echo '</pre>';
 
-$bool_val = checkReset($dbh,"tester");
-echo '<pre>'; echo $bool_val ? 'true' : 'false'; echo '</pre>';
+// $bool_val = checkReset($dbh,"tester");
+// echo '<pre>'; echo $bool_val ? 'true' : 'false'; echo '</pre>';
 
-$bool_val = checkConfrimCode($dbh,"tester","a1c46293f88f10caae38203c442f5630a36938e");
-echo '<pre>'; echo $bool_val ? 'true' : 'false'; echo '</pre>';
+// $bool_val = checkConfrimCode($dbh,"tester","a1c46293f88f10caae38203c442f5630a36938e");
+// echo '<pre>'; echo $bool_val ? 'true' : 'false'; echo '</pre>';
+
+$ppid = Upload($dbh,"./UPLOADED/archive/tester/blue duck.png",24,"tester", "","");
+echo '<pre>'; print($ppid); echo '</pre>';
+setProfilePicId($dbh,"tester",$ppid);
+
 ?>
 
 

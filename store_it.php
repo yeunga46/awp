@@ -5,7 +5,8 @@ session_start();
 require_once('Connect.php');
 
 // other functions are right here
-require_once('DBfuncs.php');
+require_once('PhotoDBFuncs.php');
+require_once('UserDBFuncs.php');
 
 // Note: "userfile" is the name from the form which we used for the
 //       file input tag.
@@ -63,13 +64,26 @@ else {
         // but we can't upload another with the same name on top,
         // because it's now read-only
         $dbh = ConnectDB();
+        $title = null;
         $caption = null;
 
+        if(!empty($_POST["title"])){
+          $title = $_POST["title"];
+        }
         if(!empty($_POST["caption"])){
           $caption = $_POST["caption"];
         }
-        
-        Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $caption,$_POST["title"]);
+
+        $ppid = Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $caption, $title);
+           
+      
+        if(is_null($title)){
+            if(!is_null(getProfilePicId($dbh, $_SESSION["username"]))){
+                $old_ppid = getProfilePicId($dbh,$_SESSION["username"]);
+                deletePhoto($dbh,$old_ppid,$_SESSION["uid"]);
+            }
+            setProfilePicId($dbh,$_SESSION["username"],$ppid);
+        }
         header('Location: ./profile.php?username='.$_SESSION["username"]);
 		//file + timestamp caption default null
 } else {

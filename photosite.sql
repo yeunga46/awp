@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2019 at 07:07 PM
+-- Generation Time: Dec 04, 2019 at 12:26 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -60,7 +60,7 @@ CREATE TABLE `photo_files` (
   `photo_id` int(8) NOT NULL,
   `uploaddate` datetime NOT NULL DEFAULT current_timestamp(),
   `uploader` varchar(128) DEFAULT NULL,
-  `title` varchar(140) NOT NULL,
+  `title` varchar(140) DEFAULT NULL,
   `caption` varchar(128) DEFAULT NULL,
   `filelocation` varchar(512) NOT NULL,
   `user_id` int(11) NOT NULL
@@ -74,7 +74,9 @@ INSERT INTO `photo_files` (`photo_id`, `uploaddate`, `uploader`, `title`, `capti
 (11, '2019-11-19 13:36:19', 'tester', 'h', 'as', './UPLOADED/archive/tester/pokehyaku01b.jpg', 24),
 (12, '2019-11-19 13:43:40', 'tester', 's', NULL, './UPLOADED/archive/tester/pokehyaku02b.jpg', 24),
 (13, '2019-11-19 13:52:32', 'tester', '3', NULL, './UPLOADED/archive/tester/pokehyaku03b.jpg', 24),
-(14, '2019-11-19 15:55:44', 'tester', 'ghost', NULL, './UPLOADED/archive/tester/pokehyaku04b.jpg', 24);
+(14, '2019-11-19 15:55:44', 'tester', 'ghost', NULL, './UPLOADED/archive/tester/pokehyaku04b.jpg', 24),
+(42, '2019-12-03 17:59:45', 'tester', 'ds', NULL, './UPLOADED/archive/tester/graph.png', 24),
+(43, '2019-12-03 18:07:36', 'tester', NULL, NULL, './UPLOADED/archive/tester/deer.png', 24);
 
 -- --------------------------------------------------------
 
@@ -103,7 +105,7 @@ INSERT INTO `photo_users` (`user_id`, `joindate`, `username`, `password`, `email
 (19, '2019-11-12 16:33:01', 'yufyufgcyufy', '$2y$10$OonSXnKxMdCvyKaQZc5zxuptX507vBdp6F1HOHl39uexq8ONauSI2', 'fyufufyuf', 0, NULL, NULL, NULL),
 (21, '2019-11-12 16:37:21', 'test6', '$2y$10$D9YS5sexY/nz6Nb/TjxZgOZd9jVWzC/TGsxA7GRpWYJKCTJ4CT6la', 'hajuwb', 0, NULL, NULL, NULL),
 (22, '2019-11-12 16:37:44', 'test7', '$2y$10$lyYFvIp0DOYo9ZrUX6fziux17s.WXF1N0pBVr.89Cv5FHn7xtmWrq', 'they', 0, NULL, 3, 'test guy'),
-(24, '2019-11-18 02:01:01', 'tester', '$2y$10$zPlHP.48LAQZ/wq7f9Mw2OUYFc9v.lT55yifHxTMbroyLVjpgvi/u', 'tes.ting.com', 0, '2f8cd645a2008edf7f5bb1234ffa09b39d5b9164', 6, 'test guy');
+(24, '2019-11-18 02:01:01', 'tester', '$2y$10$zPlHP.48LAQZ/wq7f9Mw2OUYFc9v.lT55yifHxTMbroyLVjpgvi/u', 'tes.ting.com', 0, '2f8cd645a2008edf7f5bb1234ffa09b39d5b9164', 43, 'hello');
 
 --
 -- Triggers `photo_users`
@@ -154,7 +156,7 @@ ALTER TABLE `photo_comments`
 -- AUTO_INCREMENT for table `photo_files`
 --
 ALTER TABLE `photo_files`
-  MODIFY `photo_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `photo_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `photo_users`

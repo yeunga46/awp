@@ -2,7 +2,8 @@
 // access information in directory with no web access
 require_once('Connect.php');
 // other functions are right here
-require_once('DBfuncs.php');
+require_once('UserDBFuncs.php');
+
 
 $dbh = ConnectDB();
 
