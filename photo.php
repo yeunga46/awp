@@ -11,6 +11,12 @@ $dbh = ConnectDB();
 $pid = $_GET["pid"];
 
 $photo = getPhoto($dbh, $_GET["pid"]);
+if(empty($photo)){
+
+    header('HTTP/1.1 404 Not Found');
+    ?>  <img src='./res/404.png' height=500px><?php 
+    exit();
+}
 
 $comments = getComments($dbh, $_GET["pid"]);
 

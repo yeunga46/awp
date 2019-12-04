@@ -9,9 +9,15 @@ require_once('UserDBFuncs.php');
 $dbh = ConnectDB();
 $title = $_GET["username"];
 $uid = getUid($dbh, $title);
+if(empty($uid)){
+    header('HTTP/1.1 404 Not Found');
+    ?>  <img src='./res/404.png' height=500px><?php 
+    exit();
+}
 include("header.php");
 
 $profile = getProfile($dbh, $uid);
+
 $username = $profile[0]->username;
 $profile_pic_id = $profile[0]->profile_pic_id;
 $bio = $profile[0]->bio;
@@ -71,7 +77,7 @@ if(count($photos) > 0)
             #should be adjusted to according to row size
             echo '<div class="col-sm-4">';
                 echo '<div class="thumbnail" id="photo-'; echo $i; echo '-div">';
-                    echo '<a href="./photo.php?pid='; echo $photos[$i]->photo_id; echo '">';
+                    echo '<a href="./photo/'; echo $photos[$i]->photo_id; echo '">';
                         echo '<img src="'; echo str_replace(' ', '%20', $photos[$i]->filelocation); echo '" width=100%></img>';
                             echo '<div class="caption">';
                                 echo '<p>'; echo $photos[$i]->caption; echo '</p>';
