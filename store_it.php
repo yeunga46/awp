@@ -8,6 +8,12 @@ require_once('Connect.php');
 require_once('PhotoDBFuncs.php');
 require_once('UserDBFuncs.php');
 
+//get profile= 0/1
+if(isset($_POST["profile"])){
+    $profile = $_POST["profile"];
+}else{
+    $profile = 0;
+}
 // Note: "userfile" is the name from the form which we used for the
 //       file input tag.
 
@@ -77,14 +83,14 @@ else {
         $ppid = Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $caption, $title);
            
       
-        if(is_null($title)){
+        if($profile){
             if(!is_null(getProfilePicId($dbh, $_SESSION["username"]))){
                 $old_ppid = getProfilePicId($dbh,$_SESSION["username"]);
                 deletePhoto($dbh,$old_ppid,$_SESSION["uid"]);
             }
             setProfilePicId($dbh,$_SESSION["username"],$ppid);
         }
-        header('Location: ./profile.php?username='.$_SESSION["username"]);
+        header('Location: ./u/'.$_SESSION["username"]);
 		//file + timestamp caption default null
 } else {
     die("Error copying ". $_FILES["userfile"]["name"]);
