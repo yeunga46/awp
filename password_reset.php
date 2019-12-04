@@ -4,7 +4,6 @@ require_once('Connect.php');
 // other functions are right here
 require_once('UserDBFuncs.php');
 
-
 $dbh = ConnectDB();
 
 if ((isset($_GET['code']) && !empty($_GET['code']))|| (isset($_GET['u'])&&!empty($_GET['u']))) {

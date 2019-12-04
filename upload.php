@@ -56,6 +56,10 @@ else {
                 alert('Please fill out a title for your photo before continuing.');
                 e.preventDefault();
             }
+            else if ($('#userfile').get(0).files.length === 0) {
+                alert('Please upload a photo.');
+                e.preventDefault();
+            }       
         });
     });
 </script>

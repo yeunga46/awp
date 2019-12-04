@@ -54,7 +54,8 @@ echo '<div class="flex-container">';
                 //present button for editing preferences
                 if(isset($_SESSION["username"]) && $_SESSION["username"] == $title)
                 {
-                    echo "<button class='btn btn-success' id='btn_edit'>Edit Profile</button>";
+                    echo "<button class='btn btn-success' id='btn_edit'>Edit Profile</button> ";
+                    echo "<button class='btn btn-danger'  data-toggle='modal' data-target='#div_deleteProfile' type='button'>Delete Profile</button>";
                 }
             echo '</div>';
         echo '</div>';
@@ -109,6 +110,7 @@ $().ready(function(){
             //photo-i-div
             //bio-div
             $('#bio-div').empty();
+            //change action here to whatever you set the query string to
             var form = $('<form/>', { action: './editProfile.php', method: 'POST'});
             var username = $('<h2>').html('<?php echo $_SESSION["username"]; ?>')
             var file_input = $('<input/>').attr('type', 'file').attr('accept', 'image/*').attr('name', 'userfile').on('change', function(){
@@ -140,3 +142,30 @@ $().ready(function(){
     });
 });
 </script>
+<div class="modal fade" id="div_deleteProfile" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Are you sure?</h4>
+          </div>
+          <div class="modal-body">
+            <form method="post" action="./sendemail.php" id="form-forgotPassword">
+              <div class="form-group">
+                <label for="username">Username:</label>
+                <input class="form-control" type="text" name="username" id="input_forgotUsername">
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input class="form-control" type="text" name="email" id="input_forgotEmail">
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Send Email</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>

@@ -33,7 +33,7 @@ include("header.php");
                     {?>
                         <button class="btn btn-info" title="Like">👌</button></h2>
                     <?php } ?> </h2>
-                <p>Uploaded by: <?php echo $photo[0]->uploader;?> on <?php echo $photo[0]->uploaddate; ?> </p>
+                <p>Uploaded by: <?php echo '<a href="./u/'; echo $photo[0]->uploader; echo '" >'; echo $photo[0]->uploader; echo '</a>';?> on <?php echo $photo[0]->uploaddate; ?> </p>
                 <p><em><?php echo $photo[0]->caption; ?></em></p>
              </div>
             </br>
@@ -41,7 +41,7 @@ include("header.php");
                         for($i = 0; $i < count($comments); $i++) { ?>
                         <div id="comment-<?php echo $comments[$i]->comment_id; ?>">
                             <h5><b><?php $thisUser = getUsername($dbh, $comments[$i]->user_id);
-                            echo ($thisUser == $_SESSION['username']) ? 'You' : $thisUser;?></b> said:</h5>
+                            echo (isset($_SESSION['username']) && $thisUser == $_SESSION['username']) ? 'You' : $thisUser;?></b> said:</h5>
                             <br/>
                             <p class="comment-text"><?php echo $comments[$i]->comment_text; ?></p>
                             <?php if($_SESSION['login'] && $thisUser == $_SESSION['username']) { ?>

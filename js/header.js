@@ -1,8 +1,9 @@
 $().ready(function () {
-
+    
     $('#searchbar_dropdown').hide();
+    var passwordsMatch = false;
+
     $('#searchbar').on('change keyup paste', function () {
-        console.log($('#form_search').serialize());
         $.ajax({
             url: './search.php',
             type: 'GET',
@@ -23,8 +24,6 @@ $().ready(function () {
 
                 $('#searchbar_dropdown').children('option').remove();
 
-
-
                 //0 - accounts
                 for(i = 0; i < data[0].length; i++)
                 {
@@ -35,7 +34,7 @@ $().ready(function () {
                 //1 - pictures
                 for(i = 0; i < data[1].length; i++)
                 {
-                    let currentPhotoURL = './photo.php?pid=' + data[1][i].photo_id;
+                    let currentPhotoURL = './photo/' + data[1][i].photo_id;
                     let currentPhotoOption = $('<option>' + data[1][i].title + ' by ' + data[1][i].uploader + '</option>').val(currentPhotoURL);
                     $('#searchbar_dropdown').append(currentPhotoOption);
                 }
@@ -63,13 +62,57 @@ $().ready(function () {
             }
         });
     });
+
+    $('#input_username').on('change keyup paste', function(e) {
+        /*$.ajax({
+            url: './user'
+        });*/
+
+    });
+
+    $('#input_confirm_pword').on('change keyup paste', function() {
+        if($(this).val() === $('#input_pword').val())
+        {
+            $(this).css({
+                "border-color": "#00ff00",
+                "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 255, 0, 0.6)"
+            });
+            $('#input_pword').css({
+                "border-color": "#00ff00",
+                "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 255, 0, 0.6)"
+            });
+            passwordsMatch = true;
+        }
+        else
+        {
+            $(this).css({
+                "border-color": "#FF0000",
+                "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6)"
+            });
+            $('#input_pword').css({
+                "border-color": "#FF0000",
+                "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6)"
+            });
+
+            passwordsMatch = false;
+        }
+    });
+
     $('#form-register').on('submit', function (e) {
         //broken for some reason... it worked once but never again
-        $('#form-register input').blur(function() {
-            console.log($.trim(this.value).length);
-            if(!$.trim(this.value).length) { // zero-length string AFTER a trim
-                   e.preventDefault();
+        if(!($('#input_username').val() === "" || $('#input_email').val() === "" 
+        || $('#input_pword').val() === "" || $('#input_confirm_pword').val() === ""))
+        {
+            if(!passwordsMatch)
+            {
+                e.preventDefault();
             }
-       });
+        }
+        else
+        {
+            alert("You left one or more fields empty. Please fill out the entire form and try again.");
+            e.preventDefault();
+        }
+
     });
 });

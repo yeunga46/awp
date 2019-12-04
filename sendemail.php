@@ -48,7 +48,6 @@ if(checkUserExist($dbh, $_POST['username']) || checkEmailExist($dbh, $_POST['ema
 else{
   die("Invalid username or email address.");
 }
+
+//header("Location:start.php");
 ?>
-<p>
-  A link for resetting your password has been sent to "<?php echo $_POST['email'];?>".
-</p>
