@@ -11,7 +11,9 @@
 
     $bio = $_POST['bio'];
 
-    editProfile($dbh, $uid, $bio);
+    #str replace makes the bio string safe
+
+    editProfile($dbh, $uid, str_replace(array("\r\n", "\n\r", "\r", "\n"), "<br/>", $bio));
 
     if(!is_null($_POST['userfile']))
     {

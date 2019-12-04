@@ -1,0 +1,12 @@
+div.comment-box{
+    background-color: #f8f8f8
+}
+div.comment-box-header{
+    border-bottom: 1px solid black;
+}
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}

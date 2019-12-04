@@ -16,11 +16,11 @@ else {
                 <img id="img_preview" src=".\res\placeholder.png" height="500" width="500">
             </div>
             <div class="col-md-6">
-                <form method="post" enctype="multipart/form-data" action="./store_it.php">
+                <form id="form-upload-file" method="post" enctype="multipart/form-data" action="./store_it.php">
                     <div class="form-group">
                     <!-- make sure to require title -->
                         <label for="title">Choose a title for your photo:</label>
-                        <input type="text" name="title" id="title">
+                        <input type="text" name="title" id="title" placeholder="required">
                     </div>
                     <div class="form-group">
                         <label for="caption">Enter a caption:</label>
@@ -47,6 +47,14 @@ else {
                     $('#img_preview').attr('src', e.target.result);
                 }
                 reader.readAsDataURL($('#userfile')[0].files[0]);
+            }
+        });
+        $('#form-upload-file').on('submit', function(e) {
+            if($('#title').val() === "")
+            {
+                //change this to something more pleasing later
+                alert('Please fill out a title for your photo before continuing.');
+                e.preventDefault();
             }
         });
     });
