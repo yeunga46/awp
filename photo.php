@@ -53,8 +53,11 @@ include("header.php");
                             <br/>
                             <p><em><?php echo $comments[$i]->comment_time;?></em></p>
                         </div>
-                    <?php }} if($_SESSION['login']) {?>
-                <form method="post" enctype="multipart/form-data" action="./addComment.php?pid=<?php echo $pid; ?>">
+                <?php }} if($_SESSION['login']) {?>
+                 <form method="post" enctype="multipart/form-data" action="./comment.php">
+                    <input type="hidden" name="action" value="add">
+                    <input type="hidden" name="pid" value="<?php echo $pid; ?>">
+                    <input type="hidden" name="uploader" value="<?php echo $_SESSION['username']; ?>">
                     <div class="form-group">
                         <p><em>Commenting as <?php echo $_SESSION['username'];?></em></p>
                         <textarea style="width: 100%;" name="comment"></textarea>

@@ -9,17 +9,18 @@
 // addComment() -  adds comment to table
 // USAGE: 
 // $dbh is database handle , $uid is user id, $pid is photo id, 
-function addComment($dbh, $uid, $pid, $comment)
+function addComment($dbh, $uid, $pid,$uploader, $comment)
 {
     try {
 
-        $query = 'INSERT INTO photo_comments(user_id, photo_id, comment_text)' .
-                 'VALUES (:uid, :pid, :comment)';
+        $query = 'INSERT INTO photo_comments(user_id, photo_id,  uploader, comment_text)' .
+                 'VALUES (:uid, :pid, :uploader, :comment)';
         $stmt = $dbh->prepare($query);
         
         // Note each parameter must be bound separately
         $stmt->bindParam(':uid', $uid);
         $stmt->bindParam(':pid', $pid);
+        $stmt->bindParam(':uploader', $uploader);
         $stmt->bindParam(':comment', $comment);
 
         $stmt->execute();
