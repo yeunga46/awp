@@ -97,9 +97,10 @@ echo '<pre>'; print_r($photos); echo '</pre>';
 // $bool_val = checkConfrimCode($dbh,"tester","a1c46293f88f10caae38203c442f5630a36938e");
 // echo '<pre>'; echo $bool_val ? 'true' : 'false'; echo '</pre>';
 
-$ppid = Upload($dbh,"./UPLOADED/archive/tester/blue duck.png",24,"tester", "","");
-echo '<pre>'; print($ppid); echo '</pre>';
-setProfilePicId($dbh,"tester",$ppid);
+// $ppid = Upload($dbh,"./UPLOADED/archive/tester/blue duck.png",24,"tester", "","");
+// echo '<pre>'; print($ppid); echo '</pre>';
+// setProfilePicId($dbh,"tester",$ppid);
+
 
 ?>
 

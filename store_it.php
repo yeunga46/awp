@@ -20,7 +20,32 @@ if(isset($_POST["profile"])){
 // echo "Name On Client: ", $_FILES["userfile"]["name"], "<br />";
 // echo "Name On Server: ", $_FILES["userfile"]["tmp_name"], "<br />";
 // echo "File Size: ", $_FILES["userfile"]["size"], " bytes <br />";
+if(isset($_FILES['userfile'])) {
+    $errors     = array();
+    $maxsize    = 10000000;
+    $acceptable = array(
+        'image/jpeg',
+        'image/jpg',
+        'image/gif',
+        'image/png'
+    );
 
+    if(($_FILES['userfile']['size'] >= $maxsize) || ($_FILES["userfile"]["size"] == 0)) {
+        $errors[] = 'File too large. File must be less than 10 megabytes.';
+    }
+
+    if((!in_array($_FILES['userfile']['type'], $acceptable)) && (!empty($_FILES["userfile"]["type"]))) {
+        $errors[] = 'Invalid file type. Only JPG, GIF and PNG types are accepted.';
+    }
+
+    if(count($errors) > 0) {
+        foreach($errors as $error) {
+            echo '<script>alert("'.$error.'");</script>';
+        }
+
+        die(); //Ensure no more processing is done
+    }
+}
 $File_Handle = fopen($_FILES["userfile"]["name"], "r");
 
 $File_Contents = fread($File_Handle, $_FILES["userfile"]["size"]);
@@ -30,6 +55,8 @@ $File_Contents = fread($File_Handle, $_FILES["userfile"]["size"]);
 // echo "</pre>\n";
 
 fclose($File_Handle);
+
+
 
 // In order for this to work, there has to be a directory where
 // the web server can save files, and where you can go in and work
@@ -49,7 +76,7 @@ if (!file_exists("./UPLOADED/archive/" . $_SESSION["username"])) {
     chmod("./UPLOADED/archive/". $_SESSION["username"], 0777);
 }
 // Make sure it was uploaded
-if (!is_uploaded_file( $_FILES["userfile"]["tmp_name"])) {
+if (!is_userfile( $_FILES["userfile"]["tmp_name"])) {
     #echo "<pre>\n"; print_r($_FILES["userfile"]); echo "</pre>";
     die("Error: " . $_FILES["userfile"]["name"] . " did not upload.");
 }
@@ -63,7 +90,7 @@ if(file_exists($targetname))
     header('Location: ./upload.php');
 }
 else {
-    if (move_uploaded_file($_FILES["userfile"]["tmp_name"], $targetname) ) {
+    if (move_userfile($_FILES["userfile"]["tmp_name"], $targetname) ) {
         // if we don't do this, the file will be mode 600, owned by
         // www, and so we won't be able to read it ourselves
         chmod($targetname, 0444);
