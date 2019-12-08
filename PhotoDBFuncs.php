@@ -278,4 +278,29 @@ function editPhotoCaption($dbh, $cid, $pid, $uid, $caption)
     }
 }
 
+// getPhotoTotal() - return total number of photos that have a title
+// USAGE: 
+// $dbh is database handle, $n_photos is the number of photos you want         
+function getPhotoTotal($dbh)
+{
+    // fetch the data
+    try {
+        
+        $query = "SELECT COUNT(*) FROM photo_files WHERE title IS NOT NULL";
+        // prepare to execute
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':pid', $pid);
+        $stmt->execute();
+        $total = implode($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+        $stmt = null;
+
+        return $total;
+    
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in getPhotoTotal(): ' . $e->getMessage() );
+    }
+}
+
 ?>

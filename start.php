@@ -49,6 +49,7 @@ include("header.php");
                 echo '</div>';
             }
         }
+        echo '</div>';
 
 ?>
 

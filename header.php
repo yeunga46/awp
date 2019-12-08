@@ -23,6 +23,9 @@
         <ul class="nav navbar-nav">
           <li <?php $script = $_SERVER['SCRIPT_NAME']; if($script == '/photosite/start.php'){ echo 'class="active"';} ?>><a href="./start.php">Home</a></li>
         </ul>
+        <ul class="nav navbar-nav">
+          <li <?php if($script == '/photosite/gallery.php'){ echo 'class="active"';} ?>><a href="./gallery.php">Gallery</a></li>
+        </ul>
         <form class="navbar-form" id="form_search" style="float: inherit; display: inline-block; !important">
           <div class="form-group">
             <input class="form-control" type="text" name="searchbar" id="searchbar" placeholder="search">
