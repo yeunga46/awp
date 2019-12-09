@@ -88,8 +88,12 @@ include("header.php");
                  }else{
                     echo '<li class="page-item">';
                  }
+                 if($page != 0)
+                 {
+                     #we only want previous to show up if we have somewhere to go back to
+                    echo '<a href="gallery.php?page='; echo $page; echo '"class="page-link" >Previous</a>';
+                 }
                  ?>
-                 <span class="page-link" >Previous</span>';
                 </li>
 
                 <?php    
@@ -108,7 +112,7 @@ include("header.php");
                     echo '<li class="page-item">';
                  }
                 ?>
-                  <a class="page-link" href="#">Next</a>
+                  <a class="page-link" href="gallery.php?page=<?php echo $page+2; ?>">Next</a>
                 </li>
               </ul>
             </nav>

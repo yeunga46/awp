@@ -1,7 +1,9 @@
 $().ready(function () {
     
     $('#searchbar_dropdown').hide();
+    //variables used in registering
     var passwordsMatch = false;
+    var userExist = false;
 
     $('#searchbar').on('change keyup paste', function () {
         $.ajax({
@@ -64,13 +66,20 @@ $().ready(function () {
     });
 
     $('#input_username').on('change keyup paste', function(e) {
-        /*$.ajax({
-            url: './user'
-        });*/
+        $.ajax({
+            url: './checker.php?check=userExist',
+            type: 'POST',
+            data: {username: $('#input_username').val() },
+            success: function(response)
+            {
+                console.log(response);
+            }
+        });
 
     });
 
     $('#input_confirm_pword').on('change keyup paste', function() {
+        //set to clear if fields are empty
         if($(this).val() === $('#input_pword').val())
         {
             $(this).css({
@@ -99,7 +108,6 @@ $().ready(function () {
     });
 
     $('#form-register').on('submit', function (e) {
-        //broken for some reason... it worked once but never again
         if(!($('#input_username').val() === "" || $('#input_email').val() === "" 
         || $('#input_pword').val() === "" || $('#input_confirm_pword').val() === ""))
         {

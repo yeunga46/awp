@@ -8,7 +8,7 @@ if(isset($_POST['check']) && !empty($_POST['check'])) {
     $dbh = ConnectDB();
     $check = $_POST['check'];
     switch($check) {
-        case 'userExist' : boolOutput(checkUserExist($dbh, $_POST["username"])); break;
+        case 'userExist' : boolOutput(checkUserExist($dbh, $_POST['username'])); break;
         case 'emailExist($dbh' : boolOutput(checkEmailExist($dbh, $_POST['email'])); break;
     }
 
