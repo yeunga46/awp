@@ -16,7 +16,7 @@ else {
                 <img id="img_preview" src=".\res\placeholder.png" height="500" width="500">
             </div>
             <div class="col-md-6">
-                <form id="form-upload-file" method="post" enctype="multipart/form-data" action="./store_it.php">
+                <form id="form-upload-file" method="post" enctype="multipart/form-data" action="./store_it.php?profile=0">
                     <div class="form-group">
                     <!-- make sure to require title -->
                         <label for="title">Choose a title for your photo:</label>
