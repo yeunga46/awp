@@ -46,7 +46,7 @@ include("header.php");
                             <p class="comment-text"><?php echo $comments[$i]->comment_text; ?></p>
                             <?php if($_SESSION['login'] && $thisUser == $_SESSION['username']) { ?>
                                 <button class="btn btn-info edit" id="edit-<?php echo $comments[$i]->comment_id; ?>">Edit Comment</button>
-                                <a href="./deleteComment.php?cid=<?php echo $comments[$i]->comment_id; ?>&pid=<?php echo $pid;?>">
+                                <a href="./comment.php?cid=<?php echo $comments[$i]->comment_id; ?>&pid=<?php echo $pid;?>&action=delete">
                                 <button class="btn btn-danger">Remove Comment</button></a>
                             <?php } ?>
                             <br/>
@@ -54,10 +54,7 @@ include("header.php");
                             <p><em><?php echo $comments[$i]->comment_time;?></em></p>
                         </div>
                 <?php }} if($_SESSION['login']) {?>
-                 <form method="post" enctype="multipart/form-data" action="./comment.php">
-                    <input type="hidden" name="action" value="add">
-                    <input type="hidden" name="pid" value="<?php echo $pid; ?>">
-                    <input type="hidden" name="uploader" value="<?php echo $_SESSION['username']; ?>">
+                 <form method="post" enctype="multipart/form-data" action="./comment.php?action=add&pid=<?php echo $pid; ?>">
                     <div class="form-group">
                         <p><em>Commenting as <?php echo $_SESSION['username'];?></em></p>
                         <textarea style="width: 100%;" name="comment"></textarea>
@@ -83,7 +80,7 @@ $('.edit').on('click', function() {
     $('#comment-' + cid).children('button').remove();
     $('#comment-' + cid).children('a').remove();
     $('#comment-' + cid).children('br').remove();
-    let action = './editComment.php?cid=' + cid + "&pid=<?php echo $pid; ?>";
+    let action = './comment.php?cid=' + cid + "&pid=<?php echo $pid; ?>&action=edit";
     let editCommentForm = $('<form/>', { action: action, method: 'POST'});
     let newComment = $('<textarea/>').attr('width', '100%').val(oldCommentText).attr('name','newComment');
     var submit = $('<button />').attr('type', 'submit').attr('class', 'btn btn-success').text('Submit changes');

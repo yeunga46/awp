@@ -67,22 +67,38 @@ $().ready(function () {
 
     $('#input_username').on('change keyup paste', function(e) {
         $.ajax({
-            url: './checker.php?check=userExist',
-            type: 'POST',
-            data: {username: $('#input_username').val() },
+            url: './checker.php',
+            type: 'GET',
+            data: {check: 'userExist', 'username': $('#input_username').val() },
             success: function(response)
             {
-                console.log(response);
+                if($.trim(response) === "true")
+                {
+                    $('#input_username').css({
+                        "border-color": "#FF0000",
+                        "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6)"
+                    });
+                    var error = $('<p>This username is currently in use.</p>').css('color', 'red');
+                    $('#form-register').append(error);
+                    userExist = true;
+                }
+                else
+                {
+                    $('#form-register p').remove();
+                    userExist = false;
+                    $('#input_username').removeAttr('style');
+                }
             }
         });
 
     });
 
-    $('#input_confirm_pword').on('change keyup paste', function() {
+    $('.password_input').on('change keyup paste', function() {
         //set to clear if fields are empty
-        if($(this).val() === $('#input_pword').val())
+        if($('#input_confirm_pword').val() !== "" && ($('#input_confirm_pword').val() === $('#input_pword').val()))
         {
-            $(this).css({
+            $('#form-register p').remove();
+            $('#input_confirm_pword').css({
                 "border-color": "#00ff00",
                 "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 255, 0, 0.6)"
             });
@@ -91,18 +107,25 @@ $().ready(function () {
                 "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 255, 0, 0.6)"
             });
             passwordsMatch = true;
+            
+        }
+        else if($('#input_pword').val() === "" || $('#input_confirm_pword').val() === ""){
+            $('#form-register p').remove();
+            $('#input_confirm_pword').removeAttr('style');
+            $('#input_pword').removeAttr('style');
+            passwordsMatch = false;
         }
         else
         {
-            $(this).css({
+            $('#form-register p').remove();
+            $('#input_confirm_pword').css({
                 "border-color": "#FF0000",
                 "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6)"
             });
-            $('#input_pword').css({
-                "border-color": "#FF0000",
-                "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6)"
-            });
+            $('#input_pword').removeAttr('style');
 
+            var error = $('<p>Passwords should match.</p>').css('color', 'red');
+            $('#form-register').append(error);
             passwordsMatch = false;
         }
     });
@@ -111,7 +134,7 @@ $().ready(function () {
         if(!($('#input_username').val() === "" || $('#input_email').val() === "" 
         || $('#input_pword').val() === "" || $('#input_confirm_pword').val() === ""))
         {
-            if(!passwordsMatch)
+            if(!passwordsMatch || userExist)
             {
                 e.preventDefault();
             }

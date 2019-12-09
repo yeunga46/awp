@@ -38,6 +38,7 @@ include("header.php");
     }
     
     echo '</div>';
+    echo '</br>';   
 
     $rowsize = 4;
     if(isset($_GET["size"]))
@@ -55,7 +56,7 @@ include("header.php");
     $photos = getPhotosBetween($dbh, $page * $size, $size);
 
     // total page  = total mod size
-
+    echo '<div class="container-fluid">';
     for($i = 0; $i < count($photos); $i++)
     {
         if($i % $rowsize == 0)
@@ -65,7 +66,7 @@ include("header.php");
         #should be adjusted to according to row size
         $n = 12 / $rowsize;
         echo '<div class="col-sm-'.$n.'">';
-            echo '<div class="thumbnail" id="photo-'; echo $i; echo '/div">';
+            echo '<div class="thumbnail" id="photo-'; echo $i; echo 'div">';
                 echo '<a href="./photo/'; echo $photos[$i]->photo_id; echo '">';
                     echo '<img src="'; echo str_replace(' ', '%20', $photos[$i]->filelocation); echo '" width=100%></img>';
                 echo '</a>';
@@ -78,7 +79,6 @@ include("header.php");
         }
     }
     echo '</div>';
-
     $n = ($total / $size);
 ?>
             <nav aria-label="Pages">
@@ -91,12 +91,8 @@ include("header.php");
                  if($page != 0)
                  {
                      #we only want previous to show up if we have somewhere to go back to
-                    echo '<a href="gallery.php?page='; echo $page; echo '"class="page-link" >Previous</a>';
-                 }
-                 ?>
-                </li>
-
-                <?php    
+                    echo '<a href="gallery.php?page='; echo $page; echo '"class="page-link" >Previous</a></li>';
+                 }  
                 for ($i=0; $i < $n; $i++) {
                     if($i == $page){
                         echo'<li class="page-item active" aria-current="page"><span class="page-link">'.($i+1);
@@ -106,14 +102,12 @@ include("header.php");
                     echo $i+1; echo ' </a></li>';  
                     }
                 }   
-                if($page + 1 >  $n){
-                    echo '<li class="page-item disabled">';
-                 }else{
+                if($page + 1 <  $n){
                     echo '<li class="page-item">';
+                    echo '<a class="page-link" href="gallery.php?page='; echo $page+2; echo '">Next</a>';
+                    echo '</li>';
                  }
                 ?>
-                  <a class="page-link" href="gallery.php?page=<?php echo $page+2; ?>">Next</a>
-                </li>
               </ul>
             </nav>
         </div>

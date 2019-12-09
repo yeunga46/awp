@@ -83,11 +83,11 @@
               </div>
               <div class="form-group">
                 <label for="pword">Password:</label>
-                <input class="form-control" type="password" id="input_pword" name="pword">
+                <input class="form-control password_input" type="password" id="input_pword" name="pword">
               </div>
               <div class="form-group">
                 <label for="pword">Confirm Password:</label>
-                <input class="form-control" type="password" id="input_confirm_pword">
+                <input class="form-control password_input" type="password" id="input_confirm_pword">
               </div>
           </div>
           <div class="modal-footer">
