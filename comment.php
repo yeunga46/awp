@@ -18,6 +18,10 @@ if(isset($_GET['action']) && !empty($_GET['action'])) {
         	header('Location: ./photo/' . $_GET["pid"]); break;
         case 'adminDelete' : deleteCommentAdmin($dbh, $_GET['cid'], $_GET['pid'], $_SESSION['uid']);
         	header('Location: ./photo/' . $_GET["pid"]); break;
+        case 'like' : like($dbh, $_GET['pid'], $_SESSION['uid']);
+        	header('Location: ./photo/' . $_GET["pid"]); break;
+    	case 'unlike' : unlike($dbh, $_GET['pid'], $_SESSION['uid']);
+        	header('Location: ./photo/' . $_GET["pid"]); break;
     }
 }
 

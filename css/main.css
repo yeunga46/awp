@@ -4,6 +4,16 @@ div.comment-box{
 div.comment-box-header{
     border-bottom: 1px solid black;
 }
+div.col-sm-2{
+    width: 20%;
+}
+div.col-sm-4{
+    height: 500px;
+}
+div.thumbnail {
+   box-shadow: 5px 5px grey;
+}
+
 select {
     -webkit-appearance: none;
     -moz-appearance: none;

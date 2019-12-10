@@ -169,6 +169,81 @@ function deleteComment($dbh,$cid,$uid)
         }
     }
 }
+// like() - insert a unique input that didn't exist into likes table
+// USAGE: 
+// $dbh is database handle
+function like($dbh,$pid,$uid)
+{
+    try {
+       
+        $query = "INSERT INTO likes (photo_id, user_id)".
+        " SELECT * FROM (SELECT :pid, :uid) AS tmp WHERE NOT EXISTS ".
+        "(SELECT photo_id, user_id FROM likes WHERE photo_id = :pid AND user_id = :uid) LIMIT 1";
+        // prepare to execute
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':pid', $pid);
+        $stmt->bindParam(':uid', $uid);
+        $stmt->execute();
+        $stmt = null;
 
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in like(): ' . $e->getMessage() );
+    }
+}
 
+// unlike() - delete comment only if input uid matches the comment uid
+// USAGE: 
+// $dbh is database handle
+function unlike($dbh,$pid,$uid)
+{
+    try {
+       
+        $query = "DELETE FROM likes WHERE photo_id = :pid AND user_id = :uid";
+        // prepare to execute
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':pid', $pid);
+        $stmt->bindParam(':uid', $uid);
+        $stmt->execute();
+        $stmt = null;
+
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in unlike(): ' . $e->getMessage() );
+    }
+}
+// liked() - return true/false if like exist
+// USAGE: $bool = checkUserExist($dbh, $username)
+// $dbh is database handle, $username is what to search
+function liked($dbh,$pid,$uid)
+{
+    // fetch the data
+    try {
+       
+        $query = "SELECT 1 FROM likes WHERE photo_id = :pid AND user_id = :uid";
+        // prepare to execute
+        $stmt = $dbh->prepare($query);
+
+        $stmt->bindParam(':pid', $pid);
+        $stmt->bindParam(':uid', $uid);
+
+        $stmt->execute();
+        $check = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $stmt = null;
+
+        // echo '<pre>'; print_r($check); echo '</pre>';
+        if ($check) {
+
+            return true;
+        } else {
+            return false;
+        } 
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in liked(): ' . $e->getMessage() );
+    }
+}
 ?>

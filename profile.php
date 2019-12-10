@@ -30,7 +30,7 @@ if(!is_null($profile_pic_id))
 echo '<div class="flex-container">';
      echo '<div class="container">';
         echo '<div class="row">';
-            echo '<div class="col-lg-2">';
+            echo '<div class="col-lg-2" id="profile_icon">';
                 if(isset($profile_pic) && !empty($profile_pic))
                 {
                     echo '<img id="profile_img" src="'; echo str_replace(' ', '%20', $profile_pic[0]->filelocation); echo '" width=100%></img>';
@@ -63,7 +63,7 @@ echo '<div class="flex-container">';
 echo '</div>';
 echo '</br>';
 $photos = getUserPhotos($dbh, $uid);
-$rowsize = 3;
+$rowsize = 4;
 if(count($photos) > 0)
 {
     echo '<div class="flex-container">';
@@ -76,7 +76,7 @@ if(count($photos) > 0)
                 echo '<div class="row">';
             }
             #should be adjusted to according to row size
-            echo '<div class="col-sm-4">';
+            echo '<div class="col-sm-3">';
                 echo '<div class="thumbnail" id="photo-'; echo $i; echo '-div">';
                     echo '<a href="./photo/'; echo $photos[$i]->photo_id; echo '">';
                         echo '<img src="'; echo str_replace(' ', '%20', $photos[$i]->filelocation); echo '" width=100%></img>';
