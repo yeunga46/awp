@@ -28,11 +28,7 @@ include("header.php");
     <div class="row">
         <div class="col-lg-4 comment-box float-left">
              <div class="comment-box-header" id="cbheader">
-<<<<<<< HEAD
                 <h2 id="header_title"><?php echo htmlspecialchars($photo[0]->title);?></h2>
-=======
-                <h2 id="header_title"><?php echo $photo[0]->title;?>  </h2>
->>>>>>> e7a83e07aac58eb5b795e7757294a0a7e2d4e229
                 <h3 id="header_likes"><?php echo "Likes:".$photo[0]->likes;?> </h3>
                 <?php
                     if($_SESSION['login'])
@@ -45,11 +41,7 @@ include("header.php");
                         Delete Photo</button>
                     <?php }?> 
                 <br></br><p>Uploaded by: <?php echo '<a href="./u/'; echo $photo[0]->uploader; echo '" >'; echo $photo[0]->uploader; echo '</a>';?> on <?php echo $photo[0]->uploaddate; ?> </p>
-<<<<<<< HEAD
                 <p><em><?php echo htmlspecialchars($photo[0]->caption); ?></em></p>
-=======
-                <p><em><?php echo $photo[0]->caption; ?></em></p>
->>>>>>> e7a83e07aac58eb5b795e7757294a0a7e2d4e229
              </div>
             <br></br>
              <?php if(!is_null($comments) && !empty($comments)){  

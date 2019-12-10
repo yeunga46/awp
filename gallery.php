@@ -69,11 +69,7 @@ include("header.php");
                 echo '<a href="./photo/'; echo $photos[$i]->photo_id; echo '">';
                     echo '<img src="'; echo str_replace(' ', '%20', $photos[$i]->filelocation); echo '" width=100%></img>';
                     echo '<div class="caption">';
-<<<<<<< HEAD
                                 echo '<p>'; echo htmlspecialchars($photos[$i]->caption);  echo '</p>';
-=======
-                                echo '<p>'; echo $photos[$i]->caption; echo '</p>';
->>>>>>> e7a83e07aac58eb5b795e7757294a0a7e2d4e229
                             echo '</div>';
                 echo '</a>';
             echo '</div>';

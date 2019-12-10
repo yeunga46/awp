@@ -7,7 +7,6 @@ div.comment-box-header{
 div.col-sm-2{
     width: 20%;
 }
-<<<<<<< HEAD
 div.col-sm-3{
     width: 25%;
 }
@@ -15,11 +14,6 @@ div.col-sm-4{
     width: 33%;
 }
 
-=======
-div.col-sm-4{
-    height: 500px;
-}
->>>>>>> e7a83e07aac58eb5b795e7757294a0a7e2d4e229
 div.thumbnail {
    box-shadow: 5px 5px grey;
 }
