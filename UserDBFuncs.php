@@ -1,12 +1,9 @@
 <?php
-#I suggest you refactor this into several files because its hard to figure out where each
-#function is - do something like photoDBfuncs, userDBfuncs etc.
 /* This file has useful database functions in it for the photo
- * site.
+ * site table photo_user.
  */
 
 // ListAllUsers() - return an array of user objects
-// USAGE: $userlist = ListAllUsers($dbh)
 // $dbh is database handle
 function ListAllUsers($dbh)
 {
@@ -33,8 +30,7 @@ function ListAllUsers($dbh)
 
 
 // getProfilePicId() - return profile pic id from username
-// USAGE: $username = getUid($dbh, $username)
-// $dbh is database handle, $username is what to search
+// $dbh is database handle, $username is username
 function getProfilePicId($dbh, $username)
 {
     // fetch the data
@@ -58,9 +54,8 @@ function getProfilePicId($dbh, $username)
         die ('PDO error in getProfilePicId(): ' . $e->getMessage() );
     }
 }
-// setProfilePicId() - changes the profile pic id
-// USAGE: 
-// $dbh is database handle,$ppid is profile pic id
+// setProfilePicId() - update the profile pic id of user
+// $dbh is database handle,$ppid is profile pic id, $username is username
 function setProfilePicId($dbh, $username, $ppid)
 {
 
@@ -85,8 +80,7 @@ function setProfilePicId($dbh, $username, $ppid)
 }
 
 // getUid() - return uid from username
-// USAGE: $username = getUid($dbh, $username)
-// $dbh is database handle, $username is what to search
+// $dbh is database handle, $username is username
 function getUid($dbh, $username)
 {
     // fetch the data
@@ -112,8 +106,7 @@ function getUid($dbh, $username)
 }
 
 // getUsername() - return username from uid
-// USAGE: $username = getUsername($dbh, $uid)
-// $dbh is database handle, $uid is what to search
+// $dbh is database handle, $uid is user id
 function getUsername($dbh, $uid)
 {
     // fetch the data
@@ -139,8 +132,7 @@ function getUsername($dbh, $uid)
 }
 
 // checkUserExist() - return true/false if user exist
-// USAGE: $bool = checkUserExist($dbh, $username)
-// $dbh is database handle, $username is what to search
+// $dbh is database handle, $username is username
 function checkUserExist($dbh, $username)
 {
     // fetch the data
@@ -171,8 +163,7 @@ function checkUserExist($dbh, $username)
 }
 
 // checkEmailExist() - return true/false if email exist
-// USAGE: $bool = checkEmailExist($dbh, $email)
-// $dbh is database handle, $email is what to search
+// $dbh is database handle, $email is email
 function checkEmailExist($dbh, $email)
 {
     // fetch the data
@@ -222,9 +213,8 @@ function deleteFiles($directory) {
     }
 }
 
-// deleteUser() - return true/false if password is valid
-// USAGE: $bool = checkPassword($dbh, $username, $pword)
-// $dbh is database handle, $username is what to search, $pword check against
+// deleteUser() - delete user if username and password is valid
+// $dbh is database handle, $username is username, $pword password
 function deleteUser($dbh, $username, $pword)
 {
     if(checkPassword($dbh, $username, $pword)){
@@ -247,9 +237,8 @@ function deleteUser($dbh, $username, $pword)
     }
 }
 
-// checkPassword() - return true/false if password is valid
-// USAGE: $bool = checkPassword($dbh, $username, $pword)
-// $dbh is database handle, $username is what to search, $pword check against
+// checkPassword() - return true/false if password is valid with the table entry
+// $dbh is database handle, $username is username, $pword password
 function checkPassword($dbh, $username, $pword)
 {
     // fetch the data
@@ -275,7 +264,6 @@ function checkPassword($dbh, $username, $pword)
 }
 
 // changePassword() - changes the password if the old password is valid
-// USAGE: 
 // $dbh is database handle,$pwd is old password, $new_pwd is new password
 function changePassword($dbh, $username, $pwd, $new_pwd)
 {
@@ -303,7 +291,6 @@ function changePassword($dbh, $username, $pwd, $new_pwd)
 }
 
 // editProfile() - update user bio
-// USAGE: 
 // $dbh is database handle
 function editProfile($dbh, $uid, $bio)
 {
@@ -328,9 +315,8 @@ function editProfile($dbh, $uid, $bio)
     }
 }
 
-// getProfile() -  return user info
-// USAGE: 
-// $dbh is database handle
+// getProfile() -  return array of user info
+// $dbh is database handle, $uid is user id
 function getProfile($dbh, $uid)
 {
     // fetch the data
@@ -355,9 +341,8 @@ function getProfile($dbh, $uid)
     }
 }
 
-// getProfileByName() -  return user info
-// USAGE: 
-// $dbh is database handle
+// getProfileByName() -  return  array of user info from username
+// $dbh is database handle, $username is username
 function getProfileByName($dbh, $username)
 {
     $username = "%{$username}%";
@@ -383,8 +368,7 @@ function getProfileByName($dbh, $username)
 }
 
 // checkReset() - return true/false if user can reset password with recovery link
-// USAGE: 
-// $dbh is database handle, $username is what to search
+// $dbh is database handle, $username username
 function checkReset($dbh, $username)
 {
     // fetch the data
@@ -409,8 +393,7 @@ function checkReset($dbh, $username)
     }
 }
 // checkConfrimCode() - return true/false if confrim code is valid
-// USAGE: $bool = checkPassword($dbh, $username, $pword)
-// $dbh is database handle, $username is what to search, $pword check against
+// $dbh is database handle, $username is username, $code is confirmaton code
 function checkConfrimCode($dbh,$username, $code)
 {
     // fetch the data

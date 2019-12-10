@@ -114,7 +114,6 @@ $().ready(function () {
     });
     
     $(document).on('click','.like', function(e) {
-        // alert(rootPath);
         $.ajax({
             url: 'comment.php',
             type: 'GET',

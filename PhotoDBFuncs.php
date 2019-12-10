@@ -1,13 +1,10 @@
 
 <?php
-#I suggest you refactor this into several files because its hard to figure out where each
-#function is - do something like photoDBfuncs, userDBfuncs etc.
 /* This file has useful database functions in it for the photo
- * site.
+ * site table photo_files.
  */
 
-// Upload() - upload file location  and othe information to database
-// USAGE: 
+// Upload() - upload file location and other information to database
 // $dbh is database handle, $file_location is file location,$uid is user id,
 // $uploader is username of uploader,$caption is photo caption,$title is photo title
 function Upload($dbh,$file_location,$uid,$uploader,$caption,$title)
@@ -37,9 +34,8 @@ function Upload($dbh,$file_location,$uid,$uploader,$caption,$title)
 }
 
 
-// getPhoto() - return array of phot0 info
-// USAGE: 
-// $dbh is database handle, $n_photos is the number of photos you want         
+// getPhoto() - return array of photo info
+// $dbh is database handle, $pid is photo id       
 function getPhoto($dbh,$pid)
 {
     // fetch the data
@@ -62,7 +58,6 @@ function getPhoto($dbh,$pid)
     }
 }
 // getLatestNumPhotos() - return array of latest n number of photos
-// USAGE: 
 // $dbh is database handle, $n_photos is the number of photos you want         
 function getLatestNumPhotos($dbh,$n_photos)
 {
@@ -86,8 +81,7 @@ function getLatestNumPhotos($dbh,$n_photos)
 }
 
 // getPhotosBetween() - return array of photos between x to x + n
-// USAGE: 
-// $dbh is database handle,$n_size_unit is offset ,$limit_size is limit
+// $dbh is database handle,$n_size_unit is offset ,$limit_size is limit to get
 // LIMIT 150 or LIMIT 0,150 : first 150 rows 0-150
 // LIMIT 150,150 : next 150 rows 151-300
 // LIMIT 300,150 : next 150 rows 301-450           
@@ -112,9 +106,8 @@ function getPhotosBetween($dbh,$n_size_unit,$limit_size)
     }
 }
 
-// getPhotosByTitle() - return array of photos of user
-// USAGE: 
-// $dbh is database handle
+// getPhotosByTitle() - return array of photos from title
+// $dbh is database handle , $title is title
 function getPhotosByTitle($dbh,$title)
 {
     $title = "%{$title}%";
@@ -139,9 +132,8 @@ function getPhotosByTitle($dbh,$title)
     }
 }
 
-// getUserPhotos() - return array of photos of user
-// USAGE: 
-// $dbh is database handle
+// getUserPhotos() - return array of photos from user where title is not null
+// $dbh is database handle, $uid is user id
 function getUserPhotos($dbh,$uid)
 {
     // fetch the data
@@ -165,9 +157,8 @@ function getUserPhotos($dbh,$uid)
     }
 }
 
-// checkPhotoOwner() - return true/false
-// USAGE: 
-// $dbh is database handle
+// checkPhotoOwner() - return true/false if photo is owned by user
+// $dbh is database handle, $uid is user id, $pid is photo id
 function checkPhotoOwner($dbh,$pid,$uid)
 {
     // fetch the data
@@ -197,8 +188,7 @@ function checkPhotoOwner($dbh,$pid,$uid)
 }
 
 // getPhotoLocation() - return photo location
-// USAGE: 
-// $dbh is database handle, $n_photos is the number of photos you want         
+// $dbh is database handle, $pid is photo id       
 function getPhotoLocation($dbh,$pid)
 {
     // fetch the data
@@ -223,9 +213,8 @@ function getPhotoLocation($dbh,$pid)
     }
 }
 
-// deletePhoto() - delete photo only if input uid matches the comment uid
-// USAGE: 
-// $dbh is database handle
+// deletePhoto() - delete photo only if owner of photo
+// $dbh is database handle, $uid is user id, $pid is photo id
 function deletePhoto($dbh,$pid,$uid)
 {
     if (checkPhotoOwner($dbh,$pid,$uid)){
@@ -252,8 +241,7 @@ function deletePhoto($dbh,$pid,$uid)
 }
 
 // editPhotoCaption() - update photo caption
-// USAGE: 
-// $dbh is database handle
+// $dbh is database handle, $caption is photo caption,$title is photo title, $uid is user id, $pid is photo id, $cid is comment id
 function editPhotoCaption($dbh, $cid, $pid, $uid, $caption)
 {
     try {
@@ -279,8 +267,7 @@ function editPhotoCaption($dbh, $cid, $pid, $uid, $caption)
 }
 
 // getPhotoTotal() - return total number of photos that have a title
-// USAGE: 
-// $dbh is database handle, $n_photos is the number of photos you want         
+// $dbh is database handle      
 function getPhotoTotal($dbh)
 {
     // fetch the data
@@ -303,7 +290,6 @@ function getPhotoTotal($dbh)
     }
 }
 // getNTopLikePhotos() - return array of top n number of photos based on likes
-// USAGE: 
 // $dbh is database handle, $n_photos is the number of photos you want         
 function getNTopLikePhotos($dbh,$n_photos)
 {

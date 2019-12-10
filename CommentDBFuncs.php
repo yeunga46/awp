@@ -1,14 +1,12 @@
 <?php
-#I suggest you refactor this into several files because its hard to figure out where each
-#function is - do something like photoDBfuncs, userDBfuncs etc.
+
 /* This file has useful database functions in it for the photo
- * site.
+ * site for the tables likes and photo_comments.
  */
 
 
-// addComment() -  adds comment to table
-// USAGE: 
-// $dbh is database handle , $uid is user id, $pid is photo id, 
+// addComment() - adds comment to table photo_comments.
+// $dbh is database handle , $uid is user id, $pid is photo id, $uploader is user name , $comment is comment
 function addComment($dbh, $uid, $pid,$uploader, $comment)
 {
     try {
@@ -36,9 +34,8 @@ function addComment($dbh, $uid, $pid,$uploader, $comment)
     }
 }
 
-// editComment() -  Update comment in table
-// USAGE: 
-// $dbh is database handle
+// editComment() -  Update comment in table photo_comments.
+// $dbh is database handle , $uid is user id, $pid is photo id, $cid is comment id, $comment is comment
 function editComment($dbh, $cid, $pid, $uid, $comment)
 {
     try {
@@ -64,9 +61,8 @@ function editComment($dbh, $cid, $pid, $uid, $comment)
     }
 }
 
-// getComment() - return array of comments fo a photo
-// USAGE: 
-// $dbh is database handle
+// getComment() - return array of comments for a photo
+// $dbh is database handle, $pid is photo id
 function getComments($dbh,$pid)
 {
     // fetch the data
@@ -89,9 +85,8 @@ function getComments($dbh,$pid)
     }
 }
 
-// checkCommentOwner() - return true/false
-// USAGE: 
-// $dbh is database handle
+// checkCommentOwner() - return true/false if photo_comment table user id  matches input user id 
+// $dbh is database handle, $uid is user id, $cid is comment id
 function checkCommentOwner($dbh,$cid,$uid)
 {
     // fetch the data
@@ -113,8 +108,6 @@ function checkCommentOwner($dbh,$cid,$uid)
             return false;
         } 
 
-
-        // return $check;   
     }
     catch(PDOException $e)
     {
@@ -122,9 +115,8 @@ function checkCommentOwner($dbh,$cid,$uid)
     }
 }
 
-// deleteCommentAdmin() - delete comment only if photo ownwer 
-// USAGE: 
-// $dbh is database handle
+// deleteCommentAdmin() - allows deletion of every comment only if photo ownwer 
+// $dbh is database handle, $uid is user id, $pid is photo id, $cid is comment id,
 function deleteCommentAdmin($dbh, $cid, $pid, $uid)
 {
     if (checkPhotoOwner($dbh, $pid, $uid)){
@@ -147,8 +139,7 @@ function deleteCommentAdmin($dbh, $cid, $pid, $uid)
 }
 
 // deleteComment() - delete comment only if input uid matches the comment uid
-// USAGE: 
-// $dbh is database handle
+// $dbh is database handle, $uid is user id, $cid is comment id,
 function deleteComment($dbh,$cid,$uid)
 {
     if (checkCommentOwner($dbh,$cid,$uid)){
@@ -171,7 +162,7 @@ function deleteComment($dbh,$cid,$uid)
 }
 // like() - insert a unique input that didn't exist into likes table
 // USAGE: 
-// $dbh is database handle
+// $dbh is database handle, $uid is user id, $pid is photo id
 function like($dbh,$pid,$uid)
 {
     try {
@@ -193,9 +184,8 @@ function like($dbh,$pid,$uid)
     }
 }
 
-// unlike() - delete comment only if input uid matches the comment uid
-// USAGE: 
-// $dbh is database handle
+// unlike() - deletes a like only if input uid and pid matches the like uid and pid
+// $dbh is database handle, $uid is user id, $pid is photo id
 function unlike($dbh,$pid,$uid)
 {
     try {
@@ -214,9 +204,8 @@ function unlike($dbh,$pid,$uid)
         die ('PDO error in unlike(): ' . $e->getMessage() );
     }
 }
-// liked() - return true/false if like exist
-// USAGE: $bool = checkUserExist($dbh, $username)
-// $dbh is database handle, $username is what to search
+// liked() - return true/false if liked photo like by a user
+// $dbh is database handle, $uid is user id, $pid is photo id
 function liked($dbh,$pid,$uid)
 {
     // fetch the data
