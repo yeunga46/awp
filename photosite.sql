@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2019 at 09:44 AM
+-- Generation Time: Dec 10, 2019 at 10:48 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -43,10 +43,7 @@ CREATE TABLE `likes` (
 
 INSERT INTO `likes` (`like_id`, `photo_id`, `user_id`) VALUES
 (207, 13, 24),
-(296, 49, 24),
-(321, 49, 22),
-(322, 48, 24),
-(324, 51, 24);
+(321, 49, 22);
 
 --
 -- Triggers `likes`
@@ -83,12 +80,12 @@ CREATE TABLE `photo_comments` (
 --
 
 INSERT INTO `photo_comments` (`comment_id`, `user_id`, `photo_id`, `uploader`, `comment_text`, `comment_time`) VALUES
-(8, 19, 12, NULL, NULL, '2019-11-24 00:15:34'),
-(9, 21, 12, NULL, NULL, '2019-11-24 00:15:34'),
-(10, 22, 12, NULL, NULL, '2019-11-24 00:15:34'),
-(13, 24, 11, NULL, 'ok', '2019-12-04 20:41:49'),
+(8, 19, 12, '[deleted]', 'another thing', '2019-11-24 00:15:34'),
+(9, 21, 12, '[deleted]', 'something', '2019-11-24 00:15:34'),
+(10, 22, 12, 'test7', 'one more thing', '2019-11-24 00:15:34'),
 (25, 24, 14, 'tester', 'hello', '2019-12-10 05:53:49'),
-(26, 24, 48, 'tester', '&lt;h1&gt;All good!&lt;/h1&gt;', '2019-12-10 07:48:32');
+(27, 24, 51, 'tester', 'hi', '2019-12-10 08:55:33'),
+(28, 24, 61, 'tester', '&lt;h1&gt;Quack!&lt;/h1&gt;', '2019-12-10 13:49:39');
 
 -- --------------------------------------------------------
 
@@ -113,15 +110,14 @@ CREATE TABLE `photo_files` (
 --
 
 INSERT INTO `photo_files` (`photo_id`, `uploaddate`, `uploader`, `title`, `caption`, `likes`, `filelocation`, `user_id`) VALUES
-(11, '2019-11-19 13:36:19', 'tester', 'h', 'as', 0, './UPLOADED/archive/tester/pokehyaku01b.jpg', 24),
 (12, '2019-11-19 13:43:40', 'tester', 's', NULL, 0, './UPLOADED/archive/tester/pokehyaku02b.jpg', 24),
 (13, '2019-11-19 13:52:32', 'tester', '3', NULL, 1, './UPLOADED/archive/tester/pokehyaku03b.jpg', 24),
 (14, '2019-11-19 15:55:44', 'tester', 'ghost', NULL, 0, './UPLOADED/archive/tester/pokehyaku04b.jpg', 24),
-(43, '2019-12-03 18:07:36', 'tester', NULL, NULL, 0, './UPLOADED/archive/tester/deer.png', 24),
-(48, '2019-12-09 17:34:58', 'tester', '<h1>All good!</h1>', NULL, 1, './UPLOADED/archive/tester/blue duck.png', 24),
-(49, '2019-12-10 01:02:16', 'tester', 'Mario', 'Fire Flower?', 2, './UPLOADED/archive/tester/marioblock.png', 24),
+(49, '2019-12-10 01:02:16', 'tester', 'Mario', 'Fire Flower?', 1, './UPLOADED/archive/tester/marioblock.png', 24),
 (50, '2019-12-10 02:53:47', 'tester', 'sun', '<h1>All good!</h1>', 0, './UPLOADED/archive/tester/waterfalls-during-sunset-954929.jpg', 24),
-(51, '2019-12-10 03:02:38', 'tester', 'Pardon the Interuption', '<Slurp noise>', 1, './UPLOADED/archive/tester/baby yoda.gif', 24);
+(51, '2019-12-10 03:02:38', 'tester', 'Pardon the Interuption', '<Slurp noise>', 0, './UPLOADED/archive/tester/baby yoda.gif', 24),
+(59, '2019-12-10 08:39:22', 'tester', NULL, NULL, 0, './UPLOADED/archive/tester/icon/deer.png', 24),
+(61, '2019-12-10 08:49:15', 'tester', '<h1>Quack!</h1>', '<h1>Quack!</h1>', 0, './UPLOADED/archive/tester/blue duck.png', 24);
 
 -- --------------------------------------------------------
 
@@ -147,10 +143,8 @@ CREATE TABLE `photo_users` (
 --
 
 INSERT INTO `photo_users` (`user_id`, `joindate`, `username`, `password`, `email`, `reset_password`, `confirm_code`, `profile_pic_id`, `bio`) VALUES
-(19, '2019-11-12 16:33:01', 'yufyufgcyufy', '$2y$10$OonSXnKxMdCvyKaQZc5zxuptX507vBdp6F1HOHl39uexq8ONauSI2', 'fyufufyuf', 0, NULL, NULL, NULL),
-(21, '2019-11-12 16:37:21', 'test6', '$2y$10$D9YS5sexY/nz6Nb/TjxZgOZd9jVWzC/TGsxA7GRpWYJKCTJ4CT6la', 'hajuwb', 0, NULL, NULL, NULL),
 (22, '2019-11-12 16:37:44', 'test7', '$2y$10$lyYFvIp0DOYo9ZrUX6fziux17s.WXF1N0pBVr.89Cv5FHn7xtmWrq', 'they', 0, NULL, 3, 'test guy'),
-(24, '2019-11-18 02:01:01', 'tester', '$2y$10$zPlHP.48LAQZ/wq7f9Mw2OUYFc9v.lT55yifHxTMbroyLVjpgvi/u', 'tes.ting.com', 0, '2f8cd645a2008edf7f5bb1234ffa09b39d5b9164', 43, 'hello');
+(24, '2019-11-18 02:01:01', 'tester', '$2y$10$zPlHP.48LAQZ/wq7f9Mw2OUYFc9v.lT55yifHxTMbroyLVjpgvi/u', 'tes.ting.com', 0, '2f8cd645a2008edf7f5bb1234ffa09b39d5b9164', 59, 'The End');
 
 --
 -- Triggers `photo_users`
@@ -202,19 +196,19 @@ ALTER TABLE `photo_users`
 -- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=325;
+  MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=390;
 
 --
 -- AUTO_INCREMENT for table `photo_comments`
 --
 ALTER TABLE `photo_comments`
-  MODIFY `comment_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `comment_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `photo_files`
 --
 ALTER TABLE `photo_files`
-  MODIFY `photo_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `photo_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `photo_users`

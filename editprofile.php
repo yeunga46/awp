@@ -41,6 +41,10 @@
 
             die(); //Ensure no more processing is done
         }else{
+            if (!file_exists("./UPLOADED/archive/" . $_SESSION["username"])) {
+                mkdir("./UPLOADED/archive/". $_SESSION["username"], 0777);
+                chmod("./UPLOADED/archive/". $_SESSION["username"], 0777);
+            }
 
             if (!file_exists("./UPLOADED/archive/" . $_SESSION["username"]."/icon")) {
                 mkdir("./UPLOADED/archive/". $_SESSION["username"]."/icon", 0777);
