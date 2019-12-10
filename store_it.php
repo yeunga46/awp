@@ -31,56 +31,58 @@ if(isset($_FILES['userfile'])) {
 
         die(); //Ensure no more processing is done
     }
+
+    // In order for this to work, there has to be a directory where
+    // the web server can save files, and where you can go in and work
+    // with them later.  That directory has to be mode 777, which are
+    // the permissions on "./UPLOADED/archive/".
+    // To keep everybody in the world from monkeying around in there,
+    // the directory UPLOADED is mode 701.  So people on Elvis in
+    // group "everyone" can't go in, but you can, and the webserver can.
+    // This is not great security, and it could be hacked, but it'll keep
+    // out the casual visitor.
+    // NOTE: the Makefile to set all this up isn't as bad as it sounds.
+    // echo "<p>Making directory " . $_SESSION["username"] . " . . . ";
+    if (!file_exists("./UPLOADED/archive/" . $_SESSION["username"])) {
+        mkdir("./UPLOADED/archive/". $_SESSION["username"], 0777);
+        chmod("./UPLOADED/archive/". $_SESSION["username"], 0777);
+    }
+    // Make sure it was uploaded
+    if (!is_uploaded_file( $_FILES["userfile"]["tmp_name"])) {
+        echo "<pre>\n"; print_r($_FILES["userfile"]); echo "</pre>";
+        die("Error: " . $_FILES["userfile"]["name"] . " did not upload.");
+    }
+    $targetname = "./UPLOADED/archive/" . $_SESSION["username"] . "/" . basename($_FILES["userfile"]["name"]);
+    if(file_exists($targetname))
+    {
+        ?> <script>alert("File already uploaded.")</script> <?php
+        header('Location: ./upload.php');
+    }
+    else {
+        if (move_uploaded_file($_FILES["userfile"]["tmp_name"], $targetname) ) {
+            // if we don't do this, the file will be mode 600, owned by
+            // www, and so we won't be able to read it ourselves
+            chmod($targetname, 0444);
+            // but we can't upload another with the same name on top,
+            // because it's now read-only
+            $dbh = ConnectDB();
+            $title = null;
+            $caption = null;
+            if(!empty($_POST["title"])){
+              $title = $_POST["title"];
+            }
+            if(!empty($_POST["caption"])){
+              $caption = $_POST["caption"];
+            }
+            $ppid = Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $caption, $title);
+          
+            header('Location: ./profile.php?username='.$_SESSION["username"]);
+
+        } else {
+            die("Error copying ". $_FILES["userfile"]["name"]);
+        }
+    }
 }
 
-// In order for this to work, there has to be a directory where
-// the web server can save files, and where you can go in and work
-// with them later.  That directory has to be mode 777, which are
-// the permissions on "./UPLOADED/archive/".
-// To keep everybody in the world from monkeying around in there,
-// the directory UPLOADED is mode 701.  So people on Elvis in
-// group "everyone" can't go in, but you can, and the webserver can.
-// This is not great security, and it could be hacked, but it'll keep
-// out the casual visitor.
-// NOTE: the Makefile to set all this up isn't as bad as it sounds.
-// echo "<p>Making directory " . $_SESSION["username"] . " . . . ";
-if (!file_exists("./UPLOADED/archive/" . $_SESSION["username"])) {
-    mkdir("./UPLOADED/archive/". $_SESSION["username"], 0777);
-    chmod("./UPLOADED/archive/". $_SESSION["username"], 0777);
-}
-// Make sure it was uploaded
-if (!is_uploaded_file( $_FILES["userfile"]["tmp_name"])) {
-    #echo "<pre>\n"; print_r($_FILES["userfile"]); echo "</pre>";
-    die("Error: " . $_FILES["userfile"]["name"] . " did not upload.");
-}
-$targetname = "./UPLOADED/archive/" . $_SESSION["username"] . "/" . basename($_FILES["userfile"]["name"]);
-if(file_exists($targetname))
-{
-    ?> <script>alert("File already uploaded.")</script> <?php
-    header('Location: ./upload.php');
-}
-else {
-    if (move_uploaded_file($_FILES["userfile"]["tmp_name"], $targetname) ) {
-        // if we don't do this, the file will be mode 600, owned by
-        // www, and so we won't be able to read it ourselves
-        chmod($targetname, 0444);
-        // but we can't upload another with the same name on top,
-        // because it's now read-only
-        $dbh = ConnectDB();
-        $title = null;
-        $caption = null;
-        if(!empty($_POST["title"])){
-          $title = $_POST["title"];
-        }
-        if(!empty($_POST["caption"])){
-          $caption = $_POST["caption"];
-        }
-        $ppid = Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $caption, $title);
-      
-        header('Location: ./profile.php?username='.$_SESSION["username"]);
 
-} else {
-    die("Error copying ". $_FILES["userfile"]["name"]);
-}
-}
 ?>
