@@ -4,6 +4,7 @@ $().ready(function () {
     //variables used in registering
     var passwordsMatch = false;
     var userExist = false;
+    var emailExist = false;
 
     $('#searchbar').on('change keyup paste', function () {
         $.ajax({
@@ -46,19 +47,47 @@ $().ready(function () {
     $('#searchbar_dropdown').on('change', function() {
         window.location.href = $('#searchbar_dropdown option:selected').val();
     });
+
+    $('#input_email').on('change keyup paste', function(e) {
+        $.ajax({
+            url: './checker.php',
+            type: 'GET',
+            data: {check: 'emailExist', 'email': $('#input_email').val() },
+            success: function(response)
+            {
+                if($.trim(response) === "true")
+                {
+                    emailExist = true;
+                    $('#form-register p').remove();
+                    $('#input_email').css({
+                        "border-color": "#FF0000",
+                        "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6)"
+                    });
+                    var error = $('<p>The email you entered has already been used.</p>').css('color', 'red');
+                    $('#form-register').append(error);
+                }
+                else
+                {
+                    $('#form-register p').remove();
+                    $('#input_email').removeAttr('style');
+                    emailExist = false;
+                }
+            }
+        });
+
+    });
+
     $('#btn_login').on('click', function () {
         $.ajax({
             url: './login.php',
             type: 'POST',
             data: $('#form_login').serialize(),
             success: function (response) {
-                //need to trim because otherwise there's extra whitespace and the string won't compare properly
                 if ($.trim(response) === "invalid") {
                     $('#form_login').trigger("reset");
-                    alert('Invalid username or password');
-                    //I'll change this to a tooltip later for extra eye-candy
+                    alert('Invalid username or password.');
+                    
                 } else {
-                    //refreshes the page to get the new session variables
                     location.reload();
                 }
             }
@@ -74,6 +103,7 @@ $().ready(function () {
             {
                 if($.trim(response) === "true")
                 {
+                    $('#form-register p').remove();
                     $('#input_username').css({
                         "border-color": "#FF0000",
                         "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6)"
@@ -134,8 +164,13 @@ $().ready(function () {
         if(!($('#input_username').val() === "" || $('#input_email').val() === "" 
         || $('#input_pword').val() === "" || $('#input_confirm_pword').val() === ""))
         {
-            if(!passwordsMatch || userExist)
+            if(!passwordsMatch || userExist || emailExist)
             {
+                e.preventDefault();
+            }
+            if(!verifyEmail($('#input_email').val()))
+            {
+                alert("The email you entered was invalid; please try again.");
                 e.preventDefault();
             }
         }

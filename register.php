@@ -6,12 +6,13 @@
 
 <body>
 <?php
-
+session_start();
 
 // access information in directory with no web access
 require_once('Connect.php');
-
+require_once('UserDBFuncs.php');
 $dbh = ConnectDB();
+
 
 // was a name and phone entered?
 if ( isset($_POST['username'])   &&  !empty($_POST['username'])   && 
@@ -43,6 +44,15 @@ if ( isset($_POST['username'])   &&  !empty($_POST['username'])   &&
         $stmt = null;
     
         // echo "<p>inserted $inserted record(s).</p>\n";
+
+        # make sure to log in after registering
+
+        $_SESSION['time']    = time();
+		$_SESSION['username'] =  $username;
+		$_SESSION['uid']  =  getUid($dbh, $username);
+		$_SESSION['login'] =  True;
+        session_write_close();
+
         header("Location:start.php");
 
     }

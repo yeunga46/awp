@@ -1,5 +1,5 @@
 <?php
-#BUG: bios can break the edit profile button if the user presses enter while writing a bio
+
 session_start();
 
 require_once('Connect.php');
@@ -106,6 +106,7 @@ else { ?>
 <?php }?>
 <script>
 $().ready(function(){
+    var passwordsMatch = false;
     $('#btn_edit').on('click', function(){
             //photo-i-div
             //bio-div
@@ -140,6 +141,49 @@ $().ready(function(){
             form.append(cancel);
             $('#bio-div').append(form);
     });
+    $('#form_deleteAccount').on('submit', function(e){
+        if(!passwordsMatch)
+        {
+            
+            e.preventDefault();
+        }
+    });
+
+    $('.delete_password_input').on('change keyup paste', function(){
+        if($('#delete_confirm_password').val() !== "" && ($('#delete_confirm_password').val() === $('#delete_password').val()))
+        {
+            $('#form_deleteAccount p').remove();
+            $('#delete_confirm_password').css({
+                "border-color": "#00ff00",
+                "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 255, 0, 0.6)"
+            });
+            $('#delete_password').css({
+                "border-color": "#00ff00",
+                "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 255, 0, 0.6)"
+            });
+            passwordsMatch = true;
+            
+        }
+        else if($('#delete_password').val() === "" || $('#delete_confirm_password').val() === ""){
+            $('#form_deleteAccount p').remove();
+            $('#delete_confirm_password').removeAttr('style');
+            $('#delete_password').removeAttr('style');
+            passwordsMatch = false;
+        }
+        else
+        {
+            $('#form_deleteAccount p').remove();
+            $('#delete_confirm_password').css({
+                "border-color": "#FF0000",
+                "box-shadow": "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6)"
+            });
+            $('#delete_password').removeAttr('style');
+
+            var error = $('<p>Passwords should match.</p>').css('color', 'red');
+            $('#form_deleteAccount').append(error);
+            passwordsMatch = false;
+        }
+    });
 });
 </script>
 <div class="modal fade" id="div_deleteProfile" role="dialog">
@@ -148,20 +192,22 @@ $().ready(function(){
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Are you sure?</h4>
+            </br>
+            <p>All of your account information and pictures will be deleted.</p>
           </div>
           <div class="modal-body">
-            <form method="post" action="./sendemail.php" id="form-forgotPassword">
+            <form method="POST" action="./delete.php?obj=profile" id="form_deleteAccount">
               <div class="form-group">
-                <label for="username">Username:</label>
-                <input class="form-control" type="text" name="username" id="input_forgotUsername">
+                <label for="delete_pass">Password</label>
+                <input class="form-control delete_password_input" type="password" name="delete_pass" id="delete_password">
               </div>
               <div class="form-group">
-                <label for="email">Email:</label>
-                <input class="form-control" type="text" name="email" id="input_forgotEmail">
+                <label for="delete_confirm_pass">Confirm Password</label>
+                <input class="form-control delete_password_input" type="password" name="delete_confirm_pass" id="delete_confirm_password">
               </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Send Email</button>
+            <button type="submit" class="btn btn-danger">Delete Account</button>
           </div>
           </form>
         </div>

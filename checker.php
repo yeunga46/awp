@@ -8,7 +8,11 @@ if(isset($_GET['check']) && !empty($_GET['check'])) {
     $check = $_GET['check'];
     switch($check) {
         case 'userExist' : boolOutput(checkUserExist($dbh, $_GET['username'])); break;
-        case 'emailExist' : boolOutput(checkEmailExist($dbh, $_GET['email'])); break;
+        case 'emailExist' : 
+            # need to save the email correctly - also check for validity
+            $cleanedEmail = str_replace('%40', '@', $_GET['email']);
+            boolOutput(checkEmailExist($dbh, $cleanedEmail)); 
+        break;
     }
 
 }

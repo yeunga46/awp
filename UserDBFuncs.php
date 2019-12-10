@@ -205,18 +205,21 @@ function checkEmailExist($dbh, $email)
 // USAGE: helper for deleteUser()
 // $directory the directory of the user files
 function deleteFiles($directory) {
-    $recursive = new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS);
-    $files = new RecursiveIteratorIterator($recursive, RecursiveIteratorIterator::CHILD_FIRST);
-    foreach ($files as $file) {
-        if ($file->isDir()) {
-            chmod($file->getRealPath(), 0777);
-            rmdir($file->getRealPath());
-        } else {
-            chmod($file->getRealPath(), 0777);
-            unlink($file->getRealPath());
+    if(is_dir($directory))
+    {
+        $recursive = new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($recursive, RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($files as $file) {
+            if ($file->isDir()) {
+                chmod($file->getRealPath(), 0777);
+                rmdir($file->getRealPath());
+            } else {
+                chmod($file->getRealPath(), 0777);
+                unlink($file->getRealPath());
+            }
         }
+        rmdir($directory);
     }
-    rmdir($directory);
 }
 
 // deleteUser() - return true/false if password is valid
@@ -225,18 +228,17 @@ function deleteFiles($directory) {
 function deleteUser($dbh, $username, $pword)
 {
     if(checkPassword($dbh, $username, $pword)){
+        #this only works if the user has uploaded files before
+
         deleteFiles("./UPLOADED/archive/". $username);
         // fetch the data
         try {
-           
             $query = "DELETE FROM photo_users WHERE  username=:username";
             // prepare to execute
             $stmt = $dbh->prepare($query);
             $stmt->bindParam(':username', $username);
             $stmt->execute();
             $stmt = null;
-            
-          
         }
         catch(PDOException $e)
         {

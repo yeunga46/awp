@@ -28,12 +28,18 @@ include("header.php");
     <div class="row">
         <div class="col-lg-4 comment-box">
              <div class="comment-box-header">
-                <h2><?php echo $photo[0]->title; 
+                <h2 id="header_title"><?php echo $photo[0]->title; ?> </h2>
+                <?php
                     if($_SESSION['login'])
                     {?>
-                        <button class="btn btn-info" title="Like">👌</button></h2>
-                    <?php } ?> </h2>
-                <p>Uploaded by: <?php echo '<a href="./u/'; echo $photo[0]->uploader; echo '" >'; echo $photo[0]->uploader; echo '</a>';?> on <?php echo $photo[0]->uploaddate; ?> </p>
+                        <button class="btn btn-info" title="Like">👌</button>
+                    <?php } 
+                    if($_SESSION['login'] && $_SESSION['username'] == $photo[0]->uploader){ ?> 
+                        <button class="btn btn-danger" title="Delete Photo" 
+                        data-toggle="modal" data-target="#div_deletePhotoModal"type="button">
+                        Delete Photo</button>
+                    <?php }?> 
+                </br></br><p>Uploaded by: <?php echo '<a href="./u/'; echo $photo[0]->uploader; echo '" >'; echo $photo[0]->uploader; echo '</a>';?> on <?php echo $photo[0]->uploaddate; ?> </p>
                 <p><em><?php echo $photo[0]->caption; ?></em></p>
              </div>
             </br>
@@ -72,27 +78,61 @@ include("header.php");
         </div>
     </div>
 </div>
+<div class="modal fade" id="div_deletePhotoModal" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Are you sure?</h4>
+            </br>
+            <p>This photo, along with any comments, will be deleted.</p>
+          </div>
+          <div class="modal-body">
+          <!-- again, no way to delete photos-->
+            <form method="POST" action="./delete.php?obj=photo&pid=<?php echo $pid; ?>" id="form-deletePhoto">
+              <div class="form-group">
+                <label for="username">Enter this photo's title.</label>
+                <input class="form-control" type="text" id="input_deleteTitle">
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Delete Photo</button>
+          </div>
+          </form>
+        </div>
+      </div>
+</div>
+
 <script>
-$('.edit').on('click', function() {
-    let cid = this.id.replace('edit-', '');
-    let oldCommentText = $('#comment-' + cid).children('.comment-text').html();
-    $('#comment-' + cid).children('p').remove();
-    $('#comment-' + cid).children('button').remove();
-    $('#comment-' + cid).children('a').remove();
-    $('#comment-' + cid).children('br').remove();
-    let action = './comment.php?cid=' + cid + "&pid=<?php echo $pid; ?>&action=edit";
-    let editCommentForm = $('<form/>', { action: action, method: 'POST'});
-    let newComment = $('<textarea/>').attr('width', '100%').val(oldCommentText).attr('name','newComment');
-    var submit = $('<button />').attr('type', 'submit').attr('class', 'btn btn-success').text('Submit changes');
-    var cancel = $('<button />').attr('type', 'button').attr('class', 'btn btn-danger').text('Cancel').on('click', function() {location.reload();});
+$().ready(function () {
+    $('#form-deletePhoto').on('submit', function(e) {
+        if($('#input_deleteTitle').val() !== $.trim($('#header_title').html()))
+        {
+            alert('Make sure that you typed the title correctly and try again.');
+            e.preventDefault();
+        }
+    });
 
-    editCommentForm.append(newComment);
-    editCommentForm.append($('<br/>'));
-    editCommentForm.append($('<br/>'));
-    editCommentForm.append(submit);
-    editCommentForm.append(cancel);
-    $('#comment-' + cid).append(editCommentForm);
+    $('.edit').on('click', function() {
+        let cid = this.id.replace('edit-', '');
+        let oldCommentText = $('#comment-' + cid).children('.comment-text').html();
+        $('#comment-' + cid).children('p').remove();
+        $('#comment-' + cid).children('button').remove();
+        $('#comment-' + cid).children('a').remove();
+        $('#comment-' + cid).children('br').remove();
+        let action = './comment.php?cid=' + cid + "&pid=<?php echo $pid; ?>&action=edit";
+        let editCommentForm = $('<form/>', { action: action, method: 'POST'});
+        let newComment = $('<textarea/>').attr('width', '100%').val(oldCommentText).attr('name','newComment');
+        var submit = $('<button />').attr('type', 'submit').attr('class', 'btn btn-success').text('Submit changes');
+        var cancel = $('<button />').attr('type', 'button').attr('class', 'btn btn-danger').text('Cancel').on('click', function() {location.reload();});
 
+        editCommentForm.append(newComment);
+        editCommentForm.append($('<br/>'));
+        editCommentForm.append($('<br/>'));
+        editCommentForm.append(submit);
+        editCommentForm.append(cancel);
+        $('#comment-' + cid).append(editCommentForm);
+    });
 });
 
 </script>

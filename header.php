@@ -10,6 +10,7 @@
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="js/header.js"></script>
+  <script src="js/validate.js"></script>
   <title><?php echo $title; ?></title>
 </head>
 
