@@ -13,8 +13,6 @@ if(isset($_GET['check']) && !empty($_GET['check'])) {
             $cleanedEmail = str_replace('%40', '@', $_GET['email']);
             boolOutput(checkEmailExist($dbh, $cleanedEmail)); 
             break;
-        case 'like' : require_once('commentDBFuncs.php'); session_start();
-            boolOutput(liked($dbh, $_GET['pid'],$_SESSION['uid'])); break;
     }
 
 }

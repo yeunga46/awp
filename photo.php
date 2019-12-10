@@ -114,18 +114,19 @@ $().ready(function () {
     });
     
     $(document).on('click','.like', function(e) {
+        // alert(rootPath);
         $.ajax({
-            url: './checker.php',
+            url: 'comment.php',
             type: 'GET',
-            data: {check: 'like', 'pid': <?php echo $pid; ?> },
+            data: {action: 'liked', 'pid': <?php echo $pid; ?> },
             success: function(response)
             {
                 if($.trim(response) === "true")
                 {
                     $.ajax({
-                        url:"./comment.php", //the page containing php script
-                        type: "get", //request type,
-                        data: {action: "unlike", pid: <?php echo $pid; ?>},
+                        url:'comment.php',
+                        type: 'GET',
+                        data: {action: 'unlike', pid: <?php echo $pid; ?>},
                        success:function(html) {
                          $( "#cbheader" ).load(window.location.href + " #cbheader" );
                        }
@@ -134,9 +135,9 @@ $().ready(function () {
                 else
                 {
                     $.ajax({
-                        url:"./comment.php", //the page containing php script
-                        type: "get", //request type,
-                        data: {action: "like", pid: <?php echo $pid; ?>},
+                        url:'comment.php',
+                        type: 'GET',
+                        data: {action: 'like', pid: <?php echo $pid; ?>},
                        success:function(html) {
                          $( "#cbheader" ).load(window.location.href + " #cbheader" );
                        }
