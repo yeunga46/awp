@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2019 at 09:12 AM
+-- Generation Time: Dec 10, 2019 at 09:44 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -23,6 +23,44 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `photosite` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `photosite`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `likes`
+--
+
+DROP TABLE IF EXISTS `likes`;
+CREATE TABLE `likes` (
+  `like_id` int(11) NOT NULL,
+  `photo_id` int(8) NOT NULL,
+  `user_id` int(8) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `likes`
+--
+
+INSERT INTO `likes` (`like_id`, `photo_id`, `user_id`) VALUES
+(207, 13, 24),
+(296, 49, 24),
+(321, 49, 22),
+(322, 48, 24),
+(324, 51, 24);
+
+--
+-- Triggers `likes`
+--
+DROP TRIGGER IF EXISTS `like_delete_update _count`;
+DELIMITER $$
+CREATE TRIGGER `like_delete_update _count` AFTER DELETE ON `likes` FOR EACH ROW UPDATE `photo_files` SET `likes`= (SELECT COUNT(*) FROM `likes` WHERE `photo_id` = OLD.`photo_id`) WHERE `photo_id` = OLD.`photo_id`
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `like_insert_update_count`;
+DELIMITER $$
+CREATE TRIGGER `like_insert_update_count` AFTER INSERT ON `likes` FOR EACH ROW UPDATE `photo_files` SET `likes`= (SELECT COUNT(*) FROM `likes` WHERE `photo_id` = NEW.`photo_id`) WHERE `photo_id` = NEW.`photo_id`
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -128,6 +166,13 @@ DELIMITER ;
 --
 
 --
+-- Indexes for table `likes`
+--
+ALTER TABLE `likes`
+  ADD PRIMARY KEY (`like_id`),
+  ADD KEY `photo_id` (`photo_id`);
+
+--
 -- Indexes for table `photo_comments`
 --
 ALTER TABLE `photo_comments`
@@ -154,6 +199,12 @@ ALTER TABLE `photo_users`
 --
 
 --
+-- AUTO_INCREMENT for table `likes`
+--
+ALTER TABLE `likes`
+  MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=325;
+
+--
 -- AUTO_INCREMENT for table `photo_comments`
 --
 ALTER TABLE `photo_comments`
@@ -174,6 +225,12 @@ ALTER TABLE `photo_users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `likes`
+--
+ALTER TABLE `likes`
+  ADD CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`photo_id`) REFERENCES `photo_files` (`photo_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `photo_comments`
