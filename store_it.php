@@ -4,13 +4,8 @@ session_start();
 require_once('Connect.php');
 // other functions are right here
 require_once('PhotoDBFuncs.php');
-require_once('UserDBFuncs.php');
 
-if(isset($_POST["profile"])){
-    $profile = $_POST["profile"];
-}else{
-    $profile = 0;
-}
+
 if(isset($_FILES['userfile'])) {
     $errors     = array();
     $maxsize    = 10000000;
@@ -21,7 +16,7 @@ if(isset($_FILES['userfile'])) {
         'image/png'
     );
 
-    if(($_FILES['userfile']['size'] >= $maxsize) || ($_FILES["userfile"]["size"] == 0)) {
+    if(($_FILES['userfile']['size'] >= $maxsize))  {
         $errors[] = 'File too large. File must be less than 10 megabytes.';
     }
 
@@ -37,14 +32,7 @@ if(isset($_FILES['userfile'])) {
         die(); //Ensure no more processing is done
     }
 }
-// Note: "userfile" is the name from the form which we used for the
-//       file input tag.
-// echo "Name On Client: ", $_FILES["userfile"]["name"], "<br />";
-// echo "Name On Server: ", $_FILES["userfile"]["tmp_name"], "<br />";
-// echo "File Size: ", $_FILES["userfile"]["size"], " bytes <br />";
-$File_Handle = fopen($_FILES["userfile"]["name"], "r");
-$File_Contents = fread($File_Handle, $_FILES["userfile"]["size"]);
-fclose($File_Handle);
+
 // In order for this to work, there has to be a directory where
 // the web server can save files, and where you can go in and work
 // with them later.  That directory has to be mode 777, which are
@@ -88,17 +76,9 @@ else {
           $caption = $_POST["caption"];
         }
         $ppid = Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $caption, $title);
-           
       
-        if($profile){
-            if(!is_null(getProfilePicId($dbh, $_SESSION["username"]))){
-                $old_ppid = getProfilePicId($dbh,$_SESSION["username"]);
-                deletePhoto($dbh,$old_ppid,$_SESSION["uid"]);
-            }
-            setProfilePicId($dbh,$_SESSION["username"],$ppid);
-        }
         header('Location: ./profile.php?username='.$_SESSION["username"]);
-        //file + timestamp caption default null
+
 } else {
     die("Error copying ". $_FILES["userfile"]["name"]);
 }

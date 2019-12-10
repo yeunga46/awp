@@ -112,7 +112,7 @@ $().ready(function(){
             //bio-div
             $('#bio-div').empty();
             //change action here to whatever you set the query string to
-            var form = $('<form/>', { action: './editProfile.php', method: 'POST'});
+            var form = $('<form/>', { action: './editProfile.php', method: 'POST', enctype:"multipart/form-data"});
             var username = $('<h2>').html('<?php echo $_SESSION["username"]; ?>')
             var file_input = $('<input/>').attr('type', 'file').attr('accept', 'image/*').attr('name', 'userfile').on('change', function(){
                     if (this.files[0]) 
