@@ -106,7 +106,7 @@ include("header.php");
 <script>
 $().ready(function () {
     $('#form-deletePhoto').on('submit', function(e) {
-        if($('#input_deleteTitle').val() !== $.trim($('#header_title').html()))
+        if($('#input_deleteTitle').val() !== $.trim($('#header_title').innerhtml()))
         {
             alert('Make sure that you typed the title correctly and try again.');
             e.preventDefault();
