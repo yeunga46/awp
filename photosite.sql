@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 04, 2019 at 12:26 AM
+-- Generation Time: Dec 10, 2019 at 09:12 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -47,7 +47,10 @@ CREATE TABLE `photo_comments` (
 INSERT INTO `photo_comments` (`comment_id`, `user_id`, `photo_id`, `uploader`, `comment_text`, `comment_time`) VALUES
 (8, 19, 12, NULL, NULL, '2019-11-24 00:15:34'),
 (9, 21, 12, NULL, NULL, '2019-11-24 00:15:34'),
-(10, 22, 12, NULL, NULL, '2019-11-24 00:15:34');
+(10, 22, 12, NULL, NULL, '2019-11-24 00:15:34'),
+(13, 24, 11, NULL, 'ok', '2019-12-04 20:41:49'),
+(25, 24, 14, 'tester', 'hello', '2019-12-10 05:53:49'),
+(26, 24, 48, 'tester', '&lt;h1&gt;All good!&lt;/h1&gt;', '2019-12-10 07:48:32');
 
 -- --------------------------------------------------------
 
@@ -62,6 +65,7 @@ CREATE TABLE `photo_files` (
   `uploader` varchar(128) DEFAULT NULL,
   `title` varchar(140) DEFAULT NULL,
   `caption` varchar(128) DEFAULT NULL,
+  `likes` int(8) NOT NULL DEFAULT 0,
   `filelocation` varchar(512) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -70,13 +74,16 @@ CREATE TABLE `photo_files` (
 -- Dumping data for table `photo_files`
 --
 
-INSERT INTO `photo_files` (`photo_id`, `uploaddate`, `uploader`, `title`, `caption`, `filelocation`, `user_id`) VALUES
-(11, '2019-11-19 13:36:19', 'tester', 'h', 'as', './UPLOADED/archive/tester/pokehyaku01b.jpg', 24),
-(12, '2019-11-19 13:43:40', 'tester', 's', NULL, './UPLOADED/archive/tester/pokehyaku02b.jpg', 24),
-(13, '2019-11-19 13:52:32', 'tester', '3', NULL, './UPLOADED/archive/tester/pokehyaku03b.jpg', 24),
-(14, '2019-11-19 15:55:44', 'tester', 'ghost', NULL, './UPLOADED/archive/tester/pokehyaku04b.jpg', 24),
-(42, '2019-12-03 17:59:45', 'tester', 'ds', NULL, './UPLOADED/archive/tester/graph.png', 24),
-(43, '2019-12-03 18:07:36', 'tester', NULL, NULL, './UPLOADED/archive/tester/deer.png', 24);
+INSERT INTO `photo_files` (`photo_id`, `uploaddate`, `uploader`, `title`, `caption`, `likes`, `filelocation`, `user_id`) VALUES
+(11, '2019-11-19 13:36:19', 'tester', 'h', 'as', 0, './UPLOADED/archive/tester/pokehyaku01b.jpg', 24),
+(12, '2019-11-19 13:43:40', 'tester', 's', NULL, 0, './UPLOADED/archive/tester/pokehyaku02b.jpg', 24),
+(13, '2019-11-19 13:52:32', 'tester', '3', NULL, 1, './UPLOADED/archive/tester/pokehyaku03b.jpg', 24),
+(14, '2019-11-19 15:55:44', 'tester', 'ghost', NULL, 0, './UPLOADED/archive/tester/pokehyaku04b.jpg', 24),
+(43, '2019-12-03 18:07:36', 'tester', NULL, NULL, 0, './UPLOADED/archive/tester/deer.png', 24),
+(48, '2019-12-09 17:34:58', 'tester', '<h1>All good!</h1>', NULL, 1, './UPLOADED/archive/tester/blue duck.png', 24),
+(49, '2019-12-10 01:02:16', 'tester', 'Mario', 'Fire Flower?', 2, './UPLOADED/archive/tester/marioblock.png', 24),
+(50, '2019-12-10 02:53:47', 'tester', 'sun', '<h1>All good!</h1>', 0, './UPLOADED/archive/tester/waterfalls-during-sunset-954929.jpg', 24),
+(51, '2019-12-10 03:02:38', 'tester', 'Pardon the Interuption', '<Slurp noise>', 1, './UPLOADED/archive/tester/baby yoda.gif', 24);
 
 -- --------------------------------------------------------
 
@@ -150,13 +157,13 @@ ALTER TABLE `photo_users`
 -- AUTO_INCREMENT for table `photo_comments`
 --
 ALTER TABLE `photo_comments`
-  MODIFY `comment_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `comment_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `photo_files`
 --
 ALTER TABLE `photo_files`
-  MODIFY `photo_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `photo_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `photo_users`

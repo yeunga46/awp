@@ -26,23 +26,24 @@ include("header.php");
 ?>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-4 comment-box">
-             <div class="comment-box-header">
-                <h2 id="header_title"><?php echo $photo[0]->title; ?> </h2>
+        <div class="col-lg-4 comment-box float-left">
+             <div class="comment-box-header" id="cbheader">
+                <h2 id="header_title"><?php echo htmlspecialchars($photo[0]->title);?></h2>
+                <h3 id="header_likes"><?php echo "Likes:".$photo[0]->likes;?> </h3>
                 <?php
                     if($_SESSION['login'])
                     {?>
-                        <button class="btn btn-info" title="Like">👌</button>
+                        <button class="btn btn-info like" id="like" title="Like">👌</button>
                     <?php } 
                     if($_SESSION['login'] && $_SESSION['username'] == $photo[0]->uploader){ ?> 
                         <button class="btn btn-danger" title="Delete Photo" 
                         data-toggle="modal" data-target="#div_deletePhotoModal"type="button">
                         Delete Photo</button>
                     <?php }?> 
-                </br></br><p>Uploaded by: <?php echo '<a href="./u/'; echo $photo[0]->uploader; echo '" >'; echo $photo[0]->uploader; echo '</a>';?> on <?php echo $photo[0]->uploaddate; ?> </p>
-                <p><em><?php echo $photo[0]->caption; ?></em></p>
+                <br></br><p>Uploaded by: <?php echo '<a href="./u/'; echo $photo[0]->uploader; echo '" >'; echo $photo[0]->uploader; echo '</a>';?> on <?php echo $photo[0]->uploaddate; ?> </p>
+                <p><em><?php echo htmlspecialchars($photo[0]->caption); ?></em></p>
              </div>
-            </br>
+            <br></br>
              <?php if(!is_null($comments) && !empty($comments)){  
                         for($i = 0; $i < count($comments); $i++) { ?>
                         <div id="comment-<?php echo $comments[$i]->comment_id; ?>">
@@ -64,7 +65,7 @@ include("header.php");
                     <div class="form-group">
                         <p><em>Commenting as <?php echo $_SESSION['username'];?></em></p>
                         <textarea style="width: 100%;" name="comment"></textarea>
-                        <br/>
+                        <br>
                         <br/>
                         <button type="submit" class="btn btn-success">Submit comment</button>
                     </div>
@@ -73,10 +74,9 @@ include("header.php");
                 <div><em>You must register an account to comment on this website.</em></div>
                 <?php }?>
         </div>
-        <div class="col-lg-4 text-center">
+        <div class="col-lg-4 float-left">
             <img src='<?php echo str_replace(' ', '%20', $photo[0]->filelocation); ?>' height=500px>
         </div>
-    </div>
 </div>
 <div class="modal fade" id="div_deletePhotoModal" role="dialog">
       <div class="modal-dialog modal-sm">
@@ -111,6 +111,40 @@ $().ready(function () {
             alert('Make sure that you typed the title correctly and try again.');
             e.preventDefault();
         }
+    });
+    
+    $(document).on('click','.like', function(e) {
+        $.ajax({
+            url: './checker.php',
+            type: 'GET',
+            data: {check: 'like', 'pid': <?php echo $pid; ?> },
+            success: function(response)
+            {
+                if($.trim(response) === "true")
+                {
+                    $.ajax({
+                        url:"./comment.php", //the page containing php script
+                        type: "get", //request type,
+                        data: {action: "unlike", pid: <?php echo $pid; ?>},
+                       success:function(html) {
+                         $( "#cbheader" ).load(window.location.href + " #cbheader" );
+                       }
+                    });
+                }
+                else
+                {
+                    $.ajax({
+                        url:"./comment.php", //the page containing php script
+                        type: "get", //request type,
+                        data: {action: "like", pid: <?php echo $pid; ?>},
+                       success:function(html) {
+                         $( "#cbheader" ).load(window.location.href + " #cbheader" );
+                       }
+                    });
+                }
+            }
+        });
+
     });
 
     $('.edit').on('click', function() {

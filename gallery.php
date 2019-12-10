@@ -36,7 +36,7 @@ include("header.php");
         echo '<a href="./gallery.php?page=1'; echo '&size='; echo $i*$n; echo '">';
         echo $i * $n; echo ' </a>';
     }
-    
+    echo " images per page ";
     echo '</div>';
     echo '</br>';   
 
@@ -64,11 +64,13 @@ include("header.php");
             echo '<div class="row">';
         }
         #should be adjusted to according to row size
-        $n = 12 / $rowsize;
-        echo '<div class="col-sm-'.$n.'">';
+        echo '<div class="col-sm-3">';
             echo '<div class="thumbnail" id="photo-'; echo $i; echo 'div">';
                 echo '<a href="./photo/'; echo $photos[$i]->photo_id; echo '">';
                     echo '<img src="'; echo str_replace(' ', '%20', $photos[$i]->filelocation); echo '" width=100%></img>';
+                    echo '<div class="caption">';
+                                echo '<p>'; echo htmlspecialchars($photos[$i]->caption);  echo '</p>';
+                            echo '</div>';
                 echo '</a>';
             echo '</div>';
         echo '</div>';

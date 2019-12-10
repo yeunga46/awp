@@ -45,7 +45,7 @@ function getPhoto($dbh,$pid)
     // fetch the data
     try {
         
-        $query = "SELECT photo_id, uploaddate, uploader, title, caption, filelocation FROM photo_files WHERE  photo_id=:pid";
+        $query = "SELECT photo_id, uploaddate, uploader, title, caption, filelocation, likes FROM photo_files WHERE  photo_id=:pid";
         // prepare to execute
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':pid', $pid);
@@ -69,14 +69,14 @@ function getLatestNumPhotos($dbh,$n_photos)
     // fetch the data
     try {
         
-        $query = "SELECT photo_id, uploaddate, uploader, title, caption, filelocation FROM photo_files WHERE title IS NOT NULL ORDER BY uploaddate LIMIT " .$n_photos;
+        $query = "SELECT photo_id, uploaddate, uploader, title, caption, filelocation FROM photo_files WHERE title IS NOT NULL ORDER BY uploaddate DESC LIMIT " .$n_photos;
         // prepare to execute
         $stmt = $dbh->prepare($query);
         $stmt->execute();
         $photos = $stmt->fetchAll(PDO::FETCH_OBJ);
         $stmt = null;
 
-        return array_reverse($photos);
+        return $photos;
     
     }
     catch(PDOException $e)
@@ -300,6 +300,29 @@ function getPhotoTotal($dbh)
     catch(PDOException $e)
     {
         die ('PDO error in getPhotoTotal(): ' . $e->getMessage() );
+    }
+}
+// getNTopLikePhotos() - return array of top n number of photos based on likes
+// USAGE: 
+// $dbh is database handle, $n_photos is the number of photos you want         
+function getNTopLikePhotos($dbh,$n_photos)
+{
+    // fetch the data
+    try {
+        
+        $query = "SELECT photo_id, uploaddate, uploader, title, caption, filelocation FROM photo_files WHERE title IS NOT NULL ORDER BY likes DESC LIMIT " .$n_photos;
+        // prepare to execute
+        $stmt = $dbh->prepare($query);
+        $stmt->execute();
+        $photos = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $stmt = null;
+
+        return $photos;
+    
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in getLatestNumPhotos(): ' . $e->getMessage() );
     }
 }
 
