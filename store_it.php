@@ -8,7 +8,7 @@ require_once('PhotoDBFuncs.php');
 
 if(isset($_FILES['userfile'])) {
     $errors     = array();
-    $maxsize    = 10000000;
+    $maxsize    = 2097152;
     $acceptable = array(
         'image/jpeg',
         'image/jpg',
@@ -16,8 +16,8 @@ if(isset($_FILES['userfile'])) {
         'image/png'
     );
 
-    if(($_FILES['userfile']['size'] >= $maxsize))  {
-        $errors[] = 'File too large. File must be less than 10 megabytes.';
+    if(($_FILES['userfile']['size'] >= $maxsize) || ($_FILES['userfile']['size'] == 0))  {
+        $errors[] = 'File too large. File must be less than 2 megabytes.';
     }
 
     if((!in_array($_FILES['userfile']['type'], $acceptable)) && (!empty($_FILES["userfile"]["type"]))) {
@@ -49,6 +49,13 @@ if(isset($_FILES['userfile'])) {
     }
     // Make sure it was uploaded
     if (!is_uploaded_file( $_FILES["userfile"]["tmp_name"])) {
+        $inipath = php_ini_loaded_file();
+
+        if ($inipath) {
+            echo 'Loaded php.ini: ' . $inipath;
+        } else {
+           echo 'A php.ini file is not loaded';
+        }
         echo "<pre>\n"; print_r($_FILES["userfile"]); echo "</pre>";
         die("Error: " . $_FILES["userfile"]["name"] . " did not upload.");
     }

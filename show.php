@@ -1,20 +1,21 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
 <html>
 <head>
     <title>Web Database Sample Display</title>
 </head> 
 <body>
 
-<h1>Quick testing</h1>
+<h1>Quick testing</h1> -->
 <?php
+phpinfo();
 
-// access information in directory with no web access
-require_once('Connect.php');
+// // access information in directory with no web access
+// require_once('Connect.php');
 
 // other functions are right here
-require_once('PhotoDBFuncs.php');
-require_once('UserDBFuncs.php');
-require_once('CommentDBFuncs.php');
+// require_once('PhotoDBFuncs.php');
+// require_once('UserDBFuncs.php');
+// require_once('CommentDBFuncs.php');
 
 
 
@@ -103,7 +104,8 @@ require_once('CommentDBFuncs.php');
 
 
 ?>
-
+<!-- 
 
 </body>
 </html>
+ -->

@@ -18,7 +18,7 @@
 
     if(isset($_FILES['userfile'])&& $_FILES['userfile']['size'] > 0) {
         $errors     = array();
-        $maxsize    = 10000000;
+        $maxsize    = 2097152;
         $acceptable = array(
             'image/jpeg',
             'image/jpg',
@@ -26,8 +26,8 @@
             'image/png'
         );
 
-        if(($_FILES['userfile']['size'] >= $maxsize)) {
-            $errors[] = 'File too large. File must be less than 10 megabytes.';
+        if(($_FILES['userfile']['size'] >= $maxsize) || ($_FILES['userfile']['size'] == 0)) {
+            $errors[] = 'File too large. File must be less than 2 megabytes.';
         }
 
         if((!in_array($_FILES['userfile']['type'], $acceptable)) && (!empty($_FILES["userfile"]["type"]))) {
