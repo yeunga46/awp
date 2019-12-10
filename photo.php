@@ -47,7 +47,7 @@ include("header.php");
              <?php if(!is_null($comments) && !empty($comments)){  
                         for($i = 0; $i < count($comments); $i++) { ?>
                         <div id="comment-<?php echo $comments[$i]->comment_id; ?>">
-                            <h5><b><?php $thisUser = getUsername($dbh, $comments[$i]->user_id);
+                            <h5><b><?php $thisUser = $comments[$i]->uploader;
                             echo (isset($_SESSION['username']) && $thisUser == $_SESSION['username']) ? 'You' : $thisUser;?></b> said:</h5>
                             <br/>
                             <p class="comment-text"><?php echo $comments[$i]->comment_text; ?></p>
