@@ -14,7 +14,7 @@ if(checkUserExist($dbh, $_POST['username']) || checkEmailExist($dbh, $_POST['ema
   $host = "elvis.rowan.edu/~yeunga46/awp/photosite";
   $site = "Photosite";
   $link = "/password_reset.php";
-  $myemail = "yeunga46@students.rowan.edu";
+  $myemail = "noreply@photosite.com";
   // Put together the confirmation ID:
   $now = time();
   $confirmcode = sha1("confirmation" . $now . $_POST['email']);
@@ -40,6 +40,7 @@ if(checkUserExist($dbh, $_POST['username']) || checkEmailExist($dbh, $_POST['ema
     "But don’t worry! You can use the following link to reset your password:\r\n\r\n" .
     "http://$host$link?code=$confirmcode&u=$username \r\n";
     mail($to, $subject, $message, $headers);
+    header("Location:start.php");
   }
   catch(PDOException $e){
     die ('PDO error Confrim Code For Resetting Password: ' . $e->getMessage() );
