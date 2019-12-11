@@ -12,7 +12,7 @@ $pid = $_GET["pid"];
 
 $photo = getPhoto($dbh, $_GET["pid"]);
 
-if(empty($uid)){
+if(empty($photo)){
     header("Location: /photosite/404.php");
     exit();
 }
