@@ -58,7 +58,7 @@ RewriteRule   (^[a-z]+$) ./echo.php?thing=$1 [NC,L]
 # You can set your own error document, but needs the full name like
 # the redirects.
 
-ErrorDocument 404 /photosite/res/404.png
+ErrorDocument 404 /photosite/404.php
 
 
 # You can also set a error message:

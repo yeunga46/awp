@@ -11,7 +11,6 @@ if(isset($_GET['obj']) && !empty($_GET['obj'])) {
     $obj = $_GET['obj'];
 
     switch($obj) {
-        #goes through, but delete user doesn't actually work
         case 'profile': 
             deleteUser($dbh, $_SESSION['username'], $_POST['delete_pass']);
             unset($_SESSION["uid"]);
@@ -21,7 +20,7 @@ if(isset($_GET['obj']) && !empty($_GET['obj'])) {
             session_write_close();
             header("Location:start.php");
             break;
-        case 'photo' : 
+        case 'photo': 
             deletePhoto($dbh, $_GET['pid'], $_SESSION['uid']); 
             header("Location:start.php");
             break;

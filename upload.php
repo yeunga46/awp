@@ -10,9 +10,9 @@ else {
 }
 ?>
 <div class="container-fluid">
-    <div class="container">
+        <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <img id="img_preview" src=".\res\placeholder.png" height="500" width="500">
             </div>
             <div class="col-md-6">
