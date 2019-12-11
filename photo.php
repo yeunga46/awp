@@ -167,7 +167,9 @@ $().ready(function () {
                         type: 'GET',
                         data: {action: 'unlike', pid: <?php echo $pid; ?>},
                        success:function(html) {
-                         $( "#cbheader" ).load(window.location.href + " #cbheader" );
+                        $( "#header_likes" ).load(window.location.href + " #header_likes" );
+                        $( ".btn-info" ).css("background-color", "#5bc0de").css("border-color", "#5bc0de");
+                         
                        }
                     });
                 }
@@ -178,7 +180,9 @@ $().ready(function () {
                         type: 'GET',
                         data: {action: 'like', pid: <?php echo $pid; ?>},
                        success:function(html) {
-                         $( "#cbheader" ).load(window.location.href + " #cbheader" );
+                         $( "#header_likes" ).load(window.location.href + " #header_likes" );
+                         $( ".btn-info" ).css("background-color", "#d43f3a").css("border-color", "#d43f3a");
+                         
                        }
                     });
                 }
