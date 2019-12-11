@@ -1,7 +1,5 @@
 <?php
-
 session_start();
-
 require_once('Connect.php');
 require_once('PhotoDBFuncs.php');
 require_once('UserDBFuncs.php');
@@ -93,12 +91,11 @@ if(count($photos) > 0)
     echo '</div>';
 }
 else { ?>
-    <div class="flex-container">
-        <div class="container">
+    <div class="container-fluid">
+
             <div class="col-lg-auto">
                 <h1>This person doesn't seem to have uploaded any photos.</h1>
             </div>
-        </div>
     </div>
 <?php }?>
 <script>

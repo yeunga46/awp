@@ -1,6 +1,6 @@
 <?php 
+session_start();
 $title = 'ERROR';
-
 include("header.php");
 ?>
 <div class="container">

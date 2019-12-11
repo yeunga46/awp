@@ -6,6 +6,8 @@ require_once('UserDBFuncs.php');
 
 $dbh = ConnectDB();
 
+include("header.php");
+
 if ((isset($_GET['code']) && !empty($_GET['code']))|| (isset($_GET['u'])&&!empty($_GET['u']))) {
 	if (!checkReset($dbh,$_GET['u'])) {
 		die("Link has expired.");
@@ -40,13 +42,7 @@ if(isset($_POST['pwd1'])&&isset($_POST['pwd2'])){
 	}
 }
 ?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-	<head>
-		<title>Reset your password</title>
-		<meta charset="utf-8" />
-	</head>
-	<body>
+<div class="text-center">
 		<h1>Reset your password</h1>
 		<form method="post">
 			<fieldset>
@@ -65,5 +61,4 @@ if(isset($_POST['pwd1'])&&isset($_POST['pwd2'])){
 				</table>
 			</fieldset>
 		</form>
-	</body>
-</html>
+</div>

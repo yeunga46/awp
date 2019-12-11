@@ -23,9 +23,10 @@ $title = $photo[0]->title;
 
 include("header.php");
 ?>
+
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-4 comment-box float-left">
+        <div id="cb-container" class="col-lg-4 comment-box">
              <div class="comment-box-header" id="cbheader">
                 <h2 id="header_title"><?php echo htmlspecialchars($photo[0]->title);?></h2>
                 <p id="header_likes"><?php echo "Likes: ".$photo[0]->likes;?> </p>
@@ -41,15 +42,15 @@ include("header.php");
                     <?php }?> 
                 <br></br><p>Uploaded by: <?php echo '<a href="./u/'; echo $photo[0]->uploader; echo '" >'; echo $photo[0]->uploader; echo '</a>';?> on <?php echo $photo[0]->uploaddate; ?> </p>
                 <p><em><?php echo htmlspecialchars($photo[0]->caption); ?></em></p>
+                <hr>
              </div>
-            <br></br>
              <?php if(!is_null($comments) && !empty($comments)){  
                         for($i = 0; $i < count($comments); $i++) { ?>
                         <div id="comment-<?php echo $comments[$i]->comment_id; ?>">
                             <h5><b><?php $thisUser = $comments[$i]->uploader;
                             echo (isset($_SESSION['username']) && $thisUser == $_SESSION['username']) ? 'You' : $thisUser;?></b> said:</h5>
-                            <br/>
                             <p class="comment-text"><?php echo $comments[$i]->comment_text; ?></p>
+                            
                             <?php if($_SESSION['login'] && $thisUser == $_SESSION['username']) { ?>
                                 <button class="btn btn-info edit" id="edit-<?php echo $comments[$i]->comment_id; ?>">Edit Comment</button>
                                 <a href="./comment.php?cid=<?php echo $comments[$i]->comment_id; ?>&pid=<?php echo $pid;?>&action=delete">
@@ -58,9 +59,9 @@ include("header.php");
                                      <a href="./comment.php?cid=<?php echo $comments[$i]->comment_id; ?>&pid=<?php echo $pid;?>&action=adminDelete">
                                      <button class="btn btn-danger" title="You can remove this comment if you find it offensive.">Remove Comment</button></a>
                             <?php } ?>
-                            <br/>
-                            <br/>
+
                             <p><em><?php echo $comments[$i]->comment_time;?></em></p>
+                            <hr>
                         </div>
                 <?php }} if($_SESSION['login']) {?>
                  <form method="post" enctype="multipart/form-data" action="./comment.php?action=add&pid=<?php echo $pid; ?>">
@@ -76,11 +77,13 @@ include("header.php");
                 <div><em>You must register an account to comment on this website.</em></div>
                 <?php }?>
         </div>
-        <div class="col-lg-4 float-left">
+
+        <div class="text-center" width=500px>
             <img src='<?php echo str_replace(' ', '%20', $photo[0]->filelocation); ?>' height=500px>
         </div>
 </div>
 <div id="likes_tooltip" class="my_tooltip"></div>
+<div id="btn_expand" class="expand_btn">◀</div>
 <div class="modal fade" id="div_deletePhotoModal" role="dialog">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -104,10 +107,36 @@ include("header.php");
         </div>
       </div>
 </div>
-
 <script>
 $().ready(function () {
+
     $('#likes_tooltip').hide();
+    let commentPos = $('#cb-container').position();
+    let commentWidth = $('#cb-container').outerWidth();
+    let tooltipLikerLength = 3;
+    let bodyHeight = $('#body').outerHeight();
+    var btnY = commentPos.top + (bodyHeight/2) - 62.5;
+    $('#btn_expand').css({
+        position: 'absolute',
+        top: btnY + "px",
+        left: commentWidth + "px",
+    })
+    $('#cb-container').css({ height: bodyHeight });
+
+
+    $.ajax({
+            url: 'comment.php',
+            type: 'GET',
+            data: {action: 'liked', 'pid': <?php echo $pid; ?> },
+            success: function(response)
+            {
+                if($.trim(response) === "true")
+                {
+                    $("#like").css("background-color", "#d43f3a").css("border-color", "#d43f3a");
+                }
+            }
+        });
+                
     $('#form-deletePhoto').on('submit', function(e) {
         if($('#input_deleteTitle').val() !== $.trim($('#header_title').innerhtml()))
         {
@@ -127,24 +156,21 @@ $().ready(function () {
             success:function(response) {
                 let likers = $.parseJSON($.trim(response));
                 
-                $('#likes_tooltip').html('Liked by:');
-                $('#likes_tooltip').append('</br>');
-                $('#likes_tooltip').append('</br>');
-
-                if(likers.length > 0 )
+                $('#likes_tooltip').html('Liked by: ');
+                if(likers.length > 0)
                 {
-                for(var i = 0; i < likers.length; i++)
-                {
-                    if(i != 0)
+                    for(var i = 0; i < likers.length && i < tooltipLikerLength; i++)
                     {
-                        $('#likes_tooltip').append('</br>');
+                        (i != likers.length - 1) ? $('#likes_tooltip').append(likers[i] +', ') :  $('#likes_tooltip').append(likers[i]);
                     }
-                    $('#likes_tooltip').append(likers[i]);
-                }
+                    if(likers.length > tooltipLikerLength)
+                    {
+                        (likers.length - tooltipLikerLength === 1) ? $('#likes_tooltip').append('and ' + (likers.length - tooltipLikerLength) + ' other.') : $('#likes_tooltip').append('and ' + (likers.length - tooltipLikerLength) + ' others.')
+                        
+                    }
                 $('#likes_tooltip').css({
                     top: pos.top*2.5 + "px",
-                    left: (pos.left) + "px",
-                    width: width/4 + "px",}).show();
+                    left: (pos.left) + "px",}).show();
                 }
             }});
     });
@@ -168,7 +194,7 @@ $().ready(function () {
                         data: {action: 'unlike', pid: <?php echo $pid; ?>},
                        success:function(html) {
                         $( "#header_likes" ).load(window.location.href + " #header_likes" );
-                        $( ".btn-info" ).css("background-color", "#5bc0de").css("border-color", "#5bc0de");
+                        $( "#like" ).css("background-color", "#5bc0de").css("border-color", "#5bc0de");
                          
                        }
                     });
@@ -181,7 +207,7 @@ $().ready(function () {
                         data: {action: 'like', pid: <?php echo $pid; ?>},
                        success:function(html) {
                          $( "#header_likes" ).load(window.location.href + " #header_likes" );
-                         $( ".btn-info" ).css("background-color", "#d43f3a").css("border-color", "#d43f3a");
+                         $( "#like" ).css("background-color", "#d43f3a").css("border-color", "#d43f3a");
                          
                        }
                     });
@@ -189,6 +215,39 @@ $().ready(function () {
             }
         });
 
+    });
+
+    $('#btn_expand').on('click', function() {
+        if($('#btn_expand').html() === "◀")
+        {
+            $('#btn_expand').html("▶");
+            $('#cb-container').css({
+                    width: 0 + "px",
+                    height: 0 + "px",
+                    transition: "1s",
+                    overflow: "hidden",
+                });
+                setTimeout(() => {
+                    $('#cb-container').hide();
+                }, 999);
+
+                $('#btn_expand').css({
+                position: 'absolute',
+                left: 0+ "px",
+                transition: "1s"
+                });
+        }
+        else
+        {
+            $('#cb-container').removeAttr('style');
+            $('#cb-container').css({ height: bodyHeight, transition: 'width 1s'});
+            $('#btn_expand').html("◀");
+            $('#btn_expand').css({
+                position: 'absolute',
+                top: btnY + "px",
+                left: commentWidth + "px",
+            })
+        }
     });
 
     $('.edit').on('click', function() {
@@ -212,5 +271,5 @@ $().ready(function () {
         $('#comment-' + cid).append(editCommentForm);
     });
 });
-
 </script>
+

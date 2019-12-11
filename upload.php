@@ -1,12 +1,15 @@
 <?php 
 session_start();
+
+
 if(isset($_SESSION["login"]) && $_SESSION["login"])
 {
     $title = 'Upload Photo';
     include("header.php");
 }
 else {
-    header('Location: ./start.php'); 
+
+    //header('Location: ./start.php'); 
 }
 ?>
 <div class="container-fluid">
