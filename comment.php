@@ -4,6 +4,7 @@ session_start();
 
 require_once('Connect.php');
 require_once('CommentDBFuncs.php');
+require_once('UserDBFuncs.php');
 
 if(isset($_GET['action']) && !empty($_GET['action'])) {
 	$dbh = ConnectDB();
@@ -21,6 +22,16 @@ if(isset($_GET['action']) && !empty($_GET['action'])) {
         case 'like' : like($dbh, $_GET['pid'], $_SESSION['uid']); break;
     	case 'unlike' : unlike($dbh, $_GET['pid'], $_SESSION['uid']); break;
         case 'liked' : boolOutput(liked($dbh, $_GET['pid'],$_SESSION['uid'])); break;
+        case 'getLikers' : 
+            $likers = getLikers($dbh, $_GET['pid']);
+            $data = [];
+            foreach($likers as &$liker)
+            {
+                $currentUser = getUsername($dbh, $liker->user_id);
+                array_push($data, $currentUser);
+            } 
+            echo json_encode($data);
+            break;
     }
 }
 

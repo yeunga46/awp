@@ -18,6 +18,22 @@ div.thumbnail {
    box-shadow: 5px 5px grey;
 }
 
+body {
+    background-color: #e1dbd2;
+}
+
+.my_tooltip {
+    position: absolute;
+    text-align: left;
+    padding: 4px;
+    font: 14px sans-serif;
+    color: white;
+    background: #33cc33;
+    border: 2px;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
 select {
     -webkit-appearance: none;
     -moz-appearance: none;

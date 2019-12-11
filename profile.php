@@ -10,8 +10,7 @@ $dbh = ConnectDB();
 $title = $_GET["username"];
 $uid = getUid($dbh, $title);
 if(empty($uid)){
-    header('HTTP/1.1 404 Not Found');
-    ?>  <img src='./res/404.png' height=500px><?php 
+    header("Location: /photosite/404.php");
     exit();
 }
 include("header.php");
@@ -27,8 +26,7 @@ if(!is_null($profile_pic_id))
     $profile_pic = getPhoto($dbh, $profile_pic_id);
 }
 #set up profile pic + bio
-echo '<div class="flex-container">';
-     echo '<div class="container">';
+echo '<div class="container-fluid">';
         echo '<div class="row">';
             echo '<div class="col-lg-2" id="profile_icon">';
                 if(isset($profile_pic) && !empty($profile_pic))
@@ -59,16 +57,15 @@ echo '<div class="flex-container">';
                 }
             echo '</div>';
         echo '</div>';
-    echo '</div>';
 echo '</div>';
 echo '</br>';
 $photos = getUserPhotos($dbh, $uid);
 $rowsize = 4;
 if(count($photos) > 0)
 {
-    echo '<div class="flex-container">';
+    echo '<div class="container-fluid">';
     #calculate how many we can fit on one row / col - assume 5
-        echo '<div class="container">';
+
         for($i = 0; $i < count($photos); $i++)
         {
             if($i % $rowsize == 0)
@@ -92,7 +89,7 @@ if(count($photos) > 0)
                 echo '</div>';
             }
         }
-        echo '</div>';
+
     echo '</div>';
 }
 else { ?>

@@ -65,7 +65,6 @@ include("header.php");
             {
                 echo '<div class="row">';
             }
-            #should be adjusted to according to row size
             echo '<div class="col-sm-2">';
                 echo '<div class="thumbnail" id="photo-'; echo $i; echo '-div">';
                     echo '<a href="./photo/'; echo $photos[$i]->photo_id; echo '">';
@@ -83,7 +82,6 @@ include("header.php");
             }
         }
         echo '</div>';
-
 ?>
 </div>
 </div>

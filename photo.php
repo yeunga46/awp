@@ -11,10 +11,9 @@ $dbh = ConnectDB();
 $pid = $_GET["pid"];
 
 $photo = getPhoto($dbh, $_GET["pid"]);
-if(empty($photo)){
 
-    header('HTTP/1.1 404 Not Found');
-    ?>  <img src='./res/404.png' height=500px><?php 
+if(empty($uid)){
+    header("Location: /photosite/404.php");
     exit();
 }
 
@@ -29,7 +28,7 @@ include("header.php");
         <div class="col-lg-4 comment-box float-left">
              <div class="comment-box-header" id="cbheader">
                 <h2 id="header_title"><?php echo htmlspecialchars($photo[0]->title);?></h2>
-                <h3 id="header_likes"><?php echo "Likes:".$photo[0]->likes;?> </h3>
+                <p id="header_likes"><?php echo "Likes: ".$photo[0]->likes;?> </p>
                 <?php
                     if($_SESSION['login'])
                     {?>
@@ -55,6 +54,9 @@ include("header.php");
                                 <button class="btn btn-info edit" id="edit-<?php echo $comments[$i]->comment_id; ?>">Edit Comment</button>
                                 <a href="./comment.php?cid=<?php echo $comments[$i]->comment_id; ?>&pid=<?php echo $pid;?>&action=delete">
                                 <button class="btn btn-danger">Remove Comment</button></a>
+                            <?php } else if($_SESSION['login'] && $photo[0]->uploader == $_SESSION['username']) { ?>
+                                     <a href="./comment.php?cid=<?php echo $comments[$i]->comment_id; ?>&pid=<?php echo $pid;?>&action=adminDelete">
+                                     <button class="btn btn-danger" title="You can remove this comment if you find it offensive.">Remove Comment</button></a>
                             <?php } ?>
                             <br/>
                             <br/>
@@ -78,6 +80,7 @@ include("header.php");
             <img src='<?php echo str_replace(' ', '%20', $photo[0]->filelocation); ?>' height=500px>
         </div>
 </div>
+<div id="likes_tooltip" class="my_tooltip"></div>
 <div class="modal fade" id="div_deletePhotoModal" role="dialog">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -88,7 +91,6 @@ include("header.php");
             <p>This photo, along with any comments, will be deleted.</p>
           </div>
           <div class="modal-body">
-          <!-- again, no way to delete photos-->
             <form method="POST" action="./delete.php?obj=photo&pid=<?php echo $pid; ?>" id="form-deletePhoto">
               <div class="form-group">
                 <label for="username">Enter this photo's title.</label>
@@ -105,6 +107,7 @@ include("header.php");
 
 <script>
 $().ready(function () {
+    $('#likes_tooltip').hide();
     $('#form-deletePhoto').on('submit', function(e) {
         if($('#input_deleteTitle').val() !== $.trim($('#header_title').innerhtml()))
         {
@@ -112,8 +115,45 @@ $().ready(function () {
             e.preventDefault();
         }
     });
+
+    $('#header_likes').on('mouseover', function() {
+        let pos = $('#header_likes').position();
+        let height = $('#header_likes').outerHeight();
+        let width = $('#header_likes').outerWidth();
+        $.ajax({
+            url:'comment.php',
+            type: 'GET',
+            data: {action: 'getLikers', pid: <?php echo $pid; ?>},
+            success:function(response) {
+                let likers = $.parseJSON($.trim(response));
+                
+                $('#likes_tooltip').html('Liked by:');
+                $('#likes_tooltip').append('</br>');
+                $('#likes_tooltip').append('</br>');
+
+                if(likers.length > 0 )
+                {
+                for(var i = 0; i < likers.length; i++)
+                {
+                    if(i != 0)
+                    {
+                        $('#likes_tooltip').append('</br>');
+                    }
+                    $('#likes_tooltip').append(likers[i]);
+                }
+                $('#likes_tooltip').css({
+                    top: pos.top*2.5 + "px",
+                    left: (pos.left) + "px",
+                    width: width/4 + "px",}).show();
+                }
+            }});
+    });
+
+    $('#header_likes').on('mouseout', function() {
+        $('#likes_tooltip').hide();
+    });
     
-    $(document).on('click','.like', function(e) {
+    $('#like').on('click', function(e) {
         $.ajax({
             url: 'comment.php',
             type: 'GET',
