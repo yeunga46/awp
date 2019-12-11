@@ -268,7 +268,8 @@ function liked($dbh,$pid,$uid)
         die ('PDO error in liked(): ' . $e->getMessage() );
     }
 }
-
+// getLikers() - return like id ,user id, and photo id
+// $dbh is database handle, $pid is photo id
 function getLikers($dbh, $pid)
 {
     try {
@@ -283,7 +284,7 @@ function getLikers($dbh, $pid)
     }
     catch(PDOException $e)
     {
-        die ('PDO error in liked(): ' . $e->getMessage() );
+        die ('PDO error in getLikers(): ' . $e->getMessage() );
     }
 }
 ?>
