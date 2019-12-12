@@ -34,7 +34,7 @@ echo '<div class="container-fluid">';
                 else
                 {
                     #add href to photo.php with the appropriate query
-                    echo '<img src="./res/placeholder.png" width=100% id="profile_img"></img>';
+                    echo '<img src="./res/blank-profile-picture.png" width=100% id="profile_img"></img>';
                 }
                 echo '</div>';
                 echo '<div class="col-lg-4" id="bio-div">';

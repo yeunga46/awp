@@ -111,10 +111,10 @@ include("header.php");
 $().ready(function () {
 
     $('#likes_tooltip').hide();
-    let commentPos = $('#cb-container').position();
-    let commentWidth = $('#cb-container').outerWidth();
+    var commentPos = $('#cb-container').position();
+    var commentWidth = $('#cb-container').outerWidth();
     let tooltipLikerLength = 3;
-    let bodyHeight = $('#body').outerHeight();
+    var bodyHeight = $('#body').outerHeight();
     var btnY = commentPos.top + (bodyHeight/2) - 62.5;
     $('#btn_expand').css({
         position: 'absolute',
@@ -221,24 +221,33 @@ $().ready(function () {
         if($('#btn_expand').html() === "◀")
         {
             $('#btn_expand').html("▶");
-            $('#cb-container').css({
-                    width: 0 + "px",
-                    height: 0 + "px",
-                    transition: "1s",
-                    overflow: "hidden",
-                });
-                setTimeout(() => {
-                    $('#cb-container').hide();
-                }, 999);
-
-                $('#btn_expand').css({
+            $('#btn_expand').css({
                 position: 'absolute',
                 left: 0+ "px",
                 transition: "1s"
+            });
+            $('#cb-container').css({
+                    position: 'absolute',   
+                    width: 0 + "px",
+                    transition: "width 1s",
+                    left:-10 +"px",
+                    overflow: "hidden"
                 });
-        }
+
+            setTimeout(() => {
+                $('#cb-container').children().hide();
+                $('#cb-container').css({
+                    height: 0 + "px",
+                });
+                $('#cb-container').hide();
+            }, 700);
+
+
+    }
         else
         {
+            $('#cb-container').show();
+            $('#cb-container').children().show();
             $('#cb-container').removeAttr('style');
             $('#cb-container').css({ height: bodyHeight, transition: 'width 1s'});
             $('#btn_expand').html("◀");
@@ -246,6 +255,7 @@ $().ready(function () {
                 position: 'absolute',
                 top: btnY + "px",
                 left: commentWidth + "px",
+                transition: "1s"
             })
         }
     });
