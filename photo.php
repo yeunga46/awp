@@ -78,7 +78,7 @@ include("header.php");
                 <?php }?>
         </div>
 
-        <div class="text-center" width=500px>
+        <div id="photo-container" class="col-lg-8" >
             <img src='<?php echo str_replace(' ', '%20', $photo[0]->filelocation); ?>' height=500px>
         </div>
 </div>
@@ -233,11 +233,13 @@ $().ready(function () {
                     left:-10 +"px",
                     overflow: "hidden"
                 });
+            $('#photo-container').css('text-align','center');
+            $('#photo-container').css('width','100%');
 
             setTimeout(() => {
                 $('#cb-container').children().hide();
                 $('#cb-container').css({
-                    height: 0 + "px",
+                    height: 0 + "px"
                 });
                 $('#cb-container').hide();
             }, 700);
@@ -249,6 +251,7 @@ $().ready(function () {
             $('#cb-container').show();
             $('#cb-container').children().show();
             $('#cb-container').removeAttr('style');
+            $('#photo-container').removeAttr('style');
             $('#cb-container').css({ height: bodyHeight, transition: 'width 1s'});
             $('#btn_expand').html("◀");
             $('#btn_expand').css({
