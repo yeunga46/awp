@@ -9,7 +9,7 @@ if ( empty($_POST['username'])  || empty($_POST['email'])) {
   die("You did not fill in the form correctly.  Try again.");
 }
 
-if(checkUserExist($dbh, $_POST['username']) || checkEmailExist($dbh, $_POST['email'])){
+if(checkUserExist($dbh, $_POST['username']) && checkEmailExist($dbh, $_POST['email'])){
 
   $host = "elvis.rowan.edu/~yeunga46/awp/photosite";
   $site = "Photosite";

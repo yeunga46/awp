@@ -3,12 +3,12 @@
 require_once('Connect.php');
 // other functions are right here
 require_once('UserDBFuncs.php');
-
+include("header.php");
 $dbh = ConnectDB();
 
-include("header.php");
 
-if ((isset($_GET['code']) && !empty($_GET['code']))|| (isset($_GET['u'])&&!empty($_GET['u']))) {
+
+if ((isset($_GET['code']) && !empty($_GET['code'])) || (isset($_GET['u']) && !empty($_GET['u']))) {
 	if (!checkReset($dbh,$_GET['u'])) {
 		die("Link has expired.");
 	}
@@ -19,7 +19,7 @@ if ((isset($_GET['code']) && !empty($_GET['code']))|| (isset($_GET['u'])&&!empty
 	header("Location:start.php");
 }
 
-if(isset($_POST['pwd1'])&&isset($_POST['pwd2'])){
+if((isset($_POST['pwd1'])&&!empty($_POST['pwd1']))&&(isset($_POST['pwd2'])&&!empty($_POST['pwd1']))){
 
 	if ( $_POST['pwd1'] != $_POST['pwd2'] ) {
 		die("Password doesn't match.  Try again.");
@@ -34,29 +34,33 @@ if(isset($_POST['pwd1'])&&isset($_POST['pwd2'])){
 		$stmt->bindParam(':new_pwd', $en_password);
 		$stmt->execute();
 		$stmt = null;
-		header("Location:start.php");
+		?>
+		<script type="text/javascript">
+		window.location = "./start.php";
+		</script> <?php    
 	}
 	catch(PDOException $e)
 	{
 		die ('PDO error Resetting Password: ' . $e->getMessage() );
 	}
+	
 }
 ?>
 <div class="text-center">
 		<h1>Reset your password</h1>
-		<form method="post">
+		<form method="post" action="password_reset.php">
 			<fieldset>
 				<table>
 					<tr>
 						<td> New Password: </td>
-						<td> <input name="pwd1" type="password" /> </td>
+						<td> <input name="pwd1" type="password"> </td>
 					</tr>
 					<tr>
 						<td> Re-confirm Password: </td>
-						<td> <input name="pwd2" type="password" /> </td>
+						<td> <input name="pwd2" type="password"> </td>
 					</tr>
 					<tr>
-						<td><input type="submit" />  </td>
+						<td><input value="Submit" type="submit"> </td>
 					</tr>
 				</table>
 			</fieldset>
