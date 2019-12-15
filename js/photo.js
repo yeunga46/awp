@@ -62,8 +62,12 @@ $().ready(function() {
                     for(var i = 0; i < likers.length && i < tooltipLikerLength; i++)
                     {
                         (i != likers.length - 1) 
-                        ? $('#likes_tooltip').append(likers[i] +', ') 
-                        : $('#likes_tooltip').append(likers[i]);
+                        ? ( (likers[i] == "") 
+                        ? $('#likes_tooltip').append('[deleted], ') 
+                        : $('#likes_tooltip').append(likers[i] +', '))
+                        : ( (likers[i] == "") 
+                        ? $('#likes_tooltip').append('[deleted]') 
+                        : $('#likes_tooltip').append(likers[i]));
                     }
                     if(likers.length > tooltipLikerLength)
                     {
