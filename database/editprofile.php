@@ -1,5 +1,5 @@
 <?php 
-
+    # this file handles editing a profile's bio and / or picture
     session_start();
     
     require_once('Connect.php');
@@ -82,10 +82,5 @@
 
         }
     }
-
-    
-
-
     header('Location: ./u/' . $_SESSION['username']); 
-
 ?>

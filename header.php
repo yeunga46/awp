@@ -4,11 +4,11 @@
   <base href="/photosite/">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Permanent+Marker"/>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/marker.css"/>
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
   <script src="js/header.js"></script>
   <script src="js/validate.js"></script>
   <title><?php echo $title; ?></title>
@@ -18,7 +18,7 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="./start.php"><?php echo htmlspecialchars($title);?></a>
+          <a class="navbar-brand" href="database/start.php"><?php echo htmlspecialchars($title);?></a>
         </div>
         <ul class="nav navbar-nav">
           <li <?php $script = $_SERVER['SCRIPT_NAME']; if($script == '/photosite/start.php'){ echo 'class="active"';} ?>><a href="./start.php">Home</a></li>
@@ -55,7 +55,7 @@
           <li <?php if($script == '/photosite/upload.php'){ echo 'class="active"';} ?>><a href="./upload.php">Upload</a></li>
         </ul>
         <!-- Log out form-->
-        <form class="navbar-form navbar-right" method="post" action="./logout.php">
+        <form class="navbar-form navbar-right" method="post" action="database/logout.php">
           <div class="form-group">
             <button class="btn btn-danger" type="submit" onclick="alert('Logging out...')">Log out</button>
           </div>
@@ -72,7 +72,7 @@
             <h4 class="modal-title">Register</h4>
           </div>
           <div class="modal-body">
-            <form method="post" action="./register.php" id="form-register">
+            <form method="post" action="database/register.php" id="form-register">
               <div class="form-group">
                 <label for="username">Username:</label>
                 <input class="form-control" type="text" name="username" id="input_username">
@@ -99,6 +99,7 @@
     </div>
     </div>
     </div>
+    <!-- modal for forgotten passwords -->
     <div class="modal fade" id="div_forgotPassword" role="dialog">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -107,7 +108,7 @@
             <h4 class="modal-title">Forgot Password</h4>
           </div>
           <div class="modal-body">
-            <form method="post" action="./sendemail.php" id="form-forgotPassword">
+            <form method="post" action="database/sendemail.php" id="form-forgotPassword">
               <div class="form-group">
                 <label for="username">Username:</label>
                 <input class="form-control" type="text" name="username" id="input_forgotUsername">

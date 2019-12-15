@@ -1,5 +1,5 @@
 <?php 
-
+# this file handles deleting users and photos
 session_start();
     
 require_once('Connect.php');

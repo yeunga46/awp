@@ -1,4 +1,5 @@
 <?php
+# handles logging in
 require_once('Connect.php');
 require_once('UserDBFuncs.php');
 $dbh = ConnectDB();
@@ -15,7 +16,7 @@ if ( isset($_POST['username'])   &&  !empty($_POST['username'])   ||
 		session_write_close();
 		exit();
 	}else{
-		echo 'invalid';
+		echo 'Invalid username or password.';
 		exit();
 	}
 }?>

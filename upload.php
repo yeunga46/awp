@@ -1,15 +1,13 @@
 <?php 
 session_start();
-
-
 if(isset($_SESSION["login"]) && $_SESSION["login"])
 {
     $title = 'Upload Photo';
     include("header.php");
 }
 else {
-
-    //header('Location: ./start.php'); 
+    # redirects you to the start if you're not logged in
+    header('Location: ./start.php'); 
 }
 ?>
 <div class="container-fluid">
@@ -19,7 +17,7 @@ else {
                 <img id="img_preview" src=".\res\placeholder.png" height="500" width="500">
             </div>
             <div class="col-md-6">
-                <form id="form-upload-file" method="post" enctype="multipart/form-data" action="./store_it.php">
+                <form id="form-upload-file" method="post" enctype="multipart/form-data" action="database/store_it.php">
                     <div class="form-group">
                     <!-- make sure to require title -->
                         <label for="title">Choose a title for your photo:</label>
@@ -40,7 +38,6 @@ else {
 </div>
 <script>
     //function to replace image when a file is chosen
-    //submit button should not work until a valid picture is submitted
     $(document).ready(function () {
         $('#userfile').on('change', function () {
             if ($('#userfile')[0].files && $('#userfile')[0].files[0]) {
@@ -52,10 +49,10 @@ else {
                 reader.readAsDataURL($('#userfile')[0].files[0]);
             }
         });
+        
         $('#form-upload-file').on('submit', function(e) {
             if($('#title').val() === "")
             {
-                //change this to something more pleasing later
                 alert('Please fill out a title for your photo before continuing.');
                 e.preventDefault();
             }

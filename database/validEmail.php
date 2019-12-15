@@ -1,4 +1,5 @@
 <?php
+# checks if an email is valid
 // Variable to check
 // $email = "john.doe@as.net";
 $email = $_POST['email'];

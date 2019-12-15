@@ -1,4 +1,5 @@
 <?php
+# returns a list of usernames + photos that match the search query
 // access information in directory with no web access
 require_once('Connect.php');
 

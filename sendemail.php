@@ -1,14 +1,13 @@
 <?php
 // access information in directory with no web access
-require_once('Connect.php');
+require_once('database/Connect.php');
 // other functions are right here
-require_once('UserDBFuncs.php');
+require_once('database/UserDBFuncs.php');
 $dbh = ConnectDB();
 
 if ( empty($_POST['username'])  || empty($_POST['email'])) {
   die("You did not fill in the form correctly.  Try again.");
 }
-
 if(checkUserExist($dbh, $_POST['username']) && checkEmailExist($dbh, $_POST['email'])){
 
   $host = "elvis.rowan.edu/~yeunga46/awp/photosite";
@@ -49,6 +48,4 @@ if(checkUserExist($dbh, $_POST['username']) && checkEmailExist($dbh, $_POST['ema
 else{
   die("Invalid username or email address.");
 }
-
-//header("Location:start.php");
 ?>

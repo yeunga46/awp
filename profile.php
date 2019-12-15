@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once('Connect.php');
-require_once('PhotoDBFuncs.php');
-require_once('UserDBFuncs.php');
+require_once('database/Connect.php');
+require_once('database/PhotoDBFuncs.php');
+require_once('database/UserDBFuncs.php');
 
 $dbh = ConnectDB();
 $title = $_GET["username"];
@@ -62,8 +62,8 @@ $rowsize = 4;
 if(count($photos) > 0)
 {
     echo '<div class="container-fluid">';
-    #calculate how many we can fit on one row / col - assume 5
-
+    # calculate how many we can fit on one row / col - assume 5
+    # and then draw the pictures
         for($i = 0; $i < count($photos); $i++)
         {
             if($i % $rowsize == 0)
@@ -100,13 +100,14 @@ else { ?>
 <?php }?>
 <script>
 $().ready(function(){
+    //left javascript inline because the code's short + there's inline php
     var passwordsMatch = false;
     $('#btn_edit').on('click', function(){
             //photo-i-div
             //bio-div
             $('#bio-div').empty();
             //change action here to whatever you set the query string to
-            var form = $('<form/>', { action: './editProfile.php', method: 'POST', enctype:"multipart/form-data"});
+            var form = $('<form/>', { action: 'database/editProfile.php', method: 'POST', enctype:"multipart/form-data"});
             var username = $('<h2>').html('<?php echo $_SESSION["username"]; ?>')
             var file_input = $('<input/>').attr('type', 'file').attr('accept', 'image/*').attr('name', 'userfile').on('change', function(){
                     if (this.files[0]) 
@@ -138,7 +139,6 @@ $().ready(function(){
     $('#form_deleteAccount').on('submit', function(e){
         if(!passwordsMatch)
         {
-            
             e.preventDefault();
         }
     });
@@ -180,6 +180,7 @@ $().ready(function(){
     });
 });
 </script>
+<!-- div for deleting a profile -->
 <div class="modal fade" id="div_deleteProfile" role="dialog">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -190,7 +191,7 @@ $().ready(function(){
             <p>All of your account information and pictures will be deleted.</p>
           </div>
           <div class="modal-body">
-            <form method="POST" action="./delete.php?obj=profile" id="form_deleteAccount">
+            <form method="POST" action="database/delete.php?obj=profile" id="form_deleteAccount">
               <div class="form-group">
                 <label for="delete_pass">Password</label>
                 <input class="form-control delete_password_input" type="password" name="delete_pass" id="delete_password">

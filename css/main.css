@@ -15,16 +15,13 @@ div.col-sm-4{
 img.preview_img{
     border: 1px solid grey ;
 }
-
 div.thumbnail {
    box-shadow: 5px 5px grey;
    font-family: Permanent Marker;
 }
-
 body {
     background-color: #ecd8c6; 
 }
-
 div.expand_btn {
     background: rgba(117, 116, 116, 0.85);
     font: 24px sans-serif;
@@ -38,8 +35,7 @@ div.expand_btn {
     float: left;
     position: absolute;
 }
-
-.my_tooltip {
+.like_tooltip {
     position: absolute;
     text-align: left;
     padding: 4px;
@@ -50,7 +46,6 @@ div.expand_btn {
     border-radius: 4px;
     pointer-events: none;
 }
-
 select {
     -webkit-appearance: none;
     -moz-appearance: none;

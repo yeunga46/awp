@@ -33,7 +33,6 @@ function Upload($dbh,$file_location,$uid,$uploader,$caption,$title)
     }
 }
 
-
 // getPhoto() - return array of photo info
 // $dbh is database handle, $pid is photo id       
 function getPhoto($dbh,$pid)

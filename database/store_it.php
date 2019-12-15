@@ -1,4 +1,5 @@
 <?php
+# handles storing files
 session_start();
 // access information in directory with no web access
 require_once('Connect.php');

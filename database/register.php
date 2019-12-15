@@ -1,19 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<html>
-<head>
-    <title>Register</title>
-</head>
-
-<body>
 <?php
+# handles user registration
 session_start();
 
 // access information in directory with no web access
 require_once('Connect.php');
 require_once('UserDBFuncs.php');
 $dbh = ConnectDB();
-
-
 // was a name and phone entered?
 if ( isset($_POST['username'])   &&  !empty($_POST['username'])   && 
      isset($_POST['email'])  &&  !empty($_POST['email'])      && 
@@ -60,17 +52,5 @@ if ( isset($_POST['username'])   &&  !empty($_POST['username'])   &&
     {
         die ('PDO error inserting(): ' . $e->getMessage() );
     }
-
-} else {
-
-    echo "<p>Fill in form.</p>\n";
-
 }
 ?>
-
-
-
-
-</body>
-</html>
-

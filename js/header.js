@@ -8,7 +8,7 @@ $().ready(function () {
 
     $('#searchbar').on('change keyup paste', function () {
         $.ajax({
-            url: './search.php',
+            url: 'database/search.php',
             type: 'GET',
             data: $('#form_search').serialize(),
             success: function (response) {
@@ -50,7 +50,7 @@ $().ready(function () {
 
     $('#input_email').on('change keyup paste', function(e) {
         $.ajax({
-            url: './checker.php',
+            url: 'database/checker.php',
             type: 'GET',
             data: {check: 'emailExist', 'email': $('#input_email').val() },
             success: function(response)
@@ -79,7 +79,7 @@ $().ready(function () {
 
     $('#btn_login').on('click', function () {
         $.ajax({
-            url: './login.php',
+            url: 'database/login.php',
             type: 'POST',
             data: $('#form_login').serialize(),
             success: function (response) {
@@ -96,7 +96,7 @@ $().ready(function () {
 
     $('#input_username').on('change keyup paste', function(e) {
         $.ajax({
-            url: './checker.php',
+            url: 'database/checker.php',
             type: 'GET',
             data: {check: 'userExist', 'username': $('#input_username').val() },
             success: function(response)

@@ -1,13 +1,10 @@
 <?php
 // access information in directory with no web access
-require_once('Connect.php');
+require_once('database/Connect.php');
 // other functions are right here
-require_once('UserDBFuncs.php');
+require_once('database/UserDBFuncs.php');
 include("header.php");
 $dbh = ConnectDB();
-
-
-
 if ((isset($_GET['code']) && !empty($_GET['code'])) || (isset($_GET['u']) && !empty($_GET['u']))) {
 	if (!checkReset($dbh,$_GET['u'])) {
 		die("Link has expired.");
@@ -49,20 +46,10 @@ if((isset($_POST['pwd1'])&&!empty($_POST['pwd1']))&&(isset($_POST['pwd2'])&&!emp
 <div class="text-center">
 		<h1>Reset your password</h1>
 		<form method="post" action="password_reset.php">
-			<fieldset>
-				<table>
-					<tr>
-						<td> New Password: </td>
-						<td> <input name="pwd1" type="password"> </td>
-					</tr>
-					<tr>
-						<td> Re-confirm Password: </td>
-						<td> <input name="pwd2" type="password"> </td>
-					</tr>
-					<tr>
-						<td><input value="Submit" type="submit"> </td>
-					</tr>
-				</table>
-			</fieldset>
+			<label for="pwd1">New Password:</label>
+			<input name="pwd1" type="password">
+			<label for="pwd2"> Re-confirm Password: </label>
+			<input name="pwd2" type="password">
+			<input value="Submit" type="submit">
 		</form>
 </div>

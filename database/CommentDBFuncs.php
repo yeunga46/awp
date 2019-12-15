@@ -3,9 +3,6 @@
 /* This file has useful database functions in it for the photo
  * site for the tables likes and photo_comments.
  */
-
-
-
 // addComment() - adds comment to table photo_comments.
 // $dbh is database handle , $uid is user id, $pid is photo id, $uploader is user name , $comment is comment
 function addComment($dbh, $uid, $pid,$uploader, $comment)
@@ -26,8 +23,6 @@ function addComment($dbh, $uid, $pid,$uploader, $comment)
         $inserted = $stmt->rowCount();
 
         $stmt = null;
-    
-
     }
     catch(PDOException $e)
     {
@@ -168,9 +163,6 @@ function checkPhotoOwner($dbh,$pid,$uid)
         die ('PDO error in checkPhotoOwner(): ' . $e->getMessage() );
     }
 }
-
-
-
 // deleteComment() - delete comment only if input uid matches the comment uid
 // $dbh is database handle, $uid is user id, $cid is comment id,
 function deleteComment($dbh,$cid,$uid)

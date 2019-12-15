@@ -1,87 +1,83 @@
 
 <?php 
+# set up our connections
 session_start();
-require_once('Connect.php');
-require_once('PhotoDBFuncs.php');
+require_once('database/Connect.php');
+require_once('database/PhotoDBFuncs.php');
 $dbh = ConnectDB();
-
 
 if(!isset($_SESSION["login"]))
 {
   $_SESSION["login"] = false;
 }
-if ($_SESSION["login"])
-{
-  $title = 'Welcome '.$_SESSION["username"];
-}else{
-  $title = 'Welcome';
-}
-if(isset($_GET["page"]) && $_GET["page"] >= 1 )
-{ 
-    $page = $_GET["page"] - 1;
-}else{
-    $page = 0;
-}
+
+$title = ($_SESSION["login"]) ? 'Welcome ' . $_SESSION["username"] : 'Welcome';
+$page = (isset($_GET["page"]) && $_GET["page"] >= 1 ) ? $_GET["page"] - 1 : $page = 0;
 $total = getPhotoTotal($dbh);
+
 include("header.php");
 ?>
 <div class="container-fluid">
-
-<h1>Gallery</h1>
-<?php 
-    echo '<div class="limit">';
-    echo "Display: ";
-    $n = 4;
-    for ($i=1; $i <= $n; $i++) { 
-        echo '<a href="./gallery.php?page=1'; echo '&size='; echo $i*$n; echo '">';
-        echo $i * $n; echo ' </a>';
-    }
-    echo " images per page ";
-    echo '</div>';
-    echo '</br>';   
-
-    $rowsize = 4;
-    if(isset($_GET["size"]))
-    {
-        $size = $_GET["size"];
-        $_SESSION['size'] = $_GET["size"];
-    }else{
-        if(isset($_SESSION['size'])){
-            $size = $_SESSION['size'];
-        }else{
-            $size = 4;
+    <h1>Gallery</h1>
+    <?php 
+        echo '<div class="limit">';
+        echo 'Display: ';
+        $n = 4;
+        # render the number of images per page option
+        for ($i=1; $i <= $n; $i++) { 
+            echo '<a href="./gallery.php?page=1&size=' . $i*$n . '">'
+            . $i * $n . ' </a>';
         }
-
-    }
-    $photos = getPhotosBetween($dbh, $page * $size, $size);
-
-    // total page  = total mod size
-    echo '<div class="container-fluid">';
-    for($i = 0; $i < count($photos); $i++)
-    {
-        if($i % $rowsize == 0)
+        echo ' images per page</div>';
+        echo '</br>';   
+        $rowsize = 4;
+        # get how many pictures we want per page
+        if(isset($_GET["size"]))
         {
-            echo '<div class="row">';
+            $size = $_GET["size"];
+            $_SESSION['size'] = $_GET["size"];
         }
-        #should be adjusted to according to row size
-        echo '<div class="col-sm-3">';
-            echo '<div class="thumbnail" id="photo-'; echo $i; echo 'div">';
-                echo '<a href="./photo/'; echo $photos[$i]->photo_id; echo '">';
-                    echo '<img class="preview_img" src="'; echo str_replace(' ', '%20', $photos[$i]->filelocation); echo '" width=100%></img>';
-                    echo '<hr>';
-                    echo '<div class="caption">';
-                                echo '<p>'; echo htmlspecialchars($photos[$i]->caption);  echo '</p>';
-                            echo '</div>';
-                echo '</a>';
-            echo '</div>';
-        echo '</div>';
-        if($i % $rowsize == $rowsize-1)
+        else
         {
-            #generate the closing tag for that row
-            echo '</div>';
+            if(isset($_SESSION['size']))
+            {
+                $size = $_SESSION['size'];
+            }
+            else{
+                $size = 4;
+            }
         }
-    }
+        $photos = getPhotosBetween($dbh, $page * $size, $size);
+
+        // total per page = total % size
+        # draw the pictures
+        echo '<div class="container-fluid">';
+        for($i = 0; $i < count($photos); $i++)
+        {
+            if($i % $rowsize == 0)
+            {
+                echo '<div class="row">';
+            }
+            echo '<div class="col-sm-3">';
+                echo '<div class="thumbnail" id="photo-'; echo $i; echo 'div">';
+                    echo '<a href="./photo/'; echo $photos[$i]->photo_id; echo '">';
+                        echo '<img class="preview_img" src="'; echo str_replace(' ', '%20', $photos[$i]->filelocation); echo '" width=100%></img>';
+                        echo '<hr>';
+                        echo '<div class="caption">';
+                            echo '<p>'; echo htmlspecialchars($photos[$i]->caption);  echo '</p>';
+                        echo '</div>';
+                    echo '</a>';
+                echo '</div>';
+            echo '</div>';
+
+            if($i % $rowsize == $rowsize-1)
+            {
+                #generate the closing tag for that row
+                echo '</div>';
+            }
+        }
     echo '</div>';
+
     $n = ($total / $size);
 ?>
             <nav aria-label="Pages">
