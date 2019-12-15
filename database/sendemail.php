@@ -1,8 +1,8 @@
 <?php
 // access information in directory with no web access
-require_once('database/Connect.php');
+require_once('Connect.php');
 // other functions are right here
-require_once('database/UserDBFuncs.php');
+require_once('UserDBFuncs.php');
 $dbh = ConnectDB();
 
 if ( empty($_POST['username'])  || empty($_POST['email'])) {
@@ -39,7 +39,7 @@ if(checkUserExist($dbh, $_POST['username']) && checkEmailExist($dbh, $_POST['ema
     "But don’t worry! You can use the following link to reset your password:\r\n\r\n" .
     "http://$host$link?code=$confirmcode&u=$username \r\n";
     mail($to, $subject, $message, $headers);
-    header("Location:start.php");
+    header("Location:../start.php");
   }
   catch(PDOException $e){
     die ('PDO error Confrim Code For Resetting Password: ' . $e->getMessage() );
