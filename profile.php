@@ -74,7 +74,7 @@ if(count($photos) > 0)
             echo '<div class="col-sm-3">';
                 echo '<div class="thumbnail" id="photo-'; echo $i; echo '-div">';
                     echo '<a href="./photo/'; echo $photos[$i]->photo_id; echo '">';
-                        echo '<img src="'; echo str_replace(' ', '%20', $photos[$i]->filelocation); echo '" width=100%></img>';
+                        echo '<img class="preview_img" src="'; echo str_replace(' ', '%20', $photos[$i]->filelocation); echo '" width=100%></img>';
                             echo '<div class="caption">';
                                 echo '<p>'; echo htmlspecialchars($photos[$i]->caption); echo '</p>';
                             echo '</div>';
