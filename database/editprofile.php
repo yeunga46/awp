@@ -41,21 +41,21 @@
 
             die(); //Ensure no more processing is done
         }else{
-            if (!file_exists("./UPLOADED/archive/" . $_SESSION["username"])) {
-                mkdir("./UPLOADED/archive/". $_SESSION["username"], 0777);
-                chmod("./UPLOADED/archive/". $_SESSION["username"], 0777);
+            if (!file_exists("../UPLOADED/archive/" . $_SESSION["username"])) {
+                mkdir("../UPLOADED/archive/". $_SESSION["username"], 0777);
+                chmod("../UPLOADED/archive/". $_SESSION["username"], 0777);
             }
 
-            if (!file_exists("./UPLOADED/archive/" . $_SESSION["username"]."/icon")) {
-                mkdir("./UPLOADED/archive/". $_SESSION["username"]."/icon", 0777);
-                chmod("./UPLOADED/archive/". $_SESSION["username"]."/icon", 0777);
+            if (!file_exists("../UPLOADED/archive/" . $_SESSION["username"]."/icon")) {
+                mkdir("../UPLOADED/archive/". $_SESSION["username"]."/icon", 0777);
+                chmod("../UPLOADED/archive/". $_SESSION["username"]."/icon", 0777);
             }
             // Make sure it was uploaded
             if (!is_uploaded_file( $_FILES["userfile"]["tmp_name"])) {
                 #echo "<pre>\n"; print_r($_FILES["userfile"]); echo "</pre>";
                 die("Error: " . $_FILES["userfile"]["name"] . " did not upload.");
             }
-            $targetname = "./UPLOADED/archive/" . $_SESSION["username"] . "/icon/" . basename($_FILES["userfile"]["name"]);
+            $targetname = "../UPLOADED/archive/" . $_SESSION["username"] . "/icon/" . basename($_FILES["userfile"]["name"]);
 
             if (move_uploaded_file($_FILES["userfile"]["tmp_name"], $targetname) ) {
                 // if we don't do this, the file will be mode 600, owned by
@@ -66,7 +66,7 @@
                 $title = null;
                 $caption = null;
 
-                $ppid = Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $caption, $title);
+                $ppid = Upload($dbh,substr($targetname, 1),$_SESSION["uid"],$_SESSION["username"], $caption, $title);
               
                 if(!is_null(getProfilePicId($dbh, $_SESSION["username"]))){
                     $old_ppid = getProfilePicId($dbh,$_SESSION["username"]);
@@ -74,7 +74,7 @@
                 }
                 setProfilePicId($dbh,$_SESSION["username"],$ppid);
 
-                header('Location: ./profile.php?username='.$_SESSION["username"]);
+                header('Location: ../profile.php?username='.$_SESSION["username"]);
                 //file + timestamp caption default null
             } else {
                 die("Error copying ". $_FILES["userfile"]["name"]);
@@ -82,5 +82,5 @@
 
         }
     }
-    header('Location: ./u/' . $_SESSION['username']); 
+    header('Location: ../u/' . $_SESSION['username']); 
 ?>

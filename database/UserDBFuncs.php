@@ -220,7 +220,7 @@ function deleteUser($dbh, $username, $pword)
     if(checkPassword($dbh, $username, $pword)){
         #this only works if the user has uploaded files before
 
-        deleteFiles("./UPLOADED/archive/". $username);
+        deleteFiles("../UPLOADED/archive/". $username);
         // fetch the data
         try {
             $query = "DELETE FROM photo_users WHERE  username=:username";

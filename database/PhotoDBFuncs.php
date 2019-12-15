@@ -156,6 +156,32 @@ function getUserPhotos($dbh,$uid)
     }
 }
 
+// checkPhotoOwner() - return true/false if photo is owned by user
+// $dbh is database handle, $uid is user id, $pid is photo id
+function checkPhotoOwner($dbh,$pid,$uid)
+{
+    // fetch the data
+    try {
+       
+        $query = "SELECT user_id FROM photo_files WHERE photo_id = :pid";
+        // prepare to execute
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':pid', $pid);
+        $stmt->execute();
+        $check = implode($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+        $stmt = null;
+        // echo '<pre>'; print_r($check); echo '</pre>';
+        if ($check == $uid ) {
+            return true;
+        } else {
+            return false;
+        } 
+    }
+    catch(PDOException $e)
+    {
+        die ('PDO error in checkPhotoOwner(): ' . $e->getMessage() );
+    }
+}
 
 // getPhotoLocation() - return photo location
 // $dbh is database handle, $pid is photo id       
@@ -188,7 +214,7 @@ function getPhotoLocation($dbh,$pid)
 function deletePhoto($dbh,$pid,$uid)
 {
     if (checkPhotoOwner($dbh,$pid,$uid)){
-        $location = getPhotoLocation($dbh, $pid);
+        $location = ".".getPhotoLocation($dbh, $pid);
         chmod($location, 0777);
         unlink($location);
 
@@ -281,5 +307,8 @@ function getNTopLikePhotos($dbh,$n_photos)
         die ('PDO error in getLatestNumPhotos(): ' . $e->getMessage() );
     }
 }
+
+
+
 
 ?>

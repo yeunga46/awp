@@ -44,27 +44,22 @@ if(isset($_FILES['userfile'])) {
     // out the casual visitor.
     // NOTE: the Makefile to set all this up isn't as bad as it sounds.
     // echo "<p>Making directory " . $_SESSION["username"] . " . . . ";
-    if (!file_exists("./UPLOADED/archive/" . $_SESSION["username"])) {
-        mkdir("./UPLOADED/archive/". $_SESSION["username"], 0777);
-        chmod("./UPLOADED/archive/". $_SESSION["username"], 0777);
+    if (!file_exists("../UPLOADED/archive/" . $_SESSION["username"])) {
+        mkdir("../UPLOADED/archive/". $_SESSION["username"], 0777);
+        chmod("../UPLOADED/archive/". $_SESSION["username"], 0777);
     }
     // Make sure it was uploaded
     if (!is_uploaded_file( $_FILES["userfile"]["tmp_name"])) {
         $inipath = php_ini_loaded_file();
 
-        if ($inipath) {
-            echo 'Loaded php.ini: ' . $inipath;
-        } else {
-           echo 'A php.ini file is not loaded';
-        }
         echo "<pre>\n"; print_r($_FILES["userfile"]); echo "</pre>";
         die("Error: " . $_FILES["userfile"]["name"] . " did not upload.");
     }
-    $targetname = "./UPLOADED/archive/" . $_SESSION["username"] . "/" . basename($_FILES["userfile"]["name"]);
+    $targetname = "../UPLOADED/archive/" . $_SESSION["username"] . "/" . basename($_FILES["userfile"]["name"]);
     if(file_exists($targetname))
     {
         ?> <script>alert("File already uploaded.")</script> <?php
-        header('Location: ./upload.php');
+        header('Location: ../upload.php');
     }
     else {
         if (move_uploaded_file($_FILES["userfile"]["tmp_name"], $targetname) ) {
@@ -82,9 +77,9 @@ if(isset($_FILES['userfile'])) {
             if(!empty($_POST["caption"])){
               $caption = $_POST["caption"];
             }
-            $ppid = Upload($dbh,$targetname,$_SESSION["uid"],$_SESSION["username"], $caption, $title);
+            $ppid = Upload($dbh,substr($targetname, 1),$_SESSION["uid"],$_SESSION["username"], $caption, $title);
           
-            header('Location: ./profile.php?username='.$_SESSION["username"]);
+            header('Location: ../profile.php?username='.$_SESSION["username"]);
 
         } else {
             die("Error copying ". $_FILES["userfile"]["name"]);

@@ -115,6 +115,7 @@ function checkCommentOwner($dbh,$cid,$uid)
 // $dbh is database handle, $uid is user id, $pid is photo id, $cid is comment id,
 function deleteCommentAdmin($dbh, $cid, $pid, $uid)
 {
+    require_once('PhotoDBFuncs.php');
     if (checkPhotoOwner($dbh, $pid, $uid)){
         // fetch the data
         try {
@@ -134,35 +135,6 @@ function deleteCommentAdmin($dbh, $cid, $pid, $uid)
     }
 }
 
-// checkPhotoOwner() - return true/false if photo is owned by user
-// $dbh is database handle, $uid is user id, $pid is photo id
-function checkPhotoOwner($dbh,$pid,$uid)
-{
-    // fetch the data
-    try {
-       
-        $query = "SELECT user_id FROM photo_files WHERE photo_id = :pid";
-        // prepare to execute
-        $stmt = $dbh->prepare($query);
-        $stmt->bindParam(':pid', $pid);
-        $stmt->execute();
-        $check = implode($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
-        $stmt = null;
-
-        // echo '<pre>'; print_r($check); echo '</pre>';
-
-        if ($check == $uid ) {
-            return true;
-        } else {
-            return false;
-        } 
-
-    }
-    catch(PDOException $e)
-    {
-        die ('PDO error in checkPhotoOwner(): ' . $e->getMessage() );
-    }
-}
 // deleteComment() - delete comment only if input uid matches the comment uid
 // $dbh is database handle, $uid is user id, $cid is comment id,
 function deleteComment($dbh,$cid,$uid)

@@ -18,11 +18,11 @@ if(isset($_GET['obj']) && !empty($_GET['obj'])) {
             unset($_SESSION["time"]);
             $_SESSION['login'] =  False;  
             session_write_close();
-            header("Location:start.php");
+            header("Location:../start.php");
             break;
         case 'photo': 
             deletePhoto($dbh, $_GET['pid'], $_SESSION['uid']); 
-            header("Location:start.php");
+            header("Location:../start.php");
             break;
     }
 }
