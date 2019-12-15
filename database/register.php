@@ -45,12 +45,12 @@ if ( isset($_POST['username'])   &&  !empty($_POST['username'])   &&
 		$_SESSION['login'] =  True;
         session_write_close();
 
-        header("Location:start.php");
+        header("Location:../start.php");
 
     }
     catch(PDOException $e)
     {
-        die ('PDO error inserting(): ' . $e->getMessage() );
+        die ('PDO error Registering(): ' . $e->getMessage() );
     }
 }
 ?>
