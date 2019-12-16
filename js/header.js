@@ -26,19 +26,21 @@ $().ready(function () {
                 }).show();
 
                 $('#searchbar_dropdown').children('option').remove();
+                $('#searchbar_dropdown').append('<option>Click Me</option>').val('./404.php');
 
                 //0 - accounts
-                for(i = 0; i < data[0].length; i++)
+                for(var j = 0; j < data[0].length; j++)
                 {
-                    let currentUserURL = './u/' + data[0][i].username;
-                    let currentUserOption = $('<option>' + data[0][i].username + '</option>').val(currentUserURL);
+                    let currentUserURL = './u/' + data[0][j].username;
+                    let currentUserOption = $('<option>' + data[0][j].username + '</option>').val(currentUserURL);
                     $('#searchbar_dropdown').append(currentUserOption);
                 }
                 //1 - pictures
-                for(i = 0; i < data[1].length; i++)
+                for(var k = 0; k < data[1].length; k++)
                 {
-                    let currentPhotoURL = './photo/' + data[1][i].photo_id;
-                    let currentPhotoOption = $('<option>' + data[1][i].title + ' by ' + data[1][i].uploader + '</option>').val(currentPhotoURL);
+                    let currentPhotoURL = './photo/' + data[1][k].photo_id;
+                    let currentPhotoOption = $('<option>' + data[1][k].title + ' by ' + data[1][k].uploader + '</option>').val(currentPhotoURL);
+
                     $('#searchbar_dropdown').append(currentPhotoOption);
                 }
             }
@@ -86,7 +88,6 @@ $().ready(function () {
                 if ($.trim(response) === "invalid") {
                     $('#form_login').trigger("reset");
                     alert('Invalid username or password.');
-                    
                 } else {
                     location.reload();
                 }
