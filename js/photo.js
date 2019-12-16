@@ -136,7 +136,7 @@ $().ready(function() {
         $('#comment-' + cid).children('button').remove();
         $('#comment-' + cid).children('a').remove();
         $('#comment-' + cid).children('br').remove();
-        let action = './comment.php?cid=' + cid + '&pid=' + pid + '&action=edit';
+        let action = './database/comment.php?cid=' + cid + '&pid=' + pid + '&action=edit';
         let editCommentForm = $('<form/>', { action: action, method: 'POST'});
         let newComment = $('<textarea/>')
                          .attr('width', '100%')
