@@ -1,7 +1,7 @@
 # Photo-Sharing Website
 **by Rosty Hnatyshyn and Andy Yeung**
 
-Written for Advanced Web Programming taught by Darren Provine, Fall Semester 2020, Rowan University.
+Written for Advanced Web Programming taught by Darren Provine, Fall Semester 2019, Rowan University.
 
 Written with:
 - JQuery 
